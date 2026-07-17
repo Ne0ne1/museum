@@ -215,5 +215,19 @@ export class Gallery {
     }
   }
 
+  /** Зум двумя руками: delta — изменение расстояния между ладонями в px. */
+  zoomByDelta(delta) {
+    if (!this.map || !delta) return;
+    this._zoomAcc = (this._zoomAcc || 0) + delta;
+    const STEP_PX = 70; // накопленные px на один шаг зума
+    while (Math.abs(this._zoomAcc) >= STEP_PX) {
+      const dir = Math.sign(this._zoomAcc);
+      const target = this.map.getZoom() + dir * 0.5;
+      const clamped = Math.max(7, Math.min(16, target));
+      this.map.setZoom(clamped, { animate: true });
+      this._zoomAcc -= dir * STEP_PX;
+    }
+  }
+
   handleLost() {}
 }

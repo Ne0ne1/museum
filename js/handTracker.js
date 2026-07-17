@@ -75,7 +75,7 @@ export class HandTracker {
     });
 
     this.hands.setOptions({
-      maxNumHands: 1,
+      maxNumHands: 2,
       modelComplexity: 0,
       minDetectionConfidence: 0.65,
       minTrackingConfidence: 0.5,
@@ -120,15 +120,17 @@ export class HandTracker {
     ctx.save();
     ctx.clearRect(0, 0, this.debugCanvasEl.width, this.debugCanvasEl.height);
 
-    const hasHand = results.multiHandLandmarks && results.multiHandLandmarks.length > 0;
+    const hands = results.multiHandLandmarks || [];
 
-    if (hasHand) {
-      const landmarks = results.multiHandLandmarks[0];
+    if (hands.length > 0) {
       if (typeof drawConnectors === 'function' && typeof HAND_CONNECTIONS !== 'undefined') {
-        drawConnectors(ctx, landmarks, HAND_CONNECTIONS, { color: '#3ddc97', lineWidth: 2 });
-        drawLandmarks(ctx, landmarks, { color: '#ffb648', lineWidth: 1, radius: 2 });
+        const colors = ['#3ddc97', '#4aa8ff'];
+        hands.forEach((landmarks, i) => {
+          drawConnectors(ctx, landmarks, HAND_CONNECTIONS, { color: colors[i % 2], lineWidth: 2 });
+          drawLandmarks(ctx, landmarks, { color: '#ffb648', lineWidth: 1, radius: 2 });
+        });
       }
-      this.onLandmarks(landmarks);
+      this.onLandmarks(hands);
     } else {
       this.onLandmarks(null);
     }

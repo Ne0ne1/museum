@@ -126,6 +126,10 @@ async function boot() {
           case 'fist':
             window.location.href = 'index.html';
             break;
+          case 'twohand':
+            // Развёл руки — приблизить, свёл — отдалить
+            gallery.zoomByDelta(payload.delta);
+            break;
           default:
             break;
         }

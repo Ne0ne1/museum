@@ -33,6 +33,9 @@ const NUDGE_THRESHOLD_PX = 85;
 const NUDGE_COOLDOWN_MS = 550;
 const SWIPE_SCALE = 0.55;
 
+// Две руки: изменение расстояния между ладонями = зум
+const TWOHAND_DEADZONE_PX = 3;
+
 function dist(a, b) {
   return Math.hypot(a.x - b.x, a.y - b.y, (a.z || 0) - (b.z || 0));
 }
@@ -67,10 +70,17 @@ export class GestureController {
     this.dwellEl = null;
     this.dwellStart = 0;
     this.dwellCooldownUntil = 0;
+
+    this.lastTwoHandDist = null;
   }
 
-  update(landmarks) {
-    if (!landmarks) {
+  /**
+   * @param {Array<Array<{x,y,z}>>|null} handsInput — массив рук (по 21 точке) или null
+   */
+  update(handsInput) {
+    const hands = handsInput || [];
+
+    if (hands.length === 0) {
       if (this.smoothX !== null) this.onEvent('lost', {});
       this.smoothX = null;
       this.smoothY = null;
@@ -79,12 +89,50 @@ export class GestureController {
       this.lastPalmY = null;
       this.nudgeAccX = 0;
       this.nudgeAccY = 0;
+      this.lastTwoHandDist = null;
       this._resetPinch();
       this._resetFist();
       this._resetDwell();
       return;
     }
 
+    // --- ДВЕ РУКИ: режим зума, одиночные жесты выключаем ---
+    if (hands.length >= 2) {
+      this._resetPinch();
+      this._resetFist();
+      this._resetDwell();
+      this.wasOpenPalm = false;
+      this.lastPalmX = null;
+      this.lastPalmY = null;
+      this.nudgeAccX = 0;
+      this.nudgeAccY = 0;
+
+      const c1 = hands[0][LM.MIDDLE_MCP];
+      const c2 = hands[1][LM.MIDDLE_MCP];
+      const x1 = (1 - c1.x) * window.innerWidth;
+      const y1 = c1.y * window.innerHeight;
+      const x2 = (1 - c2.x) * window.innerWidth;
+      const y2 = c2.y * window.innerHeight;
+      const distPx = Math.hypot(x2 - x1, y2 - y1);
+
+      let delta = 0;
+      if (this.lastTwoHandDist != null) {
+        delta = distPx - this.lastTwoHandDist;
+        if (Math.abs(delta) < TWOHAND_DEADZONE_PX) delta = 0;
+      }
+      this.lastTwoHandDist = distPx;
+
+      this.onEvent('twohand', {
+        dist: distPx,
+        delta,
+        centerX: (x1 + x2) / 2,
+        centerY: (y1 + y2) / 2,
+      });
+      return;
+    }
+
+    this.lastTwoHandDist = null;
+    const landmarks = hands[0];
     const now = performance.now();
     const handSize = dist(landmarks[LM.WRIST], landmarks[LM.MIDDLE_MCP]) || 0.001;
 

@@ -1,0 +1,305 @@
+[
+  {
+    "placeId": "grozny-center",
+    "year": "1818",
+    "title": "Основание крепости",
+    "description": "Заглушка: основание Грозной как крепости. Заменить на согласованный музейный текст.",
+    "image": "assets/placeholders/event-1.jpg"
+  },
+  {
+    "placeId": "grozny-center",
+    "year": "1870",
+    "title": "Город растёт",
+    "description": "Заглушка: развитие города, торговля, улицы, население.",
+    "image": "assets/placeholders/event-2.jpg"
+  },
+  {
+    "placeId": "grozny-center",
+    "year": "1990",
+    "title": "Трудные годы",
+    "description": "Заглушка: чувствительный период. Текст только после согласования с куратором музея.",
+    "image": "assets/placeholders/event-3.jpg"
+  },
+  {
+    "placeId": "grozny-center",
+    "year": "2000",
+    "title": "Возрождение центра",
+    "description": "Заглушка: восстановление центральной части города.",
+    "image": "assets/placeholders/event-4.jpg"
+  },
+  {
+    "placeId": "grozny-center",
+    "year": "2015",
+    "title": "Новый облик",
+    "description": "Заглушка: современный центр Грозного — площади, проспекты, жизнь города.",
+    "image": "assets/placeholders/event-5.jpg"
+  },
+  {
+    "placeId": "grozny-center",
+    "year": "2024",
+    "title": "Сегодня",
+    "description": "Заглушка: центр столицы сегодня — культура, туризм, события.",
+    "image": "assets/placeholders/event-6.jpg"
+  },
+
+  {
+    "placeId": "chsu-campus",
+    "year": "1938",
+    "title": "Начало вуза",
+    "description": "Заглушка: создание учебного заведения — предшественника ЧГУ.",
+    "image": "assets/placeholders/event-1.jpg"
+  },
+  {
+    "placeId": "chsu-campus",
+    "year": "1972",
+    "title": "Университет",
+    "description": "Заглушка: статус университета, рост факультетов.",
+    "image": "assets/placeholders/event-2.jpg"
+  },
+  {
+    "placeId": "chsu-campus",
+    "year": "1996",
+    "title": "Восстановление",
+    "description": "Заглушка: восстановление университета. Согласовать формулировку.",
+    "image": "assets/placeholders/event-3.jpg"
+  },
+  {
+    "placeId": "chsu-campus",
+    "year": "2010",
+    "title": "Новые корпуса",
+    "description": "Заглушка: развитие кампуса, лаборатории, инфраструктура.",
+    "image": "assets/placeholders/event-4.jpg"
+  },
+  {
+    "placeId": "chsu-campus",
+    "year": "2024",
+    "title": "ЧГУ сегодня",
+    "description": "Заглушка: университет как научный и образовательный центр республики.",
+    "image": "assets/placeholders/event-5.jpg"
+  },
+
+  {
+    "placeId": "heart-of-chechnya",
+    "year": "2008",
+    "title": "Открытие мечети",
+    "description": "Заглушка: открытие мечети «Сердце Чечни» — архитектурный и духовный символ.",
+    "image": "assets/placeholders/event-1.jpg"
+  },
+  {
+    "placeId": "heart-of-chechnya",
+    "year": "2012",
+    "title": "Центр притяжения",
+    "description": "Заглушка: место становится одним из главных образов Грозного.",
+    "image": "assets/placeholders/event-2.jpg"
+  },
+  {
+    "placeId": "heart-of-chechnya",
+    "year": "2020",
+    "title": "Туризм и культура",
+    "description": "Заглушка: поток гостей, культурные события вокруг комплекса.",
+    "image": "assets/placeholders/event-3.jpg"
+  },
+  {
+    "placeId": "heart-of-chechnya",
+    "year": "2024",
+    "title": "Символ республики",
+    "description": "Заглушка: мечеть как визитная карточка Чеченской Республики.",
+    "image": "assets/placeholders/event-4.jpg"
+  },
+
+  {
+    "placeId": "grozny-city",
+    "year": "2011",
+    "title": "Строительство комплекса",
+    "description": "Заглушка: появление высотного комплекса Грозный-Сити.",
+    "image": "assets/placeholders/event-1.jpg"
+  },
+  {
+    "placeId": "grozny-city",
+    "year": "2015",
+    "title": "Деловой центр",
+    "description": "Заглушка: офисы, гостиницы, новая городская вертикаль.",
+    "image": "assets/placeholders/event-2.jpg"
+  },
+  {
+    "placeId": "grozny-city",
+    "year": "2024",
+    "title": "Облик столицы",
+    "description": "Заглушка: Грозный-Сити в панораме современного города.",
+    "image": "assets/placeholders/event-3.jpg"
+  },
+
+  {
+    "placeId": "national-museum",
+    "year": "1924",
+    "title": "Истоки музея",
+    "description": "Заглушка: ранние музейные собрания и хранение наследия.",
+    "image": "assets/placeholders/event-1.jpg"
+  },
+  {
+    "placeId": "national-museum",
+    "year": "1960",
+    "title": "Развитие коллекции",
+    "description": "Заглушка: рост фондов, этнография, история края.",
+    "image": "assets/placeholders/event-2.jpg"
+  },
+  {
+    "placeId": "national-museum",
+    "year": "2000",
+    "title": "Новая жизнь",
+    "description": "Заглушка: восстановление и обновление музейной работы.",
+    "image": "assets/placeholders/event-3.jpg"
+  },
+  {
+    "placeId": "national-museum",
+    "year": "2024",
+    "title": "Музей будущего",
+    "description": "Заглушка: цифровые экспозиции и интерактивные стенды — в том числе этот проект.",
+    "image": "assets/placeholders/event-4.jpg"
+  },
+
+  {
+    "placeId": "argun",
+    "year": "1967",
+    "title": "Статус города",
+    "description": "Заглушка: Аргун получает статус города / ключевой этап развития.",
+    "image": "assets/placeholders/event-1.jpg"
+  },
+  {
+    "placeId": "argun",
+    "year": "2000",
+    "title": "Восстановление",
+    "description": "Заглушка: восстановление городской инфраструктуры.",
+    "image": "assets/placeholders/event-2.jpg"
+  },
+  {
+    "placeId": "argun",
+    "year": "2018",
+    "title": "Новые объекты",
+    "description": "Заглушка: современные объекты, спорт, образование.",
+    "image": "assets/placeholders/event-3.jpg"
+  },
+  {
+    "placeId": "argun",
+    "year": "2024",
+    "title": "Аргун сегодня",
+    "description": "Заглушка: город как часть современной карты ЧР.",
+    "image": "assets/placeholders/event-4.jpg"
+  },
+
+  {
+    "placeId": "gudermes",
+    "year": "1941",
+    "title": "Город на карте",
+    "description": "Заглушка: ключевые вехи становления Гудермеса.",
+    "image": "assets/placeholders/event-1.jpg"
+  },
+  {
+    "placeId": "gudermes",
+    "year": "1980",
+    "title": "Промышленный узел",
+    "description": "Заглушка: развитие города как транспортного и хозяйственного центра.",
+    "image": "assets/placeholders/event-2.jpg"
+  },
+  {
+    "placeId": "gudermes",
+    "year": "2010",
+    "title": "Обновление",
+    "description": "Заглушка: современные объекты и городская среда.",
+    "image": "assets/placeholders/event-3.jpg"
+  },
+  {
+    "placeId": "gudermes",
+    "year": "2024",
+    "title": "Гудермес сегодня",
+    "description": "Заглушка: жизнь города в наши дни.",
+    "image": "assets/placeholders/event-4.jpg"
+  },
+
+  {
+    "placeId": "lake-kezenoy",
+    "year": "1970",
+    "title": "Известность озера",
+    "description": "Заглушка: Кезеной-Ам как природная жемчужина региона.",
+    "image": "assets/placeholders/event-1.jpg"
+  },
+  {
+    "placeId": "lake-kezenoy",
+    "year": "2000",
+    "title": "Туристический маршрут",
+    "description": "Заглушка: развитие интереса к озеру у гостей республики.",
+    "image": "assets/placeholders/event-2.jpg"
+  },
+  {
+    "placeId": "lake-kezenoy",
+    "year": "2015",
+    "title": "Инфраструктура",
+    "description": "Заглушка: базы, дороги, комфорт для туристов.",
+    "image": "assets/placeholders/event-3.jpg"
+  },
+  {
+    "placeId": "lake-kezenoy",
+    "year": "2024",
+    "title": "Жемчужина ЧР",
+    "description": "Заглушка: озеро как визитная карточка природы Чечни.",
+    "image": "assets/placeholders/event-4.jpg"
+  },
+
+  {
+    "placeId": "vedeno",
+    "year": "1850",
+    "title": "Исторический край",
+    "description": "Заглушка: Ведено в истории региона. Текст согласовать.",
+    "image": "assets/placeholders/event-1.jpg"
+  },
+  {
+    "placeId": "vedeno",
+    "year": "1950",
+    "title": "Районный центр",
+    "description": "Заглушка: развитие как центра Веденского района.",
+    "image": "assets/placeholders/event-2.jpg"
+  },
+  {
+    "placeId": "vedeno",
+    "year": "2015",
+    "title": "Новая жизнь",
+    "description": "Заглушка: восстановление и развитие территории.",
+    "image": "assets/placeholders/event-3.jpg"
+  },
+  {
+    "placeId": "vedeno",
+    "year": "2024",
+    "title": "Горы и память",
+    "description": "Заглушка: Ведено сегодня — природа, традиции, люди.",
+    "image": "assets/placeholders/event-4.jpg"
+  },
+
+  {
+    "placeId": "shali",
+    "year": "1965",
+    "title": "Статус города",
+    "description": "Заглушка: Шали как город и районный центр.",
+    "image": "assets/placeholders/event-1.jpg"
+  },
+  {
+    "placeId": "shali",
+    "year": "2000",
+    "title": "Восстановление",
+    "description": "Заглушка: восстановление городской среды.",
+    "image": "assets/placeholders/event-2.jpg"
+  },
+  {
+    "placeId": "shali",
+    "year": "2019",
+    "title": "Новые объекты",
+    "description": "Заглушка: мечети, спорт, культура, современный облик.",
+    "image": "assets/placeholders/event-3.jpg"
+  },
+  {
+    "placeId": "shali",
+    "year": "2024",
+    "title": "Шали сегодня",
+    "description": "Заглушка: город в карте современной Чеченской Республики.",
+    "image": "assets/placeholders/event-4.jpg"
+  }
+]

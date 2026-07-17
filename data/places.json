@@ -1,0 +1,102 @@
+[
+  {
+    "id": "grozny-center",
+    "title": "Центр Грозного",
+    "region": "Грозный",
+    "lat": 43.3169,
+    "lng": 45.6981,
+    "description": "Сердце столицы Чеченской Республики — площадь, проспекты, символ возрождения города.",
+    "image": "assets/placeholders/place-1.jpg",
+    "photo": "assets/photos/grozny-center.jpg"
+  },
+  {
+    "id": "chsu-campus",
+    "title": "ЧГУ",
+    "region": "Грозный",
+    "lat": 43.309,
+    "lng": 45.692,
+    "description": "Чеченский государственный университет — главный вуз республики, центр образования и науки.",
+    "image": "assets/placeholders/place-2.jpg",
+    "photo": "assets/photos/chsu-campus.jpg"
+  },
+  {
+    "id": "heart-of-chechnya",
+    "title": "Мечеть «Сердце Чечни»",
+    "region": "Грозный",
+    "lat": 43.318,
+    "lng": 45.6866,
+    "description": "Одна из главных духовных и архитектурных доминант Грозного.",
+    "image": "assets/placeholders/place-3.jpg",
+    "photo": "assets/photos/heart-of-chechnya.jpg"
+  },
+  {
+    "id": "grozny-city",
+    "title": "Грозный-Сити",
+    "region": "Грозный",
+    "lat": 43.3145,
+    "lng": 45.7009,
+    "description": "Современный деловой и архитектурный комплекс — символ нового облика столицы.",
+    "image": "assets/placeholders/place-4.jpg",
+    "photo": "assets/photos/grozny-city.jpg"
+  },
+  {
+    "id": "national-museum",
+    "title": "Национальный музей",
+    "region": "Грозный",
+    "lat": 43.321,
+    "lng": 45.689,
+    "description": "Музей, хранящий историю, культуру и наследие чеченского народа.",
+    "image": "assets/placeholders/place-5.jpg",
+    "photo": "assets/photos/national-museum.jpg"
+  },
+  {
+    "id": "argun",
+    "title": "Аргун",
+    "region": "Аргун",
+    "lat": 43.2931,
+    "lng": 45.877,
+    "description": "Город Аргун — важный промышленный и культурный центр республики.",
+    "image": "assets/placeholders/place-1.jpg",
+    "photo": "assets/photos/argun.jpg"
+  },
+  {
+    "id": "gudermes",
+    "title": "Гудермес",
+    "region": "Гудермес",
+    "lat": 43.352,
+    "lng": 46.1032,
+    "description": "Один из крупнейших городов ЧР, транспортный и образовательный узел.",
+    "image": "assets/placeholders/place-2.jpg",
+    "photo": "assets/photos/gudermes.jpg"
+  },
+  {
+    "id": "lake-kezenoy",
+    "title": "Озеро Кезеной-Ам",
+    "region": "Веденский район",
+    "lat": 42.7769,
+    "lng": 46.1449,
+    "description": "Жемчужина природы Чечни — высокогорное озеро, место силы и туризма.",
+    "image": "assets/placeholders/place-3.jpg",
+    "photo": "assets/photos/lake-kezenoy.jpg"
+  },
+  {
+    "id": "vedeno",
+    "title": "Ведено",
+    "region": "Веденский район",
+    "lat": 42.9686,
+    "lng": 46.1043,
+    "description": "Исторический центр Веденского района — горы, память, традиции.",
+    "image": "assets/placeholders/place-4.jpg",
+    "photo": "assets/photos/vedeno.jpg"
+  },
+  {
+    "id": "shali",
+    "title": "Шали",
+    "region": "Шалинский район",
+    "lat": 43.1489,
+    "lng": 45.9012,
+    "description": "Город Шали — культурный и религиозный центр, современные объекты и наследие.",
+    "image": "assets/placeholders/place-5.jpg",
+    "photo": "assets/photos/shali.jpg"
+  }
+]

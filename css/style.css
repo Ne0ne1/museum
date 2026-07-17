@@ -1,0 +1,659 @@
+:root {
+  --bg-dark: #0b0f1a;
+  --bg-panel: #121a2b;
+  --accent: #3ddc97;
+  --accent-2: #ffb648;
+  --text-main: #f2f5f9;
+  --text-dim: #8b95ab;
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-dark);
+  color: var(--text-main);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  padding: 40px 60px;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* Intro */
+.intro-screen {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(circle at 50% 30%, #1a2740 0%, var(--bg-dark) 70%);
+}
+
+.intro-content h1 {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  margin-top: 10px;
+  font-size: 20px;
+  color: var(--text-dim);
+}
+
+.gesture-hints {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 40px;
+  margin: 50px 0;
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 18px;
+  color: var(--text-main);
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 22px;
+}
+
+.hint-icon {
+  font-size: 28px;
+}
+
+.btn-primary {
+  display: inline-block;
+  font-size: 20px;
+  padding: 16px 48px;
+  border-radius: 40px;
+  border: none;
+  background: var(--accent);
+  color: #08130f;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(61, 220, 151, 0.35);
+}
+
+/* Mode header */
+.mode-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.mode-header h2 {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.place-label {
+  font-size: 13px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.mode-hint {
+  font-size: 15px;
+  color: var(--text-dim);
+}
+
+.year-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.year-hint .time-year {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 120px;
+  text-align: center;
+}
+
+.year-hint .time-arrow {
+  color: var(--text-dim);
+  font-size: 15px;
+}
+
+.timeline-empty {
+  color: var(--text-dim);
+  font-size: 18px;
+  margin: auto;
+}
+
+.mode-switch-btn {
+  background: var(--bg-panel);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  padding: 10px 24px;
+  font-size: 15px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.mode-switch-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Timeline */
+.timeline-track {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  overflow: hidden;
+  position: relative;
+  padding: 20px 0;
+}
+
+.timeline-card {
+  flex: 0 0 260px;
+  height: 340px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  transform: translateX(0);
+}
+
+.timeline-card.dwelling {
+  border-color: var(--accent-2);
+  transform: scale(1.04);
+}
+
+.timeline-card.active-year {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(61, 220, 151, 0.35);
+  transform: scale(1.06);
+}
+
+.timeline-card .year {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.timeline-card .title {
+  font-size: 17px;
+  color: var(--text-main);
+}
+
+.dwell-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: var(--accent-2);
+  border-radius: 4px 0 0 0;
+  width: 0%;
+}
+
+.timeline-detail, .gallery-detail {
+  position: absolute;
+  right: 60px;
+  bottom: 60px;
+  width: 420px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Gallery / map */
+.map-screen {
+  gap: 16px;
+}
+
+.map-layout {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 20px;
+  height: 100%;
+}
+
+.gallery-canvas {
+  position: relative;
+  min-height: 420px;
+  height: 100%;
+  background:
+    radial-gradient(ellipse at 45% 40%, rgba(61, 220, 151, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 65%, rgba(255, 182, 72, 0.1) 0%, transparent 45%),
+    linear-gradient(180deg, #152036 0%, var(--bg-panel) 100%);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.gallery-canvas::before {
+  content: "КАРТА ЧР";
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--text-main);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+  z-index: 1001;
+  pointer-events: none;
+}
+
+.place-sidebar {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 18px;
+  overflow: auto;
+  min-height: 420px;
+}
+
+.place-sidebar h3 {
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+
+.place-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.place-list-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-main);
+  cursor: pointer;
+  font: inherit;
+}
+
+.place-list-item:hover {
+  border-color: var(--accent);
+}
+
+.place-list-item.focused {
+  border-color: var(--accent-2);
+  background: rgba(255, 182, 72, 0.12);
+}
+
+.place-list-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.place-list-region {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* Leaflet-маркеры */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #10182a;
+  font-family: inherit;
+}
+
+.leaflet-control-attribution {
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: var(--text-dim) !important;
+  font-size: 10px;
+}
+
+.leaflet-control-attribution a {
+  color: var(--text-dim) !important;
+}
+
+.gallery-marker {
+  background: transparent;
+  border: none;
+}
+
+.gallery-point {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  background: var(--accent);
+  box-shadow: 0 0 0 8px rgba(61, 220, 151, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  padding: 0;
+}
+
+.gallery-point.focused {
+  transform: scale(1.55);
+  background: var(--accent-2);
+  border-color: #fff;
+  box-shadow:
+    0 0 0 12px rgba(255, 182, 72, 0.3),
+    0 0 32px rgba(255, 182, 72, 0.5);
+}
+
+.leaflet-marker-icon:has(.gallery-point.focused) {
+  z-index: 1000 !important;
+}
+
+.gallery-point.focused .gallery-point-label {
+  opacity: 1;
+}
+
+.gallery-point.focused .gallery-point-label strong {
+  color: var(--accent-2);
+  font-size: 15px;
+}
+
+.gallery-point-label {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+.gallery-point-label strong {
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.gallery-point-label span {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+@media (max-width: 900px) {
+  .map-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .place-sidebar {
+    max-height: 220px;
+    min-height: 0;
+  }
+}
+
+/* История места (оверлей поверх карты) */
+.place-story {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+}
+
+.place-story-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.4) saturate(1.15);
+  transform: scale(1.06);
+  transition: transform 6s ease;
+}
+
+.place-story.open .place-story-bg {
+  transform: scale(1);
+}
+
+.place-story::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 15, 26, 0.75) 0%, rgba(11, 15, 26, 0.25) 40%, rgba(11, 15, 26, 0.85) 100%);
+  pointer-events: none;
+}
+
+.place-story-content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 48px 60px 36px;
+  min-height: 0;
+}
+
+.story-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  opacity: 0;
+  transform: translateY(-14px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.place-story.open .story-header {
+  opacity: 1;
+  transform: none;
+}
+
+.story-header h2 {
+  font-size: 40px;
+  font-weight: 700;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+}
+
+.story-cards {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 10px 4px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.story-cards::-webkit-scrollbar {
+  display: none;
+}
+
+.story-card {
+  flex: 0 0 320px;
+  max-height: 100%;
+  background: rgba(18, 26, 43, 0.82);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.place-story.open .story-card {
+  opacity: 1;
+  transform: none;
+}
+
+.story-card-img {
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+}
+
+.story-card-body {
+  padding: 18px 20px 20px;
+}
+
+.story-card-year {
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.story-card-title {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.story-card-text {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.story-hint {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-dim);
+  opacity: 0;
+  transition: opacity 0.6s ease 0.5s;
+}
+
+.place-story.open .story-hint {
+  opacity: 1;
+}
+
+.story-empty {
+  color: var(--text-dim);
+  font-size: 16px;
+  margin: auto;
+}
+
+/* Camera / debug: всегда поверх карты и оверлея */
+#input-video {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  width: 160px;
+  height: 120px;
+  border-radius: 10px;
+  opacity: 0.9;
+  transform: scaleX(-1);
+  z-index: 3000;
+  border: 1px solid var(--border);
+}
+
+#debug-canvas {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  width: 160px;
+  height: 120px;
+  transform: scaleX(-1);
+  z-index: 3001;
+  pointer-events: none;
+}
+
+.hand-cursor {
+  position: fixed;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: rgba(61, 220, 151, 0.15);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 3100;
+  transition: width 0.1s ease, height 0.1s ease, background 0.1s ease;
+}
+
+.hand-cursor.snapped {
+  width: 34px;
+  height: 34px;
+  border-width: 3px;
+  border-color: var(--accent-2);
+  background: rgba(255, 182, 72, 0.2);
+  transition: left 0.22s ease, top 0.22s ease, width 0.1s ease, height 0.1s ease;
+}
+
+.hand-cursor.pinching {
+  background: rgba(255, 182, 72, 0.35);
+  border-color: var(--accent-2);
+  width: 18px;
+  height: 18px;
+}
+
+.camera-status {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  font-size: 13px;
+  color: var(--text-dim);
+  background: rgba(0, 0, 0, 0.55);
+  padding: 6px 14px;
+  border-radius: 20px;
+  z-index: 3050;
+}

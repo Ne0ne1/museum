@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Карта ЧР — Портал времени</title>
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <section class="screen active map-screen">
+      <header class="mode-header">
+        <div>
+          <h2>Карта Чеченской Республики</h2>
+          <p class="mode-hint" id="map-focus-hint">Ладонь — точка · pinch держи — открыть · кулак держи — назад</p>
+        </div>
+        <a href="index.html" class="mode-switch-btn">← На старт</a>
+      </header>
+
+      <div class="map-layout">
+        <div id="gallery-canvas" class="gallery-canvas"></div>
+        <aside class="place-sidebar">
+          <h3>Места</h3>
+          <div id="place-list" class="place-list"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- История места: фон-фото + плашки событий -->
+    <div id="place-story" class="place-story hidden">
+      <div class="place-story-bg" id="story-bg"></div>
+      <div class="place-story-content">
+        <header class="story-header">
+          <div>
+            <p class="place-label" id="story-region">Регион</p>
+            <h2 id="story-title">Место</h2>
+          </div>
+          <button class="mode-switch-btn" id="story-close">✕ Закрыть · кулак</button>
+        </header>
+        <div class="story-cards" id="story-cards"></div>
+        <p class="story-hint">Ладонь влево/вправо — листать события · кулак — назад к карте</p>
+      </div>
+    </div>
+
+    <video id="input-video" playsinline muted autoplay></video>
+    <canvas id="debug-canvas" width="640" height="480"></canvas>
+    <div id="hand-cursor" class="hand-cursor hidden"></div>
+    <div id="camera-status" class="camera-status">Загрузка…</div>
+  </div>
+
+  <script>
+    document.getElementById('camera-status').textContent = 'HTML готов, ждём JS…';
+  </script>
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="js/pages/map.js"></script>
+</body>
+</html>

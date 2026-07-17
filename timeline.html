@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Таймлайн — Портал времени ЧР</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <section class="screen active">
+      <header class="mode-header">
+        <div>
+          <p class="place-label" id="timeline-place-region">Регион</p>
+          <h2 id="timeline-place-title">Место</h2>
+        </div>
+        <a href="map.html" class="mode-switch-btn" id="back-to-map-btn">← К карте</a>
+      </header>
+      <div id="year-hint" class="year-hint">
+        <span class="time-arrow past">← прошлое</span>
+        <span class="time-year">—</span>
+        <span class="time-arrow future">будущее →</span>
+      </div>
+      <div id="timeline-track" class="timeline-track"></div>
+      <div id="timeline-detail" class="timeline-detail hidden"></div>
+    </section>
+
+    <video id="input-video" playsinline muted autoplay></video>
+    <canvas id="debug-canvas" width="640" height="480"></canvas>
+    <div id="hand-cursor" class="hand-cursor hidden"></div>
+    <div id="camera-status" class="camera-status">JS ещё не стартовал…</div>
+  </div>
+
+  <script>
+    document.getElementById('camera-status').textContent = 'Загрузка страницы…';
+  </script>
+  <script type="module" src="js/pages/timeline.js"></script>
+</body>
+</html>

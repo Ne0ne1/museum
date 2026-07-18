@@ -31,7 +31,9 @@ export function startHandUI(onEvent, options = {}) {
         cursorEl.style.left = `${payload.x}px`;
         cursorEl.style.top = `${payload.y}px`;
       } else if (type === 'lost') {
+        // В свободном режиме просто прячем — не оставляем «прилипший» кружок
         cursorEl.classList.add('hidden');
+        cursorEl.classList.remove('snapped', 'pinching');
       } else if (type === 'pinchstart' || type === 'pinchmove') {
         cursorEl.classList.add('pinching');
       } else if (type === 'pinchend') {

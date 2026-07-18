@@ -1,6 +1,6 @@
 // Конечный автомат жестов.
-// Курсор — как есть (сглаживание не трогаем).
-// Pinch/кулак — только после удержания, чтобы убрать ложные срабатывания.
+// Ладонь: дискретный свайп в 4 стороны (не накопление дрожи).
+// Pinch/кулак — с коротким удержанием.
 
 const LM = {
   WRIST: 0,
@@ -12,29 +12,34 @@ const LM = {
   PINKY_TIP: 20,
 };
 
-// Pinch: сведённые пальцы + короткое удержание
-const PINCH_THRESHOLD = 0.3;
-const PINCH_HOLD_MS = 280;
-const PINCH_COOLDOWN_MS = 1000;
+// Pinch: чуть мягче порог + гистерезис, чтобы удержание успевало дойти до confirm
+const PINCH_THRESHOLD = 0.4;
+const PINCH_RELEASE = 0.52;
+const PINCH_HOLD_MS = 200;
+const PINCH_COOLDOWN_MS = 700;
 
-// Кулак: сжатая ладонь + короткое удержание
-const FIST_THRESHOLD = 0.48;
-const FIST_HOLD_MS = 380;
+// Кулак строже pinch — щипок не должен уходить в fist
+const FIST_THRESHOLD = 0.4;
+const FIST_HOLD_MS = 420;
 const FIST_COOLDOWN_MS = 1300;
 
-const OPEN_PALM_THRESHOLD = 0.78;
+// Ладонь для свайпа: достаточно «не кулак и не pinch» (не требуем идеально открытую)
+const OPEN_PALM_THRESHOLD = 0.42;
 const DWELL_MS = 750;
 
-// Курсор: чуть отзывчивее, но без «полёта»
 const CURSOR_SMOOTHING = 0.22;
 const CURSOR_DEADZONE_PX = 3;
 
-const NUDGE_THRESHOLD_PX = 85;
-const NUDGE_COOLDOWN_MS = 550;
-const SWIPE_SCALE = 0.55;
+// Свайп ладонью: один жест = один шаг
+const SWIPE_MIN_PX = 32;
+const SWIPE_MAX_MS = 550;
+const SWIPE_COOLDOWN_MS = 320;
+const SWIPE_AXIS_RATIO = 1.1;
+const PALM_SMOOTHING = 0.45;
+const SWIPE_SCALE = 1.35;
 
-// Две руки: изменение расстояния между ладонями = зум
 const TWOHAND_DEADZONE_PX = 3;
+const TWOHAND_FRAMES = 10; // не глушить pinch/кулак из‑за ложной «второй руки»
 
 function dist(a, b) {
   return Math.hypot(a.x - b.x, a.y - b.y, (a.z || 0) - (b.z || 0));
@@ -60,22 +65,26 @@ export class GestureController {
     this.fistFired = false;
     this.fistCooldownUntil = 0;
 
-    this.wasOpenPalm = false;
-    this.lastPalmX = null;
-    this.lastPalmY = null;
-    this.nudgeAccX = 0;
-    this.nudgeAccY = 0;
-    this.nudgeCooldownUntil = 0;
+    // Ладонь / свайп
+    this.smoothPalmX = null;
+    this.smoothPalmY = null;
+    this.swipeOriginX = null;
+    this.swipeOriginY = null;
+    this.swipeOriginAt = 0;
+    this.swipeCooldownUntil = 0;
+    this.lastPalmRawX = null;
+    this.lastPalmRawY = null;
 
     this.dwellEl = null;
     this.dwellStart = 0;
     this.dwellCooldownUntil = 0;
 
     this.lastTwoHandDist = null;
+    this.twoHandFrames = 0;
   }
 
   /**
-   * @param {Array<Array<{x,y,z}>>|null} handsInput — массив рук (по 21 точке) или null
+   * @param {Array<Array<{x,y,z}>>|null} handsInput
    */
   update(handsInput) {
     const hands = handsInput || [];
@@ -84,28 +93,28 @@ export class GestureController {
       if (this.smoothX !== null) this.onEvent('lost', {});
       this.smoothX = null;
       this.smoothY = null;
-      this.wasOpenPalm = false;
-      this.lastPalmX = null;
-      this.lastPalmY = null;
-      this.nudgeAccX = 0;
-      this.nudgeAccY = 0;
+      this._resetPalmSwipe();
       this.lastTwoHandDist = null;
+      this.twoHandFrames = 0;
       this._resetPinch();
       this._resetFist();
       this._resetDwell();
       return;
     }
 
-    // --- ДВЕ РУКИ: режим зума, одиночные жесты выключаем ---
+    // Две руки: зум только если вторая рука стабильна.
+    // Если уже идёт pinch/кулак одной рукой — не сбрасываем жест (ложный 2-й детект).
     if (hands.length >= 2) {
+      this.twoHandFrames += 1;
+      if (this.twoHandFrames < TWOHAND_FRAMES || this.isPinching || this.fistHoldStart != null) {
+        this._processOneHand(hands[0]);
+        return;
+      }
+
       this._resetPinch();
       this._resetFist();
       this._resetDwell();
-      this.wasOpenPalm = false;
-      this.lastPalmX = null;
-      this.lastPalmY = null;
-      this.nudgeAccX = 0;
-      this.nudgeAccY = 0;
+      this._resetPalmSwipe();
 
       const c1 = hands[0][LM.MIDDLE_MCP];
       const c2 = hands[1][LM.MIDDLE_MCP];
@@ -131,8 +140,12 @@ export class GestureController {
       return;
     }
 
+    this.twoHandFrames = 0;
     this.lastTwoHandDist = null;
-    const landmarks = hands[0];
+    this._processOneHand(hands[0]);
+  }
+
+  _processOneHand(landmarks) {
     const now = performance.now();
     const handSize = dist(landmarks[LM.WRIST], landmarks[LM.MIDDLE_MCP]) || 0.001;
 
@@ -151,15 +164,17 @@ export class GestureController {
     }
 
     const pinchDist = dist(landmarks[LM.THUMB_TIP], landmarks[LM.INDEX_TIP]) / handSize;
-    const pinchingNow = pinchDist < PINCH_THRESHOLD;
+    // Гистерезис: войти в pinch легче, выйти — только когда пальцы заметно разомкнулись
+    const pinchingNow = this.isPinching
+      ? pinchDist < PINCH_RELEASE
+      : pinchDist < PINCH_THRESHOLD;
 
     const palmCenter = landmarks[LM.MIDDLE_MCP];
     const tips = [LM.INDEX_TIP, LM.MIDDLE_TIP, LM.RING_TIP, LM.PINKY_TIP].map((i) => landmarks[i]);
     const avgTipDist = tips.reduce((sum, t) => sum + dist(t, palmCenter), 0) / tips.length / handSize;
 
-    const isOpenNow = avgTipDist > OPEN_PALM_THRESHOLD;
-    // Кулак только если пальцы близко к ладони И это не pinch
-    const isFistNow = !pinchingNow && avgTipDist < FIST_THRESHOLD;
+    // Кулак только если это не щипок и пальцы реально собраны
+    const isFistNow = !pinchingNow && pinchDist > PINCH_RELEASE && avgTipDist < FIST_THRESHOLD;
 
     this.onEvent('cursor', {
       x: this.smoothX,
@@ -170,7 +185,7 @@ export class GestureController {
       fistProgress: this._fistProgress(now, isFistNow),
     });
 
-    // --- PINCH: подтверждение только после удержания ---
+    // --- PINCH ---
     if (pinchingNow) {
       if (!this.isPinching) {
         this.isPinching = true;
@@ -195,8 +210,8 @@ export class GestureController {
           this.onEvent('pinchconfirm', { x: this.smoothX, y: this.smoothY });
         }
       }
-      // во время pinch кулак не копим
       this._resetFist();
+      this._resetPalmSwipe();
     } else if (this.isPinching) {
       this.isPinching = false;
       this.pinchHoldStart = null;
@@ -204,7 +219,7 @@ export class GestureController {
       this.onEvent('pinchend', { x: this.smoothX, y: this.smoothY });
     }
 
-    // --- FIST: назад только после удержания сжатой ладони ---
+    // --- FIST ---
     if (isFistNow) {
       if (this.fistHoldStart == null) {
         this.fistHoldStart = now;
@@ -217,51 +232,88 @@ export class GestureController {
         this.fistCooldownUntil = now + FIST_COOLDOWN_MS;
         this.onEvent('fist', {});
       }
+      this._resetPalmSwipe();
     } else {
       this._resetFist();
     }
 
-    // --- Свайп / nudge только открытой ладонью без pinch ---
-    const palmX = (1 - palmCenter.x) * window.innerWidth;
-    const palmY = palmCenter.y * window.innerHeight;
+    // --- СВАЙП ЛАДОНЬЮ ---
+    const palmRawX = (1 - palmCenter.x) * window.innerWidth;
+    const palmRawY = palmCenter.y * window.innerHeight;
 
-    if (isOpenNow && !pinchingNow && !isFistNow) {
-      if (this.wasOpenPalm && this.lastPalmX !== null) {
-        const deltaX = (palmX - this.lastPalmX) * SWIPE_SCALE;
-        const deltaY = (palmY - this.lastPalmY) * SWIPE_SCALE;
+    if (this.smoothPalmX == null) {
+      this.smoothPalmX = palmRawX;
+      this.smoothPalmY = palmRawY;
+    } else {
+      this.smoothPalmX += (palmRawX - this.smoothPalmX) * PALM_SMOOTHING;
+      this.smoothPalmY += (palmRawY - this.smoothPalmY) * PALM_SMOOTHING;
+    }
 
-        if (Math.abs(deltaX) > 0.8) {
-          this.onEvent('swipe', { deltaX, deltaY });
-        }
+    const canPalmNav = !pinchingNow && !isFistNow;
 
-        this.nudgeAccX += palmX - this.lastPalmX;
-        this.nudgeAccY += palmY - this.lastPalmY;
-        const accLen = Math.hypot(this.nudgeAccX, this.nudgeAccY);
+    if (canPalmNav && this.lastPalmRawX != null) {
+      const dx = (palmRawX - this.lastPalmRawX) * SWIPE_SCALE;
+      if (Math.abs(dx) > 0.6) {
+        this.onEvent('swipe', { deltaX: dx, deltaY: palmRawY - this.lastPalmRawY });
+      }
+    }
+    this.lastPalmRawX = palmRawX;
+    this.lastPalmRawY = palmRawY;
 
-        if (accLen >= NUDGE_THRESHOLD_PX && now >= this.nudgeCooldownUntil) {
-          this.onEvent('nudge', {
-            dirX: this.nudgeAccX / accLen,
-            dirY: this.nudgeAccY / accLen,
-          });
-          this.nudgeAccX = 0;
-          this.nudgeAccY = 0;
-          this.nudgeCooldownUntil = now + NUDGE_COOLDOWN_MS;
+    if (canPalmNav && now >= this.swipeCooldownUntil) {
+      if (this.swipeOriginX == null) {
+        this.swipeOriginX = this.smoothPalmX;
+        this.swipeOriginY = this.smoothPalmY;
+        this.swipeOriginAt = now;
+      } else {
+        const dx = this.smoothPalmX - this.swipeOriginX;
+        const dy = this.smoothPalmY - this.swipeOriginY;
+        const elapsed = now - this.swipeOriginAt;
+        const absX = Math.abs(dx);
+        const absY = Math.abs(dy);
+        const distMove = Math.hypot(dx, dy);
+
+        if (elapsed > SWIPE_MAX_MS) {
+          this.swipeOriginX = this.smoothPalmX;
+          this.swipeOriginY = this.smoothPalmY;
+          this.swipeOriginAt = now;
+        } else if (distMove >= SWIPE_MIN_PX) {
+          let dirX = 0;
+          let dirY = 0;
+          if (absX >= absY * SWIPE_AXIS_RATIO) {
+            dirX = dx > 0 ? 1 : -1;
+          } else if (absY >= absX * SWIPE_AXIS_RATIO) {
+            dirY = dy > 0 ? 1 : -1;
+          } else if (absX >= absY) {
+            dirX = dx > 0 ? 1 : -1;
+          } else {
+            dirY = dy > 0 ? 1 : -1;
+          }
+
+          this.onEvent('nudge', { dirX, dirY });
+          this.swipeCooldownUntil = now + SWIPE_COOLDOWN_MS;
+          this.swipeOriginX = this.smoothPalmX;
+          this.swipeOriginY = this.smoothPalmY;
+          this.swipeOriginAt = now;
         }
       }
-      this.wasOpenPalm = true;
-      this.lastPalmX = palmX;
-      this.lastPalmY = palmY;
-    } else {
-      this.wasOpenPalm = false;
-      this.lastPalmX = null;
-      this.lastPalmY = null;
-      this.nudgeAccX = 0;
-      this.nudgeAccY = 0;
+    } else if (!canPalmNav) {
+      this.swipeOriginX = null;
+      this.swipeOriginY = null;
     }
 
     if (this.dwellEnabled) {
       this._updateDwell(this.smoothX, this.smoothY, pinchingNow || isFistNow);
     }
+  }
+
+  _resetPalmSwipe() {
+    this.smoothPalmX = null;
+    this.smoothPalmY = null;
+    this.swipeOriginX = null;
+    this.swipeOriginY = null;
+    this.lastPalmRawX = null;
+    this.lastPalmRawY = null;
   }
 
   _pinchProgress(now, pinchingNow) {

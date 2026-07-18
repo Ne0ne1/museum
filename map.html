@@ -13,7 +13,7 @@
       <header class="mode-header">
         <div>
           <h2>Карта Чеченской Республики</h2>
-          <p class="mode-hint" id="map-focus-hint">Ладонь — точка · pinch — открыть · кулак — назад · две руки — зум</p>
+          <p class="mode-hint" id="map-focus-hint">Короткий свайп ладонью ←→↑↓ — соседняя точка · pinch — открыть · кулак — назад</p>
         </div>
         <a href="index.html" class="mode-switch-btn">← На старт</a>
       </header>
@@ -38,8 +38,13 @@
           </div>
           <button class="mode-switch-btn" id="story-close">✕ Закрыть · кулак</button>
         </header>
-        <div class="story-cards" id="story-cards"></div>
-        <p class="story-hint">Ладонь влево/вправо — листать события · кулак — назад к карте</p>
+        <div class="story-carousel" id="story-carousel">
+          <button type="button" class="story-nav story-nav-prev" id="story-prev" aria-label="Предыдущий год">‹</button>
+          <div class="story-cards" id="story-cards"></div>
+          <button type="button" class="story-nav story-nav-next" id="story-next" aria-label="Следующий год">›</button>
+        </div>
+        <div class="story-dots" id="story-dots"></div>
+        <p class="story-hint">Стрелки / колесо / свайп ладонью ←→ · кулак/pinch — назад</p>
       </div>
     </div>
 
@@ -50,7 +55,11 @@
   </div>
 
   <script>
-    document.getElementById('camera-status').textContent = 'HTML готов, ждём JS…';
+    document.getElementById('camera-status').textContent = 'HTML готов…';
+    window.addEventListener('error', function (e) {
+      var el = document.getElementById('camera-status');
+      if (el) el.textContent = 'Ошибка: ' + e.message;
+    });
   </script>
   <script src="vendor/leaflet/leaflet.js"></script>
   <script type="module" src="js/pages/map.js"></script>

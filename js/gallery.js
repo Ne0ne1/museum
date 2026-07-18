@@ -18,6 +18,8 @@ export class Gallery {
     this.focusIndex = 0;
     this.map = null;
     this.markers = [];
+    /** Когда false — не приклеиваем курсор к маркеру (история места / свободная рука). */
+    this.cursorSnapEnabled = true;
   }
 
   async load(url = 'data/places.json') {
@@ -39,35 +41,42 @@ export class Gallery {
       throw new Error('Leaflet не загрузился (vendor/leaflet/leaflet.js)');
     }
 
+    // На всякий случай — если карта уже была (горячий reload)
+    if (this.map) {
+      this.map.remove();
+      this.map = null;
+    }
+
     this.map = L.map(this.canvasEl, {
-      zoomControl: false,
+      zoomControl: true,
       attributionControl: true,
+      zoomSnap: 0.5,
     });
 
     this.initialBounds = L.latLngBounds(this.places.map((p) => [p.lat, p.lng])).pad(0.18);
+
+    // Только OSM — меньше сюрпризов с CDN
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap',
+    }).addTo(this.map);
+
     this.map.fitBounds(this.initialBounds);
-
-    // Тёмные тайлы CARTO под стиль стенда; фолбэк — обычный OSM
-    const carto = L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-      {
-        maxZoom: 18,
-        subdomains: 'abcd',
-        attribution: '© OpenStreetMap · © CARTO',
-      }
-    );
-    carto.on('tileerror', () => {
-      if (this._fallbackApplied) return;
-      this._fallbackApplied = true;
-      this.map.removeLayer(carto);
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap',
-      }).addTo(this.map);
+    // Не снапаем на каждом move — иначе курсор «прилипает» к точке и не слушает руку
+    this.map.on('zoomend moveend', () => {
+      if (this.cursorSnapEnabled) this.snapCursorToFocus();
     });
-    carto.addTo(this.map);
 
-    this.map.on('move zoom zoomend moveend', () => this.snapCursorToFocus());
+    const fixSize = () => {
+      if (!this.map) return;
+      this.map.invalidateSize(false);
+    };
+    requestAnimationFrame(() => {
+      fixSize();
+      this.map.fitBounds(this.initialBounds, { animate: false });
+      setTimeout(fixSize, 150);
+      setTimeout(fixSize, 500);
+    });
   }
 
   _renderMarkers() {
@@ -140,30 +149,56 @@ export class Gallery {
   _findNeighbor(fromIdx, dirX, dirY) {
     const from = this._screenPoint(fromIdx);
 
-    const lenDir = Math.hypot(dirX, dirY) || 1;
-    const ux = dirX / lenDir;
-    const uy = dirY / lenDir;
+    // Нормализуем в кардинальное направление (как приходит из жеста)
+    let ux = 0;
+    let uy = 0;
+    if (Math.abs(dirX) >= Math.abs(dirY)) {
+      ux = dirX > 0 ? 1 : dirX < 0 ? -1 : 0;
+    } else {
+      uy = dirY > 0 ? 1 : dirY < 0 ? -1 : 0;
+    }
+    if (ux === 0 && uy === 0) return -1;
 
     let best = -1;
     let bestScore = Infinity;
 
-    this.places.forEach((place, idx) => {
+    this.places.forEach((_, idx) => {
       if (idx === fromIdx) return;
       const pt = this._screenPoint(idx);
       const vx = pt.x - from.x;
       const vy = pt.y - from.y;
       const len = Math.hypot(vx, vy);
-      if (len < 4) return;
+      if (len < 8) return;
 
-      const alignment = (vx / len) * ux + (vy / len) * uy;
-      if (alignment < 0.25) return;
+      // Должна быть в нужной полуплоскости
+      const along = vx * ux + vy * uy;
+      if (along < 12) return;
 
-      const score = len / (alignment * alignment);
+      // Штраф за отклонение от оси (чтобы не прыгало «вбок»)
+      const cross = Math.abs(vx * uy - vy * ux);
+      const score = along + cross * 1.8;
       if (score < bestScore) {
         bestScore = score;
         best = idx;
       }
     });
+
+    // Фолбэк: если строго по оси никого нет — берём ближайшую в полуплоскости
+    if (best < 0) {
+      this.places.forEach((_, idx) => {
+        if (idx === fromIdx) return;
+        const pt = this._screenPoint(idx);
+        const vx = pt.x - from.x;
+        const vy = pt.y - from.y;
+        const along = vx * ux + vy * uy;
+        if (along < 8) return;
+        const len = Math.hypot(vx, vy);
+        if (len < bestScore) {
+          bestScore = len;
+          best = idx;
+        }
+      });
+    }
 
     return best;
   }
@@ -180,7 +215,7 @@ export class Gallery {
 
     const place = this.places[this.focusIndex];
     if (this.hintEl && place) {
-      this.hintEl.textContent = `Выбрано: ${place.title}. Pinch — открыть · кулак — назад`;
+      this.hintEl.textContent = `Выбрано: ${place.title}. Свайп ←→↑↓ · pinch — открыть · кулак — назад`;
     }
 
     if (pan && this.map && place) {
@@ -191,7 +226,7 @@ export class Gallery {
   }
 
   snapCursorToFocus() {
-    if (!this.focusCursorEl) return;
+    if (!this.cursorSnapEnabled || !this.focusCursorEl) return;
     const point = this.canvasEl.querySelector(`.gallery-point[data-index="${this.focusIndex}"]`);
     if (!point) {
       this.focusCursorEl.classList.add('hidden');

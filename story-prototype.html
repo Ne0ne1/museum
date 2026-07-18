@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Прототип · Портал времени</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #0b0f1a;
+      --accent: #3ddc97;
+      --accent-2: #ffb648;
+      --text-main: #f2f5f9;
+      --text-dim: #8b95ab;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: Manrope, system-ui, sans-serif;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .portal {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+    }
+
+    .portal:active { cursor: grabbing; }
+
+    /* Full-bleed dual buffers for crossfade */
+    .hero {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform: scale(1.08);
+      transition: opacity 0.55s ease;
+      will-change: opacity, transform;
+      pointer-events: none;
+    }
+
+    .hero.is-front {
+      opacity: 1;
+      z-index: 1;
+      animation: kenBurns 14s ease-out forwards;
+    }
+
+    .hero.is-back {
+      opacity: 0;
+      z-index: 0;
+    }
+
+    @keyframes kenBurns {
+      from { transform: scale(1.08); }
+      to { transform: scale(1); }
+    }
+
+    .veil {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      /* Светлый верх — чтобы подпись на фото «ЦЕНТР ГРОЗНОГО, …» читалась */
+      background:
+        linear-gradient(180deg, rgba(11, 15, 26, 0.08) 0%, rgba(11, 15, 26, 0.05) 42%, rgba(11, 15, 26, 0.35) 68%, rgba(11, 15, 26, 0.94) 100%);
+    }
+
+    .top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 4;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 28px 40px 0;
+      pointer-events: none;
+    }
+
+    .back-link {
+      pointer-events: auto;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 10px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+      background: rgba(11, 15, 26, 0.45);
+      backdrop-filter: blur(8px);
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .back-link:hover {
+      color: var(--text-main);
+      border-color: rgba(61, 220, 151, 0.5);
+    }
+
+    .rail {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 5;
+      padding: 0 48px 36px;
+      pointer-events: none;
+    }
+
+    .rail-track {
+      position: relative;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      pointer-events: auto;
+    }
+
+    .rail-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28) 8%, rgba(255, 255, 255, 0.28) 92%, transparent);
+      transform: translateY(-50%);
+    }
+
+    .rail-years {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .rail-year {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: var(--text-dim);
+      font: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 18px 6px 8px;
+      position: relative;
+      transition: color 0.2s ease, transform 0.25s ease;
+    }
+
+    .rail-year::before {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.35);
+      transform: translateX(-50%);
+      transition: background 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .rail-year.is-active {
+      color: var(--text-main);
+      transform: translateY(-4px);
+    }
+
+    .rail-year.is-active::before {
+      background: var(--accent);
+      transform: translateX(-50%) scale(1.35);
+      box-shadow: 0 0 0 4px rgba(61, 220, 151, 0.22);
+    }
+
+    .hint {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-dim);
+      opacity: 0;
+      animation: fadeIn 0.8s ease 0.8s forwards;
+    }
+
+    .nav {
+      position: absolute;
+      top: 50%;
+      z-index: 5;
+      transform: translateY(-50%);
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(11, 15, 26, 0.5);
+      color: var(--text-main);
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: border-color 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+    }
+
+    .nav:hover:not(:disabled) {
+      border-color: var(--accent);
+      background: rgba(61, 220, 151, 0.18);
+    }
+
+    .nav:disabled { opacity: 0.3; cursor: default; }
+    .nav.prev { left: 24px; }
+    .nav.next { right: 24px; }
+
+    .status {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 6;
+      font-size: 12px;
+      color: var(--text-dim);
+      background: rgba(11, 15, 26, 0.55);
+      padding: 6px 12px;
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; transform: none; }
+    }
+
+    @media (max-width: 720px) {
+      .top, .rail { padding-left: 20px; padding-right: 20px; }
+      .nav { display: none; }
+      .rail-year { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="portal" id="portal" aria-label="Портал времени места">
+    <div class="hero is-front" id="hero-a"></div>
+    <div class="hero is-back" id="hero-b"></div>
+    <div class="veil"></div>
+
+    <div class="status" id="status">Загрузка…</div>
+
+    <header class="top">
+      <a class="back-link" href="map.html">← К карте</a>
+    </header>
+
+    <button type="button" class="nav prev" id="btn-prev" aria-label="Предыдущий год">‹</button>
+    <button type="button" class="nav next" id="btn-next" aria-label="Следующий год">›</button>
+
+    <footer class="rail">
+      <div class="rail-track">
+        <div class="rail-line"></div>
+        <div class="rail-years" id="rail-years"></div>
+      </div>
+      <p class="hint">Свайп / стрелки ←→ · клик по году на линии</p>
+    </footer>
+  </div>
+
+  <script type="module">
+    const PLACE_ID = new URLSearchParams(location.search).get('place') || 'grozny-center';
+
+    const portal = document.getElementById('portal');
+    const heroA = document.getElementById('hero-a');
+    const heroB = document.getElementById('hero-b');
+    const railEl = document.getElementById('rail-years');
+    const statusEl = document.getElementById('status');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+
+    let events = [];
+    let index = 0;
+    let fallbackPhoto = '';
+    let frontIsA = true;
+    let busy = false;
+
+    function setStatus(msg) {
+      statusEl.textContent = msg;
+    }
+
+    /** "1900-е" → 1900, "1999" → 1999 */
+    function yearKey(year) {
+      const m = String(year).match(/\d+/);
+      return m ? Number(m[0]) : 0;
+    }
+
+    function imageFor(ev) {
+      return (ev && ev.image) || fallbackPhoto;
+    }
+
+    function activeHero() {
+      return frontIsA ? heroA : heroB;
+    }
+
+    function idleHero() {
+      return frontIsA ? heroB : heroA;
+    }
+
+    function showAt(i, { animate = true } = {}) {
+      if (!events.length) return;
+      const next = Math.max(0, Math.min(events.length - 1, i));
+      if (next === index && animate) return;
+      if (animate && busy) return;
+
+      const ev = events[next];
+      const url = imageFor(ev);
+      index = next;
+
+      if (!animate) {
+        const front = activeHero();
+        front.style.backgroundImage = `url("${url}")`;
+        front.classList.remove('is-back');
+        front.classList.add('is-front');
+        idleHero().classList.remove('is-front');
+        idleHero().classList.add('is-back');
+        front.style.animation = 'none';
+        void front.offsetWidth;
+        front.style.animation = '';
+        updateChrome();
+        return;
+      }
+
+      busy = true;
+      const front = activeHero();
+      const back = idleHero();
+      back.style.backgroundImage = `url("${url}")`;
+      back.style.animation = 'none';
+      void back.offsetWidth;
+      back.style.animation = '';
+
+      back.classList.remove('is-back');
+      back.classList.add('is-front');
+      front.classList.remove('is-front');
+      front.classList.add('is-back');
+      frontIsA = !frontIsA;
+
+      updateChrome();
+      setTimeout(() => { busy = false; }, 560);
+    }
+
+    function updateChrome() {
+      const ev = events[index];
+      if (!ev) return;
+      railEl.querySelectorAll('.rail-year').forEach((btn, i) => {
+        btn.classList.toggle('is-active', i === index);
+      });
+      btnPrev.disabled = index <= 0;
+      btnNext.disabled = index >= events.length - 1;
+      setStatus(`${ev.year} · ${index + 1}/${events.length}`);
+    }
+
+    function go(delta) {
+      showAt(index + delta);
+    }
+
+    function buildRail() {
+      railEl.innerHTML = '';
+      events.forEach((ev, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'rail-year' + (i === index ? ' is-active' : '');
+        btn.textContent = ev.year;
+        btn.setAttribute('aria-label', `Год ${ev.year}`);
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          showAt(i);
+        });
+        railEl.appendChild(btn);
+      });
+    }
+
+    function preload(urls) {
+      urls.forEach((src) => {
+        if (!src) return;
+        const img = new Image();
+        img.src = src;
+      });
+    }
+
+    /** Drag / swipe on the portal */
+    let dragging = false;
+    let startX = 0;
+    let pointerId = null;
+
+    portal.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('a, button')) return;
+      if (e.button != null && e.button !== 0) return;
+      dragging = true;
+      startX = e.clientX;
+      pointerId = e.pointerId;
+      portal.setPointerCapture?.(e.pointerId);
+    });
+
+    portal.addEventListener('pointerup', (e) => {
+      if (!dragging || (pointerId != null && e.pointerId !== pointerId)) return;
+      const dx = e.clientX - startX;
+      dragging = false;
+      pointerId = null;
+      if (dx > 70) go(-1);
+      else if (dx < -70) go(1);
+    });
+
+    portal.addEventListener('pointercancel', () => {
+      dragging = false;
+      pointerId = null;
+    });
+
+    portal.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        if (e.deltaX > 20) go(1);
+        else if (e.deltaX < -20) go(-1);
+      } else {
+        if (e.deltaY > 20) go(1);
+        else if (e.deltaY < -20) go(-1);
+      }
+    }, { passive: false });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') go(-1);
+      else if (e.key === 'ArrowRight') go(1);
+    });
+
+    btnPrev.addEventListener('click', () => go(-1));
+    btnNext.addEventListener('click', () => go(1));
+
+    async function boot() {
+      try {
+        const [placesRes, eventsRes] = await Promise.all([
+          fetch('data/places.json'),
+          fetch('data/events.json'),
+        ]);
+        const places = await placesRes.json();
+        const allEvents = await eventsRes.json();
+        const place = places.find((p) => p.id === PLACE_ID) || places[0];
+
+        fallbackPhoto = place.photo || place.image;
+
+        events = allEvents
+          .filter((ev) => ev.placeId === place.id)
+          .sort((a, b) => yearKey(a.year) - yearKey(b.year));
+
+        if (!events.length) {
+          setStatus('Нет событий для этого места');
+          return;
+        }
+
+        preload(events.map(imageFor));
+        buildRail();
+        showAt(0, { animate: false });
+        setStatus(`${place.title} · ${events.length} эпох`);
+      } catch (err) {
+        console.error(err);
+        setStatus('Ошибка загрузки данных');
+      }
+    }
+
+    boot();
+  </script>
+</body>
+</html>

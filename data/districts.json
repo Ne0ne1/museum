@@ -1,0 +1,47 @@
+[
+  {
+    "id": "grozny",
+    "title": "Грозный",
+    "subtitle": "Столица",
+    "lat": 43.316,
+    "lng": 45.694,
+    "pad": 0.22,
+    "minZoom": 12
+  },
+  {
+    "id": "argun",
+    "title": "Аргун",
+    "subtitle": "Город",
+    "lat": 43.2931,
+    "lng": 45.877,
+    "pad": 0.35,
+    "minZoom": 12
+  },
+  {
+    "id": "gudermes",
+    "title": "Гудермес",
+    "subtitle": "Город",
+    "lat": 43.352,
+    "lng": 46.1032,
+    "pad": 0.35,
+    "minZoom": 12
+  },
+  {
+    "id": "vedeno",
+    "title": "Веденский район",
+    "subtitle": "Район",
+    "lat": 42.87,
+    "lng": 46.12,
+    "pad": 0.28,
+    "minZoom": 10
+  },
+  {
+    "id": "shali",
+    "title": "Шалинский район",
+    "subtitle": "Район",
+    "lat": 43.1489,
+    "lng": 45.9012,
+    "pad": 0.35,
+    "minZoom": 11
+  }
+]

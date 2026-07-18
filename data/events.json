@@ -1,45 +1,45 @@
 [
   {
     "placeId": "grozny-center",
-    "year": "1818",
-    "title": "Основание крепости",
-    "description": "Заглушка: основание Грозной как крепости. Заменить на согласованный музейный текст.",
-    "image": "assets/placeholders/event-1.jpg"
+    "year": "1900-е",
+    "title": "Начало века",
+    "description": "Центр Грозного в начале XX века: улицы, конные повозки, малоэтажная застройка.",
+    "image": "assets/photos/grozny-center/1900s.png"
   },
   {
     "placeId": "grozny-center",
-    "year": "1870",
-    "title": "Город растёт",
-    "description": "Заглушка: развитие города, торговля, улицы, население.",
-    "image": "assets/placeholders/event-2.jpg"
+    "year": "1940-е",
+    "title": "Военные и послевоенные годы",
+    "description": "Улицы центра в 1940-е: советская застройка, транспорт, повседневная жизнь города.",
+    "image": "assets/photos/grozny-center/1940s.png"
   },
   {
     "placeId": "grozny-center",
-    "year": "1990",
-    "title": "Трудные годы",
-    "description": "Заглушка: чувствительный период. Текст только после согласования с куратором музея.",
-    "image": "assets/placeholders/event-3.jpg"
+    "year": "1950-е",
+    "title": "Площадь и монумент",
+    "description": "Центр Грозного в 1950-е: площадь, монумент, классическая архитектура.",
+    "image": "assets/photos/grozny-center/1950s.png"
   },
   {
     "placeId": "grozny-center",
-    "year": "2000",
-    "title": "Возрождение центра",
-    "description": "Заглушка: восстановление центральной части города.",
-    "image": "assets/placeholders/event-4.jpg"
+    "year": "1999",
+    "title": "Конец XX века",
+    "description": "Вид на центр Грозного на рубеже веков.",
+    "image": "assets/photos/grozny-center/1999.png"
   },
   {
     "placeId": "grozny-center",
-    "year": "2015",
-    "title": "Новый облик",
-    "description": "Заглушка: современный центр Грозного — площади, проспекты, жизнь города.",
-    "image": "assets/placeholders/event-5.jpg"
+    "year": "2010",
+    "title": "Возрождение",
+    "description": "Центр города в 2010 году: новые доминанты, проспекты, обновлённый облик.",
+    "image": "assets/photos/grozny-center/2010.png"
   },
   {
     "placeId": "grozny-center",
-    "year": "2024",
+    "year": "2025",
     "title": "Сегодня",
-    "description": "Заглушка: центр столицы сегодня — культура, туризм, события.",
-    "image": "assets/placeholders/event-6.jpg"
+    "description": "Современный центр Грозного: мечеть «Сердце Чечни», Грозный-Сити, парки.",
+    "image": "assets/photos/grozny-center/2025.png"
   },
 
   {

@@ -3,9 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <title>Карта ЧР — Портал времени</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=8" />
+  <link rel="stylesheet" href="css/portal.css?v=5" />
 </head>
 <body>
   <div id="app">
@@ -13,7 +18,7 @@
       <header class="mode-header">
         <div>
           <h2>Карта Чеченской Республики</h2>
-          <p class="mode-hint" id="map-focus-hint">Короткий свайп ладонью ←→↑↓ — соседняя точка · pinch — открыть · кулак — назад</p>
+          <p class="mode-hint" id="map-focus-hint">Сначала район · pinch — приблизить · потом место · кулак — назад</p>
         </div>
         <a href="index.html" class="mode-switch-btn">← На старт</a>
       </header>
@@ -21,31 +26,30 @@
       <div class="map-layout">
         <div id="gallery-canvas" class="gallery-canvas"></div>
         <aside class="place-sidebar">
-          <h3>Места</h3>
+          <h3 id="place-list-title">Районы</h3>
           <div id="place-list" class="place-list"></div>
         </aside>
       </div>
     </section>
 
-    <!-- История места: фон-фото + плашки событий -->
-    <div id="place-story" class="place-story hidden">
-      <div class="place-story-bg" id="story-bg"></div>
-      <div class="place-story-content">
-        <header class="story-header">
-          <div>
-            <p class="place-label" id="story-region">Регион</p>
-            <h2 id="story-title">Место</h2>
-          </div>
-          <button class="mode-switch-btn" id="story-close">✕ Закрыть · кулак</button>
-        </header>
-        <div class="story-carousel" id="story-carousel">
-          <button type="button" class="story-nav story-nav-prev" id="story-prev" aria-label="Предыдущий год">‹</button>
-          <div class="story-cards" id="story-cards"></div>
-          <button type="button" class="story-nav story-nav-next" id="story-next" aria-label="Следующий год">›</button>
+    <!-- Lucy-style portal: full-bleed photo + year rail (NOT cards) -->
+    <div class="portal" id="place-portal" aria-label="Портал времени места">
+      <div class="hero is-front" data-hero="a"></div>
+      <div class="hero is-back" data-hero="b"></div>
+      <div class="veil"></div>
+      <div class="status" data-status>Загрузка…</div>
+      <header class="top">
+        <button type="button" class="back-link" data-back>← К карте · кулак 2 сек</button>
+      </header>
+      <button type="button" class="nav prev" data-prev aria-label="Предыдущий год">‹</button>
+      <button type="button" class="nav next" data-next aria-label="Следующий год">›</button>
+      <footer class="rail">
+        <div class="rail-track">
+          <div class="rail-line"></div>
+          <div class="rail-years" data-rail></div>
         </div>
-        <div class="story-dots" id="story-dots"></div>
-        <p class="story-hint">Стрелки / колесо / свайп ладонью ←→ · кулак/pinch — назад</p>
-      </div>
+        <p class="hint">Взмах ладонью ←→ · держи кулак 2 сек — назад</p>
+      </footer>
     </div>
 
     <video id="input-video" playsinline muted autoplay></video>
@@ -62,6 +66,6 @@
     });
   </script>
   <script src="vendor/leaflet/leaflet.js"></script>
-  <script type="module" src="js/pages/map.js"></script>
+  <script type="module" src="js/pages/map.js?v=fade"></script>
 </body>
 </html>

@@ -12,31 +12,35 @@ const LM = {
   PINKY_TIP: 20,
 };
 
-// Pinch: чуть мягче порог + гистерезис, чтобы удержание успевало дойти до confirm
-const PINCH_THRESHOLD = 0.4;
-const PINCH_RELEASE = 0.52;
+// Pinch
+const PINCH_THRESHOLD = 0.42;
+const PINCH_RELEASE = 0.55;
 const PINCH_HOLD_MS = 200;
 const PINCH_COOLDOWN_MS = 700;
 
-// Кулак строже pinch — щипок не должен уходить в fist
-const FIST_THRESHOLD = 0.4;
-const FIST_HOLD_MS = 420;
-const FIST_COOLDOWN_MS = 1300;
+// Кулак: 2с. Детекция по числу согнутых пальцев (стабильнее, чем один порог).
+const FIST_CURL_ENTER = 0.55; // tip→ладонь / handSize — палец «согнут»
+const FIST_CURL_EXIT = 0.70;  // чтобы выйти из кулака, пальцы должны разогнуться сильнее
+const FIST_MIN_CURLED = 3;    // минимум 3 пальца из 4 (без большого)
+const FIST_HOLD_MS = 2000;
+const FIST_COOLDOWN_MS = 800;
+const FIST_LOST_GRACE_MS = 450;
+
 
 // Ладонь для свайпа: достаточно «не кулак и не pinch» (не требуем идеально открытую)
 const OPEN_PALM_THRESHOLD = 0.42;
 const DWELL_MS = 750;
 
-const CURSOR_SMOOTHING = 0.22;
-const CURSOR_DEADZONE_PX = 3;
+const CURSOR_SMOOTHING = 0.18;
+const CURSOR_DEADZONE_PX = 5;
 
-// Свайп ладонью: один жест = один шаг
-const SWIPE_MIN_PX = 32;
-const SWIPE_MAX_MS = 550;
-const SWIPE_COOLDOWN_MS = 320;
-const SWIPE_AXIS_RATIO = 1.1;
-const PALM_SMOOTHING = 0.45;
-const SWIPE_SCALE = 1.35;
+// Свайп ладонью: намеренный взмах (меньше ложных перескоков при наведении)
+const SWIPE_MIN_PX = 55;
+const SWIPE_MAX_MS = 650;
+const SWIPE_COOLDOWN_MS = 520;
+const SWIPE_AXIS_RATIO = 1.35;
+const PALM_SMOOTHING = 0.28;
+const SWIPE_SCALE = 1.1;
 
 const TWOHAND_DEADZONE_PX = 3;
 const TWOHAND_FRAMES = 10; // не глушить pinch/кулак из‑за ложной «второй руки»
@@ -64,6 +68,8 @@ export class GestureController {
     this.fistHoldStart = null;
     this.fistFired = false;
     this.fistCooldownUntil = 0;
+    this.fistLostSince = null;
+    this.fistLatched = false;
 
     // Ладонь / свайп
     this.smoothPalmX = null;
@@ -164,26 +170,77 @@ export class GestureController {
     }
 
     const pinchDist = dist(landmarks[LM.THUMB_TIP], landmarks[LM.INDEX_TIP]) / handSize;
-    // Гистерезис: войти в pinch легче, выйти — только когда пальцы заметно разомкнулись
-    const pinchingNow = this.isPinching
-      ? pinchDist < PINCH_RELEASE
-      : pinchDist < PINCH_THRESHOLD;
 
     const palmCenter = landmarks[LM.MIDDLE_MCP];
-    const tips = [LM.INDEX_TIP, LM.MIDDLE_TIP, LM.RING_TIP, LM.PINKY_TIP].map((i) => landmarks[i]);
-    const avgTipDist = tips.reduce((sum, t) => sum + dist(t, palmCenter), 0) / tips.length / handSize;
+    const tipIdx = [LM.INDEX_TIP, LM.MIDDLE_TIP, LM.RING_TIP, LM.PINKY_TIP];
+    const curls = tipIdx.map((i) => dist(landmarks[i], palmCenter) / handSize);
+    const curlLimit = this.fistLatched ? FIST_CURL_EXIT : FIST_CURL_ENTER;
+    const curledCount = curls.filter((c) => c < curlLimit).length;
+    const avgCurl = curls.reduce((a, b) => a + b, 0) / curls.length;
+    const middleExt = curls[1];
 
-    // Кулак только если это не щипок и пальцы реально собраны
-    const isFistNow = !pinchingNow && pinchDist > PINCH_RELEASE && avgTipDist < FIST_THRESHOLD;
+    // Кулак: ≥3 пальца согнуты (большой не считаем — у кулака он часто у tip)
+    const fistRaw = curledCount >= FIST_MIN_CURLED && avgCurl < curlLimit;
+
+    let isFistNow = false;
+    if (fistRaw) {
+      this.fistLostSince = null;
+      this.fistLatched = true;
+      isFistNow = true;
+    } else if (this.fistLatched || this.fistHoldStart != null) {
+      if (this.fistLostSince == null) this.fistLostSince = now;
+      if (now - this.fistLostSince < FIST_LOST_GRACE_MS) {
+        isFistNow = true;
+      } else {
+        this.fistLatched = false;
+        this.fistLostSince = null;
+        isFistNow = false;
+      }
+    }
+
+    // Pinch: щипок И это не кулак (средний/безымянный относительно открыты)
+    const wantPinch = this.isPinching
+      ? pinchDist < PINCH_RELEASE
+      : pinchDist < PINCH_THRESHOLD;
+    const pinchingNow = !isFistNow && wantPinch && curledCount <= 2 && middleExt >= 0.42;
 
     this.onEvent('cursor', {
       x: this.smoothX,
       y: this.smoothY,
       visible: true,
       pinchDist,
+      curledCount,
+      avgCurl,
       pinchProgress: this._pinchProgress(now, pinchingNow),
       fistProgress: this._fistProgress(now, isFistNow),
     });
+
+    // --- FIST ---
+    if (isFistNow) {
+      if (this.isPinching) {
+        this.isPinching = false;
+        this.pinchHoldStart = null;
+        this.pinchConfirmed = false;
+        this.onEvent('pinchend', { x: this.smoothX, y: this.smoothY });
+      }
+      if (this.fistHoldStart == null) {
+        this.fistHoldStart = now;
+        this.fistFired = false;
+        this.onEvent('fiststart', { curledCount, avgCurl });
+      } else if (
+        !this.fistFired &&
+        now - this.fistHoldStart >= FIST_HOLD_MS &&
+        now >= this.fistCooldownUntil
+      ) {
+        this.fistFired = true;
+        this.fistCooldownUntil = now + FIST_COOLDOWN_MS;
+        this.onEvent('fist', { curledCount, avgCurl });
+      }
+      this._resetPalmSwipe();
+    } else if (this.fistHoldStart != null) {
+      if (!this.fistFired) this.onEvent('fistcancel', {});
+      this._resetFist();
+    }
 
     // --- PINCH ---
     if (pinchingNow) {
@@ -210,31 +267,12 @@ export class GestureController {
           this.onEvent('pinchconfirm', { x: this.smoothX, y: this.smoothY });
         }
       }
-      this._resetFist();
       this._resetPalmSwipe();
     } else if (this.isPinching) {
       this.isPinching = false;
       this.pinchHoldStart = null;
       this.pinchConfirmed = false;
       this.onEvent('pinchend', { x: this.smoothX, y: this.smoothY });
-    }
-
-    // --- FIST ---
-    if (isFistNow) {
-      if (this.fistHoldStart == null) {
-        this.fistHoldStart = now;
-      } else if (
-        !this.fistFired &&
-        now - this.fistHoldStart >= FIST_HOLD_MS &&
-        now >= this.fistCooldownUntil
-      ) {
-        this.fistFired = true;
-        this.fistCooldownUntil = now + FIST_COOLDOWN_MS;
-        this.onEvent('fist', {});
-      }
-      this._resetPalmSwipe();
-    } else {
-      this._resetFist();
     }
 
     // --- СВАЙП ЛАДОНЬЮ ---
@@ -335,6 +373,8 @@ export class GestureController {
   _resetFist() {
     this.fistHoldStart = null;
     this.fistFired = false;
+    this.fistLostSince = null;
+    this.fistLatched = false;
   }
 
   _updateDwell(x, y, blocked) {

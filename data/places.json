@@ -1,6 +1,7 @@
 [
   {
     "id": "grozny-center",
+    "districtId": "grozny",
     "title": "Центр Грозного",
     "region": "Грозный",
     "lat": 43.3169,
@@ -11,6 +12,7 @@
   },
   {
     "id": "chsu-campus",
+    "districtId": "grozny",
     "title": "ЧГУ",
     "region": "Грозный",
     "lat": 43.309,
@@ -21,6 +23,7 @@
   },
   {
     "id": "heart-of-chechnya",
+    "districtId": "grozny",
     "title": "Мечеть «Сердце Чечни»",
     "region": "Грозный",
     "lat": 43.318,
@@ -31,6 +34,7 @@
   },
   {
     "id": "grozny-city",
+    "districtId": "grozny",
     "title": "Грозный-Сити",
     "region": "Грозный",
     "lat": 43.3145,
@@ -41,6 +45,7 @@
   },
   {
     "id": "national-museum",
+    "districtId": "grozny",
     "title": "Национальный музей",
     "region": "Грозный",
     "lat": 43.321,
@@ -51,6 +56,7 @@
   },
   {
     "id": "argun",
+    "districtId": "argun",
     "title": "Аргун",
     "region": "Аргун",
     "lat": 43.2931,
@@ -61,6 +67,7 @@
   },
   {
     "id": "gudermes",
+    "districtId": "gudermes",
     "title": "Гудермес",
     "region": "Гудермес",
     "lat": 43.352,
@@ -71,6 +78,7 @@
   },
   {
     "id": "lake-kezenoy",
+    "districtId": "vedeno",
     "title": "Озеро Кезеной-Ам",
     "region": "Веденский район",
     "lat": 42.7769,
@@ -81,6 +89,7 @@
   },
   {
     "id": "vedeno",
+    "districtId": "vedeno",
     "title": "Ведено",
     "region": "Веденский район",
     "lat": 42.9686,
@@ -91,6 +100,7 @@
   },
   {
     "id": "shali",
+    "districtId": "shali",
     "title": "Шали",
     "region": "Шалинский район",
     "lat": 43.1489,

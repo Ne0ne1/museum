@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
-  <link rel="stylesheet" href="css/style.css?v=12" />
-  <link rel="stylesheet" href="css/portal.css?v=7" />
+  <link rel="stylesheet" href="css/style.css?v=13" />
+  <link rel="stylesheet" href="css/portal.css?v=9" />
 </head>
 <body>
   <div id="app">
@@ -18,7 +18,7 @@
       <header class="mode-header">
         <div>
           <h2>Портал времени · карта ЧР</h2>
-          <p class="mode-hint" id="map-focus-hint">Район → место → годы · pinch открыть · свайп ←→ · кулак 1 сек — назад</p>
+          <p class="mode-hint" id="map-focus-hint">Район → место → годы · pinch открыть · свайп ←→ · кулак: районы 3 сек</p>
         </div>
         <a href="index.html" class="mode-switch-btn">← На старт</a>
       </header>
@@ -57,9 +57,11 @@
         </div>
         <div class="top-actions">
           <button type="button" class="back-link" data-compare-btn>Сравнить эпохи</button>
-          <button type="button" class="back-link" data-back>← К карте · кулак 1 сек</button>
+          <button type="button" class="back-link" data-back>← К карте · кулак 2 сек</button>
         </div>
       </header>
+
+      <div class="portal-fist-ring" data-fist-ring aria-hidden="true"></div>
 
       <aside class="story-sheet" data-story-sheet aria-hidden="true">
         <div class="story-sheet-handle"></div>
@@ -76,7 +78,7 @@
           <div class="rail-line"></div>
           <div class="rail-years" data-rail></div>
         </div>
-        <p class="hint">←→ годы · ↑ текст эпохи · «Сравнить» — шов времени · кулак — назад</p>
+        <p class="hint">слева новое · → прошлое · ↑ текст · pinch 0.5с — сравнение · кулак 2 сек — назад</p>
       </footer>
     </div>
 
@@ -94,6 +96,6 @@
     });
   </script>
   <script src="vendor/leaflet/leaflet.js"></script>
-  <script type="module" src="js/pages/map.js?v=11"></script>
+  <script type="module" src="js/pages/map.js?v=19"></script>
 </body>
 </html>

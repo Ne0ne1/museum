@@ -18,7 +18,7 @@ const PINCH_RELEASE = 0.55;
 const PINCH_HOLD_MS = 450; // быстрее для демо ≤30 сек
 const PINCH_COOLDOWN_MS = 700;
 
-// Кулак: 2с. Детекция по числу согнутых пальцев (стабильнее, чем один порог).
+// Кулак: удержание (по умолчанию 1с; в портале можно 3с).
 const FIST_CURL_ENTER = 0.55; // tip→ладонь / handSize — палец «согнут»
 const FIST_CURL_EXIT = 0.70;  // чтобы выйти из кулака, пальцы должны разогнуться сильнее
 const FIST_MIN_CURLED = 3;    // минимум 3 пальца из 4 (без большого)
@@ -34,13 +34,13 @@ const DWELL_MS = 750;
 const CURSOR_SMOOTHING = 0.18;
 const CURSOR_DEADZONE_PX = 5;
 
-// Свайп ладонью: намеренный взмах (меньше ложных перескоков при наведении)
-const SWIPE_MIN_PX = 55;
-const SWIPE_MAX_MS = 650;
-const SWIPE_COOLDOWN_MS = 520;
-const SWIPE_AXIS_RATIO = 1.35;
-const PALM_SMOOTHING = 0.28;
-const SWIPE_SCALE = 1.1;
+// Свайп ладонью: лёгкий шаг между районами/местами (киоск)
+const SWIPE_MIN_PX = 38;
+const SWIPE_MAX_MS = 750;
+const SWIPE_COOLDOWN_MS = 340;
+const SWIPE_AXIS_RATIO = 1.15;
+const PALM_SMOOTHING = 0.32;
+const SWIPE_SCALE = 1.25;
 
 const TWOHAND_DEADZONE_PX = 3;
 const TWOHAND_FRAMES = 10; // не глушить pinch/кулак из‑за ложной «второй руки»
@@ -70,6 +70,7 @@ export class GestureController {
     this.fistCooldownUntil = 0;
     this.fistLostSince = null;
     this.fistLatched = false;
+    this.fistHoldMs = FIST_HOLD_MS;
 
     // Ладонь / свайп
     this.smoothPalmX = null;
@@ -229,7 +230,7 @@ export class GestureController {
         this.onEvent('fiststart', { curledCount, avgCurl });
       } else if (
         !this.fistFired &&
-        now - this.fistHoldStart >= FIST_HOLD_MS &&
+        now - this.fistHoldStart >= this.fistHoldMs &&
         now >= this.fistCooldownUntil
       ) {
         this.fistFired = true;
@@ -361,7 +362,15 @@ export class GestureController {
 
   _fistProgress(now, isFistNow) {
     if (!isFistNow || this.fistHoldStart == null || this.fistFired) return 0;
-    return Math.min(1, (now - this.fistHoldStart) / FIST_HOLD_MS);
+    return Math.min(1, (now - this.fistHoldStart) / this.fistHoldMs);
+  }
+
+  /** Длительность удержания кулака (мс). Сбрасывает текущий прогресс. */
+  setFistHoldMs(ms) {
+    const next = Math.max(200, Number(ms) || FIST_HOLD_MS);
+    if (next === this.fistHoldMs) return;
+    this.fistHoldMs = next;
+    this._resetFist();
   }
 
   _resetPinch() {

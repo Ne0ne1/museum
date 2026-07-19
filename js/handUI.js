@@ -1,7 +1,7 @@
 // Общий запуск трекинга руки на любой странице.
 
 import { HandTracker } from './handTracker.js?v=4';
-import { GestureController } from './gestureState.js?v=11';
+import { GestureController } from './gestureState.js?v=14';
 export { saveSelectedPlace, loadSelectedPlace } from './storage.js';
 
 /**
@@ -93,5 +93,5 @@ export function startHandUI(onEvent, options = {}) {
 
   window.addEventListener('pagehide', () => tracker.stop());
 
-  return tracker;
+  return { tracker, gestures: gestureController };
 }

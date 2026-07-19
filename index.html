@@ -3,53 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <title>Портал времени · Музей новых технологий</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=12" />
+  <link rel="stylesheet" href="css/style.css?v=14" />
 </head>
 <body>
   <div id="app">
     <section class="screen active intro-screen">
-      <div class="intro-content">
-        <p class="intro-eyebrow">Музей новых технологий · стенд истории ЧР / ЧГУ</p>
-        <h1>Портал времени</h1>
-        <p class="subtitle">Выбери место на карте — и рукой пройди по его прошлому и настоящему</p>
-
-        <div class="demo-script">
-          <strong>Демо за 30 секунд:</strong>
-          Грозный → pinch открыть → свайп ладонью по годам → кулак назад
-        </div>
-
-        <div class="gesture-hints gesture-hints-compact">
-          <div class="hint">
-            <span class="hint-icon">🤏</span>
-            <span><b>Pinch</b> — открыть район или место</span>
-          </div>
-          <div class="hint">
-            <span class="hint-icon">🖐️</span>
-            <span><b>Свайп ладонью</b> — соседняя точка / другой год</span>
-          </div>
-          <div class="hint">
-            <span class="hint-icon">✊</span>
-            <span><b>Кулак 1 сек</b> — шаг назад</span>
-          </div>
-        </div>
-
-        <a href="map.html" class="btn-primary" id="start-btn">Начать</a>
-
-        <div class="jury-pitch">
-          <div>
-            <h3>Как в зале музея</h3>
-            <p>Большой экран + веб-камера. Без очереди на шлем: несколько посетителей смотрят вместе, один управляет рукой.</p>
-          </div>
-          <div>
-            <h3>Почему внедряемо</h3>
-            <p>Обычный ПК, Chrome, локальные фото и карта. Контент — JSON. Масштаб: новые места без переписывания кода.</p>
-          </div>
-        </div>
+      <div class="intro-hero" aria-hidden="true">
+        <div class="intro-hero-photo"></div>
+        <div class="intro-hero-veil"></div>
       </div>
+
+      <div class="intro-content">
+        <p class="intro-brand">Музей новых технологий</p>
+        <h1 class="intro-title">Портал времени</h1>
+        <p class="intro-lead">Место на карте — и рука проводит через его эпохи</p>
+
+        <div class="intro-actions">
+          <a href="map.html" class="btn-primary intro-cta" id="start-btn">Начать</a>
+          <p class="intro-demo">30 сек: Грозный → открыть → годы → назад</p>
+        </div>
+
+        <ul class="intro-gestures" aria-label="Три жеста">
+          <li>
+            <span class="intro-gesture-key">Pinch</span>
+            <span class="intro-gesture-desc">открыть</span>
+          </li>
+          <li>
+            <span class="intro-gesture-key">Ладонь</span>
+            <span class="intro-gesture-desc">листать</span>
+          </li>
+          <li>
+            <span class="intro-gesture-key">Кулак</span>
+            <span class="intro-gesture-desc">назад</span>
+          </li>
+        </ul>
+      </div>
+
+      <footer class="intro-footer">
+        <p><strong>В зале:</strong> большой экран, одна камера, смотрят вместе — без очереди на шлем.</p>
+        <p><strong>Внедрение:</strong> ПК + Chrome, контент в JSON, новые места без переписывания кода.</p>
+      </footer>
     </section>
   </div>
 </body>

@@ -1,6 +1,6 @@
-import { Gallery } from '../gallery.js?v=10';
+import { Gallery } from '../gallery.js?v=13';
 import { saveSelectedPlace } from '../storage.js';
-import { createPortalStory } from '../portalStory.js?v=8';
+import { createPortalStory } from '../portalStory.js?v=15';
 
 const statusEl = document.getElementById('camera-status');
 const hintEl = document.getElementById('map-focus-hint');
@@ -9,10 +9,30 @@ const listEl = document.getElementById('place-list');
 const listTitleEl = document.getElementById('place-list-title');
 
 let allEvents = [];
+let gestures = null;
 
 function setStatus(msg) {
   if (statusEl) statusEl.textContent = msg;
   console.log('[map]', msg);
+}
+
+const FIST_MS = {
+  portal: 2000,    // фото / портал эпох
+  districts: 3000, // карта районов → на старт
+  places: 2000,    // места → к районам
+};
+
+function syncFistHoldMs() {
+  if (!gestures?.setFistHoldMs) return;
+  if (portal.isOpen()) {
+    gestures.setFistHoldMs(FIST_MS.portal);
+    return;
+  }
+  if (gallery?.mode === 'places') {
+    gestures.setFistHoldMs(FIST_MS.places);
+    return;
+  }
+  gestures.setFistHoldMs(FIST_MS.districts);
 }
 
 window.addEventListener('error', (e) => {
@@ -28,6 +48,7 @@ let gallery;
 
 const portal = createPortalStory(document.getElementById('place-portal'), {
   onClose: () => {
+    syncFistHoldMs();
     if (gallery) {
       gallery.clearHoldProgress();
       gallery.resetView();
@@ -47,6 +68,7 @@ gallery = new Gallery(
     gallery.clearHoldProgress();
     setStatus(`Портал: ${place.title}`);
     portal.openPlace(place, allEvents);
+    syncFistHoldMs();
   },
   { focusCursorEl: cursorEl, hintEl, listEl, listTitleEl }
 );
@@ -79,13 +101,21 @@ async function boot() {
   }
 
   try {
-    const { startHandUI } = await import('../handUI.js?v=11');
+    const { startHandUI } = await import('../handUI.js?v=14');
     setStatus('Карта готова. Камера…');
-    startHandUI(
+    const hand = startHandUI(
       (type, payload) => {
         if (portal.isOpen()) {
           gallery.clearHoldProgress();
-          if (type === 'fist') setStatus('Назад к карте');
+          if (type === 'cursor') {
+            const fistP = payload.fistProgress || 0;
+            if (fistP > 0.02) {
+              const label = portal.isCompare?.() ? 'выйти из сравнения' : 'назад (2 сек)';
+              setStatus(`Кулак ${Math.round(fistP * 100)}% — ${label}`);
+            }
+          } else if (type === 'fist') {
+            setStatus(portal.isCompare?.() ? 'Выход из сравнения…' : 'Назад к карте');
+          }
           portal.handleGesture(type, payload);
           return;
         }
@@ -95,7 +125,8 @@ async function boot() {
           const pinchP = payload.pinchProgress || 0;
           if (fistP > 0.02) {
             gallery.setHoldProgress(fistP, 'fist');
-            setStatus(`Кулак ${Math.round(fistP * 100)}% — назад`);
+            const sec = gallery.mode === 'districts' ? 3 : 2;
+            setStatus(`Кулак ${Math.round(fistP * 100)}% — назад (${sec} сек)`);
           } else if (pinchP > 0.02) {
             gallery.setHoldProgress(pinchP, 'pinch');
             setStatus(`Pinch ${Math.round(pinchP * 100)}% — выбрать`);
@@ -114,6 +145,7 @@ async function boot() {
             setStatus('Pinch → открываю место…');
           }
           gallery.confirmFocus();
+          syncFistHoldMs();
         } else if (type === 'pinchstart') {
           setStatus('Pinch… обводка точки');
         } else if (type === 'fist') {
@@ -123,12 +155,15 @@ async function boot() {
           } else {
             window.location.href = 'index.html';
           }
+          syncFistHoldMs();
         } else if (type === 'twohand') {
           gallery.zoomByDelta(payload.delta);
         }
       },
       { freeCursor: false, dwellEnabled: false, hideCursor: true }
     );
+    gestures = hand?.gestures || null;
+    syncFistHoldMs();
   } catch (err) {
     console.warn(err);
     setStatus('Карта без камеры: ' + err.message);

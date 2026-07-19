@@ -41,19 +41,173 @@ html, body {
   display: flex;
 }
 
-/* Intro */
+/* Intro — full-bleed museum hero */
 .intro-screen {
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: radial-gradient(circle at 50% 30%, #1a2740 0%, var(--bg-dark) 70%);
+  align-items: stretch;
+  justify-content: space-between;
+  text-align: left;
+  padding: 0;
+  overflow: hidden;
+  font-family: Manrope, "Segoe UI", system-ui, sans-serif;
+  background: #070b14;
+}
+
+.intro-hero {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.intro-hero-photo {
+  position: absolute;
+  inset: -2%;
+  background:
+    url("../assets/photos/grozny-center/2025.png") center / cover no-repeat;
+  transform: scale(1.04);
+  animation: introKenBurns 22s ease-out forwards;
+  filter: saturate(0.92) brightness(0.72);
+}
+
+.intro-hero-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(105deg, rgba(7, 11, 20, 0.92) 0%, rgba(7, 11, 20, 0.72) 42%, rgba(7, 11, 20, 0.35) 68%, rgba(7, 11, 20, 0.55) 100%),
+    linear-gradient(180deg, rgba(7, 11, 20, 0.25) 0%, rgba(7, 11, 20, 0.15) 45%, rgba(7, 11, 20, 0.88) 100%);
+}
+
+@keyframes introKenBurns {
+  from { transform: scale(1.04); }
+  to { transform: scale(1.12); }
 }
 
 .intro-content {
-  max-width: 920px;
-  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  max-width: min(720px, 92vw);
+  margin: 0;
+  padding: clamp(40px, 8vh, 72px) clamp(28px, 6vw, 72px) 24px;
+  animation: introRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+@keyframes introRise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.intro-brand {
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(242, 245, 249, 0.72);
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+
+.intro-title {
+  font-size: clamp(48px, 9vw, 92px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  color: #f2f5f9;
+  text-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  margin: 0;
+}
+
+.intro-lead {
+  margin-top: 18px;
+  max-width: 28ch;
+  font-size: clamp(17px, 2.2vw, 22px);
+  line-height: 1.4;
+  color: rgba(242, 245, 249, 0.82);
+  font-weight: 500;
+}
+
+.intro-actions {
+  margin-top: clamp(28px, 5vh, 44px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 22px;
+}
+
+.intro-cta {
+  animation: introCtaPulse 2.8s ease-in-out 1.2s infinite;
+}
+
+@keyframes introCtaPulse {
+  0%, 100% { box-shadow: 0 8px 28px rgba(61, 220, 151, 0.25); }
+  50% { box-shadow: 0 12px 36px rgba(61, 220, 151, 0.42); }
+}
+
+.intro-demo {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(242, 245, 249, 0.62);
+  letter-spacing: 0.01em;
+}
+
+.intro-gestures {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  margin: clamp(36px, 6vh, 56px) 0 0;
+  padding: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 22px;
+}
+
+.intro-gestures li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 15px;
+}
+
+.intro-gesture-key {
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+.intro-gesture-desc {
+  color: rgba(242, 245, 249, 0.7);
+}
+
+.intro-footer {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 28px;
+  padding: 20px clamp(28px, 6vw, 72px) clamp(24px, 4vh, 36px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, transparent, rgba(7, 11, 20, 0.55));
+  animation: introRise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+.intro-footer p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(242, 245, 249, 0.58);
+  max-width: 46ch;
+}
+
+.intro-footer strong {
+  color: rgba(242, 245, 249, 0.88);
+  font-weight: 700;
+}
+
+/* legacy intro bits (kept for other pages if referenced) */
 .intro-eyebrow {
   font-size: 13px;
   letter-spacing: 0.16em;
@@ -64,9 +218,6 @@ html, body {
 }
 
 .intro-content h1 {
-  font-size: clamp(40px, 7vw, 64px);
-  font-weight: 800;
-  letter-spacing: -0.02em;
   font-family: Manrope, "Segoe UI", system-ui, sans-serif;
 }
 
@@ -114,13 +265,6 @@ html, body {
   color: var(--text-dim);
 }
 
-@media (max-width: 800px) {
-  .gesture-hints-compact,
-  .jury-pitch {
-    grid-template-columns: 1fr;
-  }
-}
-
 .subtitle {
   margin-top: 10px;
   font-size: 20px;
@@ -152,21 +296,38 @@ html, body {
 
 .btn-primary {
   display: inline-block;
-  font-size: 20px;
-  padding: 16px 48px;
-  border-radius: 40px;
+  font-size: 18px;
+  padding: 15px 40px;
+  border-radius: 999px;
   border: none;
   background: var(--accent);
   color: #08130f;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
   text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
+  background: #4af0a8;
   box-shadow: 0 10px 30px rgba(61, 220, 151, 0.35);
+}
+
+@media (max-width: 800px) {
+  .intro-footer {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-gestures {
+    gap: 12px 20px;
+  }
+
+  .gesture-hints-compact,
+  .jury-pitch {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Mode header */
@@ -592,19 +753,19 @@ html, body {
 }
 
 .gallery-point.is-district {
-  width: 36px;
-  height: 36px;
+  width: 46px;
+  height: 46px;
   background: #1a8f6a;
-  box-shadow: 0 0 0 10px rgba(61, 220, 151, 0.18);
+  box-shadow: 0 0 0 14px rgba(61, 220, 151, 0.22);
 }
 
 .gallery-point.is-district .gallery-point-label {
-  top: 42px;
-  opacity: 0.85;
+  top: 54px;
+  opacity: 0.9;
 }
 
 .gallery-point.is-district .gallery-point-label strong {
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .gallery-point.is-place {

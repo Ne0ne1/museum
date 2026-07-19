@@ -66,6 +66,17 @@ export function createPortalStory(rootEl, { onClose } = {}) {
     }
   }
 
+  function setFistProgress(progress) {
+    const p = Math.max(0, Math.min(1, progress || 0));
+    rootEl.style.setProperty('--fist-progress', String(p));
+    rootEl.classList.toggle('fist-holding', p > 0.02);
+    if (backBtn) {
+      backBtn.style.setProperty('--hold-progress', String(p));
+      backBtn.classList.toggle('holding', p > 0.02);
+      backBtn.classList.toggle('holding-fist', p > 0.02);
+    }
+  }
+
   function updateChrome() {
     const ev = events[index];
     if (!ev) return;
@@ -78,7 +89,7 @@ export function createPortalStory(rootEl, { onClose } = {}) {
     if (eventTitleEl) eventTitleEl.textContent = compareOn ? 'Сравнение эпох' : (ev.title || '');
     if (eventTeaserEl) {
       eventTeaserEl.textContent = compareOn
-        ? 'Двигай шов — прошлое и настоящее рядом'
+        ? 'Pinch — шов · кулак — выйти из сравнения'
         : (sheetOpen ? 'Свайп вниз — свернуть текст' : 'Свайп вверх — короткий текст эпохи');
     }
     if (sheetYearEl) sheetYearEl.textContent = ev.year || '';
@@ -87,8 +98,9 @@ export function createPortalStory(rootEl, { onClose } = {}) {
       const body = (ev.detail && ev.detail.trim()) || ev.description || '';
       sheetTextEl.textContent = body;
     }
-    setStatus(compareOn
-      ? `${events[0]?.year || ''} ↔ ${events[events.length - 1]?.year || ''}`
+    const pair = compareOn ? pickComparePair() : null;
+    setStatus(compareOn && pair
+      ? `${pair.past.year} ↔ ${pair.present.year}`
       : `${ev.year} · ${index + 1}/${events.length}`);
   }
 
@@ -149,24 +161,65 @@ export function createPortalStory(rootEl, { onClose } = {}) {
 
   function setComparePos(pct) {
     comparePos = Math.max(8, Math.min(92, pct));
-    if (compareLeft) compareLeft.style.width = `${comparePos}%`;
+    if (compareLeft) {
+      // clip-path: картинка на весь экран, без «зума» при движении шва
+      compareLeft.style.width = '';
+      compareLeft.style.clipPath = `inset(0 ${100 - comparePos}% 0 0)`;
+    }
     if (compareHandle) compareHandle.style.left = `${comparePos}%`;
   }
 
-  function openCompare() {
+  /** Позиция шва по экранной X руки / курсора. */
+  function setComparePosFromX(clientX) {
+    const rect = (compareEl || rootEl).getBoundingClientRect();
+    if (!rect.width) return;
+    setComparePos(((clientX - rect.left) / rect.width) * 100);
+  }
+
+  /**
+   * Пара для шва: текущий кадр ↔ противоположный край таймлайна.
+   * В первой половине (ближе к «сейчас») — с самым старым;
+   * во второй (в прошлом) — с самым новым.
+   * На экране всегда: слева старше, справа новее.
+   */
+  function pickComparePair() {
+    const n = events.length;
+    if (n < 2) return null;
+    const current = events[index];
+    const newest = events[0];
+    const oldest = events[n - 1];
+    const mid = (n - 1) / 2;
+    // index 0 = новое слева; малые индексы → сравниваем со старым краем
+    let other = index <= mid ? oldest : newest;
+    if (other === current) {
+      other = index === 0 ? oldest : newest;
+    }
+    if (other === current) return null;
+
+    const a = current;
+    const b = other;
+    const past = yearKey(a.year) <= yearKey(b.year) ? a : b;
+    const present = past === a ? b : a;
+    return { past, present, current, other };
+  }
+
+  function openCompare({ pos } = {}) {
     if (events.length < 2 || !compareEl) return;
+    const pair = pickComparePair();
+    if (!pair) return;
+
     setSheet(false);
+    const wasOn = compareOn;
     compareOn = true;
     rootEl.classList.add('compare-mode');
     compareEl.hidden = false;
-    const first = events[0];
-    const last = events[events.length - 1];
-    if (compareLeft) compareLeft.style.backgroundImage = `url("${imageFor(first)}")`;
-    if (compareRight) compareRight.style.backgroundImage = `url("${imageFor(last)}")`;
-    if (compareYearA) compareYearA.textContent = first.year;
-    if (compareYearB) compareYearB.textContent = last.year;
+    if (compareLeft) compareLeft.style.backgroundImage = `url("${imageFor(pair.past)}")`;
+    if (compareRight) compareRight.style.backgroundImage = `url("${imageFor(pair.present)}")`;
+    if (compareYearA) compareYearA.textContent = pair.past.year;
+    if (compareYearB) compareYearB.textContent = pair.present.year;
     if (compareBtn) compareBtn.textContent = 'Выйти из сравнения';
-    setComparePos(50);
+    if (typeof pos === 'number') setComparePos(pos);
+    else if (!wasOn) setComparePos(50);
     updateChrome();
   }
 
@@ -212,6 +265,7 @@ export function createPortalStory(rootEl, { onClose } = {}) {
     if (!open) return;
     closeCompare();
     setSheet(false);
+    setFistProgress(0);
     open = false;
     rootEl.classList.remove('open');
     events = [];
@@ -223,15 +277,17 @@ export function createPortalStory(rootEl, { onClose } = {}) {
     if (!place) return;
     fallbackPhoto = place.photo || place.image;
     placeTitle = place.title || '';
+    // Новое слева → старое справа
     events = (allEvents || [])
       .filter((ev) => ev.placeId === place.id)
-      .sort((a, b) => yearKey(a.year) - yearKey(b.year));
+      .sort((a, b) => yearKey(b.year) - yearKey(a.year));
 
     index = 0;
     frontIsA = true;
     open = true;
     closeCompare();
     setSheet(false);
+    setFistProgress(0);
     rootEl.classList.add('open');
 
     if (!events.length) {
@@ -256,13 +312,39 @@ export function createPortalStory(rootEl, { onClose } = {}) {
   function handleGesture(type, payload) {
     if (!open) return false;
 
+    if (type === 'cursor') {
+      const fistP = payload.fistProgress || 0;
+      setFistProgress(fistP);
+      return true;
+    }
+
+    // В сравнении: pinch двигает шторку. Вход — pinchconfirm или кнопка.
+    if (type === 'pinchstart' || type === 'pinchmove') {
+      if (compareOn && payload && typeof payload.x === 'number') {
+        setComparePosFromX(payload.x);
+      }
+      return true;
+    }
+
+    if (type === 'pinchconfirm') {
+      if (events.length < 2) return true;
+      if (!compareOn) {
+        openCompare();
+        if (payload && typeof payload.x === 'number') setComparePosFromX(payload.x);
+      } else if (payload && typeof payload.x === 'number') {
+        setComparePosFromX(payload.x);
+      }
+      return true;
+    }
+
+    if (type === 'pinchend') return true;
+
     if (type === 'nudge') {
       if (compareOn) {
         if (payload.dirX > 0) setComparePos(comparePos + 8);
         else if (payload.dirX < 0) setComparePos(comparePos - 8);
         return true;
       }
-      // Вертикаль: вверх — текст, вниз — свернуть
       if (payload.dirY < 0) {
         setSheet(true);
         updateChrome();
@@ -273,6 +355,7 @@ export function createPortalStory(rootEl, { onClose } = {}) {
         updateChrome();
         return true;
       }
+      // ← новое, → прошлое (таймлайн: новое слева)
       if (payload.dirX > 0) go(1);
       else if (payload.dirX < 0) go(-1);
       return true;
@@ -281,12 +364,17 @@ export function createPortalStory(rootEl, { onClose } = {}) {
     if (type === 'swipe') return true;
 
     if (type === 'fist') {
+      setFistProgress(0);
+      if (compareOn) {
+        closeCompare();
+        return true;
+      }
       close();
       return true;
     }
 
-    if (type === 'pinchconfirm' && events.length >= 2) {
-      toggleCompare();
+    if (type === 'lost' || type === 'fistcancel') {
+      setFistProgress(0);
       return true;
     }
 
@@ -439,6 +527,7 @@ export function createPortalStory(rootEl, { onClose } = {}) {
     close,
     handleGesture,
     isOpen: () => open,
+    isCompare: () => compareOn,
     go,
   };
 }

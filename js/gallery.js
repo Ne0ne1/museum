@@ -207,7 +207,7 @@ export class Gallery {
       weight: focused ? 3.2 : 2,
       opacity: focused ? 1 : 0.92,
       fillColor: color,
-      fillOpacity: focused ? 0.28 : 0.14,
+      fillOpacity: focused ? 0.36 : 0.16,
       lineJoin: 'round',
       lineCap: 'round',
       className: focused ? 'district-poly is-focused' : 'district-poly',
@@ -318,8 +318,8 @@ export class Gallery {
                 : (place.region || '')}</span>
             </div>
           </div>`,
-        iconSize: isDistrict ? [36, 36] : [28, 28],
-        iconAnchor: isDistrict ? [18, 18] : [14, 14],
+        iconSize: isDistrict ? [48, 48] : [28, 28],
+        iconAnchor: isDistrict ? [24, 24] : [14, 14],
       });
 
       const marker = L.marker([place.lat, place.lng], { icon }).addTo(this.map);
@@ -434,7 +434,7 @@ export class Gallery {
     });
 
     if (this.hintEl) {
-      this.hintEl.textContent = `${d.title}: выбери место · pinch — открыть · кулак — к районам`;
+        this.hintEl.textContent = `${d.title}: выбери место · pinch — открыть · кулак 2 сек — к районам`;
     }
   }
 
@@ -459,7 +459,7 @@ export class Gallery {
     }
 
     if (this.hintEl) {
-      this.hintEl.textContent = 'Выбери район · свайп ←→↑↓ · pinch — приблизить · кулак — на старт';
+      this.hintEl.textContent = 'Выбери район · свайп ←→↑↓ · pinch — приблизить · кулак 3 сек — на старт';
     }
     return true;
   }
@@ -474,56 +474,35 @@ export class Gallery {
   }
 
   _findNeighbor(fromIdx, dirX, dirY) {
-    const from = this._screenPoint(fromIdx);
+    // И районы, и места — шаг по оси + цикл (не застреваем на краю)
+    return this._findNeighborByAxis(fromIdx, dirX, dirY);
+  }
 
-    let ux = 0;
-    let uy = 0;
-    if (Math.abs(dirX) >= Math.abs(dirY)) {
-      ux = dirX > 0 ? 1 : dirX < 0 ? -1 : 0;
-    } else {
-      uy = dirY > 0 ? 1 : dirY < 0 ? -1 : 0;
-    }
-    if (ux === 0 && uy === 0) return -1;
+  /** Следующая точка по горизонтали/вертикали экрана, с циклом. */
+  _findNeighborByAxis(fromIdx, dirX, dirY) {
+    const horizontal = Math.abs(dirX) >= Math.abs(dirY);
+    const step = horizontal
+      ? (dirX > 0 ? 1 : dirX < 0 ? -1 : 0)
+      : (dirY > 0 ? 1 : dirY < 0 ? -1 : 0);
+    if (!step) return -1;
 
-    let best = -1;
-    let bestScore = Infinity;
-
-    this.places.forEach((_, idx) => {
-      if (idx === fromIdx) return;
+    const rows = this.places.map((_, idx) => {
       const pt = this._screenPoint(idx);
-      const vx = pt.x - from.x;
-      const vy = pt.y - from.y;
-      const len = Math.hypot(vx, vy);
-      if (len < 8) return;
-
-      const along = vx * ux + vy * uy;
-      if (along < 12) return;
-
-      const cross = Math.abs(vx * uy - vy * ux);
-      const score = along + cross * 1.8;
-      if (score < bestScore) {
-        bestScore = score;
-        best = idx;
-      }
+      return { idx, x: pt.x, y: pt.y };
     });
 
-    if (best < 0) {
-      this.places.forEach((_, idx) => {
-        if (idx === fromIdx) return;
-        const pt = this._screenPoint(idx);
-        const vx = pt.x - from.x;
-        const vy = pt.y - from.y;
-        const along = vx * ux + vy * uy;
-        if (along < 8) return;
-        const len = Math.hypot(vx, vy);
-        if (len < bestScore) {
-          bestScore = len;
-          best = idx;
-        }
-      });
+    if (rows.length < 2) return -1;
+
+    if (horizontal) {
+      rows.sort((a, b) => a.x - b.x || a.y - b.y);
+    } else {
+      rows.sort((a, b) => a.y - b.y || a.x - b.x);
     }
 
-    return best;
+    const pos = rows.findIndex((r) => r.idx === fromIdx);
+    if (pos < 0) return -1;
+    const next = (pos + step + rows.length) % rows.length;
+    return rows[next].idx;
   }
 
   _applyFocus(pan = true) {
@@ -542,14 +521,26 @@ export class Gallery {
     const place = this.places[this.focusIndex];
     if (this.hintEl && place) {
       if (this.mode === 'districts') {
-        this.hintEl.textContent = `Район: ${place.title}. Свайп ←→↑↓ · pinch — приблизить · кулак — на старт`;
+        this.hintEl.textContent = `Район: ${place.title}. Свайп ←→↑↓ · pinch — приблизить · кулак 3 сек — на старт`;
       } else {
-        this.hintEl.textContent = `Место: ${place.title}. Свайп ←→↑↓ · pinch — открыть · кулак — к районам`;
+        this.hintEl.textContent = `Место: ${place.title}. Свайп ←→↑↓ · pinch — открыть · кулак 2 сек — к районам`;
       }
     }
 
     if (pan && this.map && place) {
-      this.map.panTo([place.lat, place.lng], { animate: true, duration: 0.4 });
+      if (this.mode === 'districts') {
+        // Не дёргаем камеру на каждый свайп — только лёгкий pan, если точка у края
+        const pt = this.map.latLngToContainerPoint([place.lat, place.lng]);
+        const size = this.map.getSize();
+        const margin = 90;
+        const nearEdge =
+          pt.x < margin || pt.y < margin || pt.x > size.x - margin || pt.y > size.y - margin;
+        if (nearEdge) {
+          this.map.panTo([place.lat, place.lng], { animate: true, duration: 0.35 });
+        }
+      } else {
+        this.map.panTo([place.lat, place.lng], { animate: true, duration: 0.4 });
+      }
     }
 
     this._updateDistrictPolygonFocus();

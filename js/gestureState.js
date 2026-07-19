@@ -15,14 +15,14 @@ const LM = {
 // Pinch
 const PINCH_THRESHOLD = 0.42;
 const PINCH_RELEASE = 0.55;
-const PINCH_HOLD_MS = 700; // чуть дольше — видно кольцо на точке
+const PINCH_HOLD_MS = 450; // быстрее для демо ≤30 сек
 const PINCH_COOLDOWN_MS = 700;
 
 // Кулак: 2с. Детекция по числу согнутых пальцев (стабильнее, чем один порог).
 const FIST_CURL_ENTER = 0.55; // tip→ладонь / handSize — палец «согнут»
 const FIST_CURL_EXIT = 0.70;  // чтобы выйти из кулака, пальцы должны разогнуться сильнее
 const FIST_MIN_CURLED = 3;    // минимум 3 пальца из 4 (без большого)
-const FIST_HOLD_MS = 2000;
+const FIST_HOLD_MS = 1000;
 const FIST_COOLDOWN_MS = 800;
 const FIST_LOST_GRACE_MS = 450;
 

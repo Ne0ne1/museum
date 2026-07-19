@@ -1,6 +1,6 @@
-import { Gallery } from '../gallery.js?v=8';
+import { Gallery } from '../gallery.js?v=10';
 import { saveSelectedPlace } from '../storage.js';
-import { createPortalStory } from '../portalStory.js?v=6';
+import { createPortalStory } from '../portalStory.js?v=8';
 
 const statusEl = document.getElementById('camera-status');
 const hintEl = document.getElementById('map-focus-hint');
@@ -79,7 +79,7 @@ async function boot() {
   }
 
   try {
-    const { startHandUI } = await import('../handUI.js?v=10');
+    const { startHandUI } = await import('../handUI.js?v=11');
     setStatus('Карта готова. Камера…');
     startHandUI(
       (type, payload) => {

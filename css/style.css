@@ -49,10 +49,76 @@ html, body {
   background: radial-gradient(circle at 50% 30%, #1a2740 0%, var(--bg-dark) 70%);
 }
 
+.intro-content {
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.intro-eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
 .intro-content h1 {
-  font-size: 56px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-size: clamp(40px, 7vw, 64px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-family: Manrope, "Segoe UI", system-ui, sans-serif;
+}
+
+.demo-script {
+  margin: 28px auto 8px;
+  max-width: 640px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(61, 220, 151, 0.35);
+  background: rgba(61, 220, 151, 0.08);
+  color: var(--text-main);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.gesture-hints-compact {
+  grid-template-columns: repeat(3, 1fr);
+  margin: 28px 0 36px;
+}
+
+.jury-pitch {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  text-align: left;
+}
+
+.jury-pitch > div {
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: rgba(18, 26, 43, 0.85);
+  border: 1px solid var(--border);
+}
+
+.jury-pitch h3 {
+  font-size: 15px;
+  margin-bottom: 8px;
+  color: var(--accent-2);
+}
+
+.jury-pitch p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+@media (max-width: 800px) {
+  .gesture-hints-compact,
+  .jury-pitch {
+    grid-template-columns: 1fr;
+  }
 }
 
 .subtitle {
@@ -311,6 +377,17 @@ html, body {
   gap: 8px;
 }
 
+.sidebar-demo-tip {
+  margin-top: 14px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-dim);
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px dashed rgba(61, 220, 151, 0.35);
+  background: rgba(61, 220, 151, 0.06);
+}
+
 .place-list-item {
   position: relative;
   display: flex;
@@ -377,9 +454,15 @@ html, body {
   font-weight: 600;
 }
 
-.place-list-region {
+.sidebar-demo-tip {
+  margin-top: 14px;
   font-size: 12px;
+  line-height: 1.4;
   color: var(--text-dim);
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px dashed rgba(61, 220, 151, 0.35);
+  background: rgba(61, 220, 151, 0.06);
 }
 
 /* Leaflet-маркеры */
@@ -409,6 +492,11 @@ html, body {
 
 .leaflet-control-attribution a {
   color: var(--text-dim) !important;
+}
+
+/* Скрыть флаг в атрибуции Leaflet */
+.leaflet-attribution-flag {
+  display: none !important;
 }
 
 .map-tiles-dim {

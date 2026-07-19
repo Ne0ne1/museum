@@ -3,38 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Портал времени ЧР</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Портал времени · Музей новых технологий</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=12" />
 </head>
 <body>
   <div id="app">
     <section class="screen active intro-screen">
       <div class="intro-content">
-        <h1>Портал времени ЧР</h1>
-        <p class="subtitle">Музей новых технологий · история мест Чеченской Республики</p>
-        <div class="gesture-hints">
-          <div class="hint">
-            <span class="hint-icon">🖐️</span>
-            <span>Короткий свайп открытой ладонью ←→↑↓ — соседняя точка</span>
-          </div>
+        <p class="intro-eyebrow">Музей новых технологий · стенд истории ЧР / ЧГУ</p>
+        <h1>Портал времени</h1>
+        <p class="subtitle">Выбери место на карте — и рукой пройди по его прошлому и настоящему</p>
+
+        <div class="demo-script">
+          <strong>Демо за 30 секунд:</strong>
+          Грозный → pinch открыть → свайп ладонью по годам → кулак назад
+        </div>
+
+        <div class="gesture-hints gesture-hints-compact">
           <div class="hint">
             <span class="hint-icon">🤏</span>
-            <span>Сведи пальцы на миг — открыть</span>
+            <span><b>Pinch</b> — открыть район или место</span>
           </div>
           <div class="hint">
-            <span class="hint-icon">☝️</span>
-            <span>Задержи палец на событии — подробности</span>
+            <span class="hint-icon">🖐️</span>
+            <span><b>Свайп ладонью</b> — соседняя точка / другой год</span>
           </div>
           <div class="hint">
             <span class="hint-icon">✊</span>
-            <span>Сожми кулак на миг — назад</span>
-          </div>
-          <div class="hint">
-            <span class="hint-icon">🙌</span>
-            <span>Две руки: разведи — приблизь карту, сведи — отдали</span>
+            <span><b>Кулак 1 сек</b> — шаг назад</span>
           </div>
         </div>
+
         <a href="map.html" class="btn-primary" id="start-btn">Начать</a>
+
+        <div class="jury-pitch">
+          <div>
+            <h3>Как в зале музея</h3>
+            <p>Большой экран + веб-камера. Без очереди на шлем: несколько посетителей смотрят вместе, один управляет рукой.</p>
+          </div>
+          <div>
+            <h3>Почему внедряемо</h3>
+            <p>Обычный ПК, Chrome, локальные фото и карта. Контент — JSON. Масштаб: новые места без переписывания кода.</p>
+          </div>
+        </div>
       </div>
     </section>
   </div>

@@ -1,7 +1,7 @@
 // Общий запуск трекинга руки на любой странице.
 
 import { HandTracker } from './handTracker.js?v=4';
-import { GestureController } from './gestureState.js?v=10';
+import { GestureController } from './gestureState.js?v=11';
 export { saveSelectedPlace, loadSelectedPlace } from './storage.js';
 
 /**

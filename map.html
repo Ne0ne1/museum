@@ -9,16 +9,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
-  <link rel="stylesheet" href="css/style.css?v=10" />
-  <link rel="stylesheet" href="css/portal.css?v=5" />
+  <link rel="stylesheet" href="css/style.css?v=12" />
+  <link rel="stylesheet" href="css/portal.css?v=7" />
 </head>
 <body>
   <div id="app">
     <section class="screen active map-screen">
       <header class="mode-header">
         <div>
-          <h2>Карта Чеченской Республики</h2>
-          <p class="mode-hint" id="map-focus-hint">Сначала район · pinch — приблизить · потом место · кулак — назад</p>
+          <h2>Портал времени · карта ЧР</h2>
+          <p class="mode-hint" id="map-focus-hint">Район → место → годы · pinch открыть · свайп ←→ · кулак 1 сек — назад</p>
         </div>
         <a href="index.html" class="mode-switch-btn">← На старт</a>
       </header>
@@ -28,19 +28,47 @@
         <aside class="place-sidebar">
           <h3 id="place-list-title">Районы</h3>
           <div id="place-list" class="place-list"></div>
+          <p class="sidebar-demo-tip">Демо: Грозный → Центр Грозного → свайп по годам</p>
         </aside>
       </div>
     </section>
 
-    <!-- Lucy-style portal: full-bleed photo + year rail (NOT cards) -->
     <div class="portal" id="place-portal" aria-label="Портал времени места">
       <div class="hero is-front" data-hero="a"></div>
       <div class="hero is-back" data-hero="b"></div>
       <div class="veil"></div>
+
+      <div class="compare" data-compare hidden>
+        <div class="compare-left" data-compare-left></div>
+        <div class="compare-right" data-compare-right></div>
+        <div class="compare-handle" data-compare-handle></div>
+        <div class="compare-labels">
+          <span data-compare-year-a></span>
+          <span data-compare-year-b></span>
+        </div>
+      </div>
+
       <div class="status" data-status>Загрузка…</div>
       <header class="top">
-        <button type="button" class="back-link" data-back>← К карте · кулак 2 сек</button>
+        <div class="place-caption">
+          <div class="place-name" data-place-name></div>
+          <div class="event-title" data-event-title></div>
+          <p class="event-teaser" data-event-teaser></p>
+        </div>
+        <div class="top-actions">
+          <button type="button" class="back-link" data-compare-btn>Сравнить эпохи</button>
+          <button type="button" class="back-link" data-back>← К карте · кулак 1 сек</button>
+        </div>
       </header>
+
+      <aside class="story-sheet" data-story-sheet aria-hidden="true">
+        <div class="story-sheet-handle"></div>
+        <div class="story-sheet-year" data-sheet-year></div>
+        <h3 class="story-sheet-title" data-sheet-title></h3>
+        <p class="story-sheet-text" data-sheet-text></p>
+        <p class="story-sheet-hint">Свайп ладонью вниз — свернуть</p>
+      </aside>
+
       <button type="button" class="nav prev" data-prev aria-label="Предыдущий год">‹</button>
       <button type="button" class="nav next" data-next aria-label="Следующий год">›</button>
       <footer class="rail">
@@ -48,7 +76,7 @@
           <div class="rail-line"></div>
           <div class="rail-years" data-rail></div>
         </div>
-        <p class="hint">Взмах ладонью ←→ · держи кулак 2 сек — назад</p>
+        <p class="hint">←→ годы · ↑ текст эпохи · «Сравнить» — шов времени · кулак — назад</p>
       </footer>
     </div>
 
@@ -66,6 +94,6 @@
     });
   </script>
   <script src="vendor/leaflet/leaflet.js"></script>
-  <script type="module" src="js/pages/map.js?v=8"></script>
+  <script type="module" src="js/pages/map.js?v=11"></script>
 </body>
 </html>

@@ -2,12 +2,13 @@
 from __future__ import annotations
 
 import math
+import ssl
 import time
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-ROOT = Path(r"C:\Users\liquid\museum")
+ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "vendor" / "tiles" / "satellite"
 
 # Chechnya bbox (pad a bit for map edges)
@@ -19,6 +20,12 @@ Z_MIN, Z_MAX = 8, 13
 URL = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
 
 UA = "museum-stand/1.0 (offline demo tiles; local museum exhibit)"
+
+try:
+    import certifi
+    SSL_CTX = ssl.create_default_context(cafile=certifi.where())
+except Exception:
+    SSL_CTX = ssl._create_unverified_context()
 
 
 def deg2num(lat_deg, lon_deg, zoom):
@@ -43,7 +50,7 @@ def download_one(z, x, y):
     url = URL.format(z=z, y=y, x=x)
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
+        with urllib.request.urlopen(req, timeout=30, context=SSL_CTX) as resp:
             data = resp.read()
         if len(data) < 200:
             return "empty", dest
@@ -60,11 +67,12 @@ def main():
         for x in xs:
             for y in ys:
                 jobs.append((z, x, y))
-    print(f"Tiles to fetch: {len(jobs)} (z{Z_MIN}-{Z_MAX})")
+    print(f"Tiles to fetch: {len(jobs)} (z{Z_MIN}-{Z_MAX})", flush=True)
     OUT.mkdir(parents=True, exist_ok=True)
 
     done = skip = err = 0
     t0 = time.time()
+    first_err = None
     with ThreadPoolExecutor(max_workers=8) as ex:
         futs = {ex.submit(download_one, z, x, y): (z, x, y) for z, x, y in jobs}
         for i, fut in enumerate(as_completed(futs), 1):
@@ -75,17 +83,19 @@ def main():
                 skip += 1
             else:
                 err += 1
+                if first_err is None:
+                    first_err = status
+                    print(f"First error: {status}", flush=True)
             if i % 50 == 0 or i == len(jobs):
                 elapsed = time.time() - t0
-                print(f"  {i}/{len(jobs)} ok={done} skip={skip} err={err} ({elapsed:.0f}s)")
+                print(f"  {i}/{len(jobs)} ok={done} skip={skip} err={err} ({elapsed:.0f}s)", flush=True)
 
-    # marker file for app
     (OUT / "READY.txt").write_text(
         f"Esri World Imagery z{Z_MIN}-{Z_MAX}\nbbox={LAT_MIN},{LON_MIN},{LAT_MAX},{LON_MAX}\n",
         encoding="utf-8",
     )
     size_mb = sum(p.stat().st_size for p in OUT.rglob("*.jpg")) / (1024 * 1024)
-    print(f"Done. Local tiles ~{size_mb:.1f} MB in {OUT}")
+    print(f"Done. Local tiles ~{size_mb:.1f} MB in {OUT}", flush=True)
 
 
 if __name__ == "__main__":

@@ -62,7 +62,7 @@ export class Gallery {
       placeCount: this.allPlaces.filter((p) => p.districtId === d.id).length,
     }));
 
-    this.focusIndex = 0;
+    this.focusIndex = Math.max(0, this.districts.findIndex((d) => d.id === 'grozny'));
     this.mode = 'districts';
     this.activeDistrict = null;
     this.places = this.districts.map((d) => this._districtAsPoint(d));
@@ -105,6 +105,11 @@ export class Gallery {
       maxZoom: 13,
     });
 
+    // Убрать флаг Leaflet из атрибуции
+    if (this.map.attributionControl) {
+      this.map.attributionControl.setPrefix('');
+    }
+
     const allLatLngs = [
       ...this.districts.map((d) => [d.lat, d.lng]),
       ...this.allPlaces.map((p) => [p.lat, p.lng]),
@@ -117,12 +122,12 @@ export class Gallery {
     this.republicBounds = L.latLngBounds(allLatLngs).pad(0.08);
     this.initialBounds = this.republicBounds;
 
-    // Только локальные спутниковые тайлы (без сети — иначе лаги на стенде)
-    L.tileLayer('vendor/tiles/satellite/{z}/{x}/{y}.jpg', {
+    // Спутник: локальный кэш, иначе онлайн Esri (пока качается архив)
+    this.baseLayer = L.tileLayer('vendor/tiles/satellite/{z}/{x}/{y}.jpg', {
       minZoom: 8,
       maxZoom: 13,
       maxNativeZoom: 13,
-      attribution: 'Esri World Imagery (локальный кэш)',
+      attribution: 'Esri World Imagery',
       errorTileUrl:
         'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
       keepBuffer: 4,
@@ -168,11 +173,22 @@ export class Gallery {
       const sample = await fetch('vendor/tiles/satellite/10/639/372.jpg', { method: 'HEAD' });
       if (!sample.ok) throw new Error('нет тайлов');
     } catch (err) {
-      console.error('[map] local tiles missing', err);
+      console.warn('[map] local tiles missing — online Esri fallback', err);
+      if (this.baseLayer && this.map) {
+        try { this.map.removeLayer(this.baseLayer); } catch (_) {}
+      }
+      this.baseLayer = L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        {
+          minZoom: 8,
+          maxZoom: 13,
+          attribution: 'Esri World Imagery',
+          maxNativeZoom: 19,
+        }
+      ).addTo(this.map);
       const status = document.getElementById('camera-status');
       if (status) {
-        status.textContent =
-          'Нет локальных тайлов! Запусти: python scripts/download_satellite_tiles.py';
+        status.textContent = 'Спутник онлайн (локальные тайлы качаются…)';
       }
     }
   }
@@ -388,7 +404,14 @@ export class Gallery {
     this.mode = 'places';
     this.activeDistrict = d;
     this.places = places.map((p) => ({ ...p, _kind: 'place' }));
-    this.focusIndex = 0;
+    // Демо-путь: Центр Грозного / ЧГУ первыми в фокусе
+    const prefer = ['grozny-center', 'chsu-campus', 'national-museum'];
+    let focus = 0;
+    for (const id of prefer) {
+      const idx = this.places.findIndex((p) => p.id === id);
+      if (idx >= 0) { focus = idx; break; }
+    }
+    this.focusIndex = focus;
 
     this._renderMarkers();
     this._renderList();

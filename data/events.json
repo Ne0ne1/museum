@@ -4,566 +4,719 @@
     "year": "1950-е",
     "title": "Площадь формируется",
     "description": "Грунтовая площадь и административное здание Ачхой-Мартана.",
-    "image": "assets/photos/achkhoy-martan/1950s.jpg"
+    "image": "assets/photos/achkhoy-martan/1950s.jpg",
+    "detail": "Грунтовая площадь и административное здание Ачхой-Мартана."
   },
   {
     "placeId": "achkhoy-martan",
     "year": "1960-е",
     "title": "Озеленение",
     "description": "Появляются деревья, дорожки и упорядоченное пространство площади.",
-    "image": "assets/photos/achkhoy-martan/1960s.jpg"
+    "image": "assets/photos/achkhoy-martan/1960s.jpg",
+    "detail": "Появляются деревья, дорожки и упорядоченное пространство площади."
   },
   {
     "placeId": "achkhoy-martan",
     "year": "1970-е",
     "title": "Благоустройство",
     "description": "Площадь Ленина становится более зелёной и обустроенной.",
-    "image": "assets/photos/achkhoy-martan/1970s.jpg"
+    "image": "assets/photos/achkhoy-martan/1970s.jpg",
+    "detail": "Площадь Ленина становится более зелёной и обустроенной."
   },
   {
     "placeId": "achkhoy-martan",
     "year": "1980-е",
     "title": "Городская жизнь",
     "description": "Цветные кадры: дорога, фонари, повседневное движение.",
-    "image": "assets/photos/achkhoy-martan/1980s.jpg"
+    "image": "assets/photos/achkhoy-martan/1980s.jpg",
+    "detail": "Цветные кадры: дорога, фонари, повседневное движение."
   },
   {
     "placeId": "achkhoy-martan",
     "year": "1990-е",
     "title": "Конец века",
     "description": "Площадь на рубеже тысячелетий.",
-    "image": "assets/photos/achkhoy-martan/1990s.jpg"
+    "image": "assets/photos/achkhoy-martan/1990s.jpg",
+    "detail": "Площадь на рубеже тысячелетий."
   },
   {
     "placeId": "achkhoy-martan",
     "year": "2000-е",
     "title": "Новый облик",
     "description": "Круговой цветник, асфальт и обновлённый центр.",
-    "image": "assets/photos/achkhoy-martan/2000s.jpg"
+    "image": "assets/photos/achkhoy-martan/2000s.jpg",
+    "detail": "Круговой цветник, асфальт и обновлённый центр."
   },
   {
     "placeId": "argun",
     "year": "1990-е",
     "title": "Аргун в 1990-е",
     "description": "Город в годы конфликта.",
-    "image": "assets/photos/argun/1990s.jpg"
+    "image": "assets/photos/argun/1990s.jpg",
+    "detail": "Город в годы конфликта."
   },
   {
     "placeId": "argun",
     "year": "2004",
     "title": "Аргун, 2004",
     "description": "Аргун в середине 2000-х.",
-    "image": "assets/photos/argun/2004.jpg"
+    "image": "assets/photos/argun/2004.jpg",
+    "detail": "Аргун в середине 2000-х."
   },
   {
     "placeId": "argun",
     "year": "2020",
     "title": "Аргун сегодня",
     "description": "Мечеть Аймани Кадыровой и Argun City.",
-    "image": "assets/photos/argun/2020.jpg"
+    "image": "assets/photos/argun/2020.jpg",
+    "detail": "Мечеть Аймани Кадыровой и Argun City."
   },
   {
     "placeId": "argun",
     "year": "2024",
     "title": "Аргун сегодня",
-    "description": "Заглушка: город как часть современной карты ЧР.",
-    "image": "assets/photos/argun.jpg"
-  },
-  {
-    "placeId": "chsu-campus",
-    "year": "1990-е",
-    "title": "ЧГУ в 1990-е",
-    "description": "Здание университета после боёв, начало восстановления.",
-    "image": "assets/photos/chsu-campus/1990s.jpg"
-  },
-  {
-    "placeId": "chsu-campus",
-    "year": "2005",
-    "title": "ЧГУ, 2005",
-    "description": "Кампус в годы восстановления.",
-    "image": "assets/photos/chsu-campus/2005.jpg"
-  },
-  {
-    "placeId": "chsu-campus",
-    "year": "2020-е",
-    "title": "ЧГУ сегодня",
-    "description": "Современный кампус Чеченского государственного университета.",
-    "image": "assets/photos/chsu-campus/2020s.jpg"
+    "description": "Аргун сегодня — промышленный и культурный центр на карте республики.",
+    "image": "assets/photos/argun.jpg",
+    "detail": "Аргун сегодня — промышленный и культурный центр на карте республики."
   },
   {
     "placeId": "grozny-center",
     "year": "1900-е",
     "title": "Начало века",
     "description": "Центр Грозного в начале XX века: улицы, конные повозки, малоэтажная застройка.",
-    "image": "assets/photos/grozny-center/1900s.png"
+    "image": "assets/photos/grozny-center/1900s.png",
+    "detail": "Грозный начала века — торговый и административный узел Северного Кавказа. На снимке — повседневная жизнь улиц до больших перемен XX века."
   },
   {
     "placeId": "grozny-center",
     "year": "1940-е",
     "title": "Военные и послевоенные годы",
     "description": "Улицы центра в 1940-е: советская застройка, транспорт, повседневная жизнь города.",
-    "image": "assets/photos/grozny-center/1940s.png"
+    "image": "assets/photos/grozny-center/1940s.png",
+    "detail": "Военные и послевоенные годы изменили ритм города. Архитектура и транспорт того времени читаются в облике центральных улиц."
   },
   {
     "placeId": "grozny-center",
     "year": "1950-е",
     "title": "Площадь и монумент",
     "description": "Центр Грозного в 1950-е: площадь, монумент, классическая архитектура.",
-    "image": "assets/photos/grozny-center/1950s.png"
+    "image": "assets/photos/grozny-center/1950s.png",
+    "detail": "Послевоенное восстановление дало центру новые площади и монументальную застройку. Это уже узнаваемый «советский» Грозный."
   },
   {
     "placeId": "grozny-center",
     "year": "1994",
     "title": "Улица после боёв",
     "description": "БТР и жители на улице разрушенного Грозного.",
-    "image": "assets/photos/grozny-center/1994.jpg"
+    "image": "assets/photos/grozny-center/1994.jpg",
+    "detail": "Трудные годы войны оставили глубокий след в ландшафте города. Кадр фиксирует улицу, где рядом оказались разрушения и продолжающаяся жизнь."
   },
   {
     "placeId": "grozny-center",
     "year": "1995",
     "title": "Руины центра",
     "description": "Разрушенный центр Грозного зимой 1994–1995 годов.",
-    "image": "assets/photos/grozny-center/1995.jpg"
+    "image": "assets/photos/grozny-center/1995.jpg",
+    "detail": "Зима 1994–1995 годов стала одной из самых тяжёлых страниц истории Грозного. Руины центра — документ эпохи, который музей показывает бережно и без пафоса."
   },
   {
     "placeId": "grozny-center",
     "year": "1996",
     "title": "Рынок среди руин",
     "description": "Уличная жизнь и рынок на фоне разрушенных кварталов.",
-    "image": "assets/photos/grozny-center/1996.jpg"
+    "image": "assets/photos/grozny-center/1996.jpg",
+    "detail": "Даже среди разрушений город не замирал полностью: появлялись рынки и точки обмена. Так выглядела повседневность выживания."
   },
   {
     "placeId": "grozny-center",
     "year": "1999",
     "title": "БТР у завода",
     "description": "Военная техника и стихийный рынок у разрушенных цехов.",
-    "image": "assets/photos/grozny-center/1999.jpg"
+    "image": "assets/photos/grozny-center/1999.jpg",
+    "detail": "Конец 1990-х — продолжение испытания для столицы. Военная техника и стихийная торговля соседствуют на одном кадре."
   },
   {
     "placeId": "grozny-center",
     "year": "2006",
     "title": "Улица возрождается",
     "description": "Руины рядом с новым домом — повседневная реконструкция города.",
-    "image": "assets/photos/grozny-center/2006.jpg"
+    "image": "assets/photos/grozny-center/2006.jpg",
+    "detail": "Начало активного восстановления: рядом с руинами уже появляются новые дома. Кадр показывает город «на стыке» прошлого и будущего."
   },
   {
     "placeId": "grozny-center",
     "year": "2010",
     "title": "Возрождение",
     "description": "Центр города в 2010 году: новые доминанты, проспекты, обновлённый облик.",
-    "image": "assets/photos/grozny-center/2010.png"
+    "image": "assets/photos/grozny-center/2010.png",
+    "detail": "К 2010 году центр обретает новый силуэт — проспекты, доминанты, обновлённая инфраструктура. Возрождение становится видимым."
   },
   {
     "placeId": "grozny-center",
     "year": "2025",
     "title": "Сегодня",
     "description": "Современный центр Грозного: мечеть «Сердце Чечни», Грозный-Сити, парки.",
-    "image": "assets/photos/grozny-center/2025.png"
+    "image": "assets/photos/grozny-center/2025.png",
+    "detail": "Сегодняшний центр — парки, мечеть «Сердце Чечни», деловые башни. Это образ столицы, который гости музея узнают сразу."
   },
   {
     "placeId": "grozny-city",
     "year": "1990-е",
     "title": "Центр Грозного, 1990-е",
     "description": "Разрушенный центр — место будущего Грозный-Сити.",
-    "image": "assets/photos/grozny-city/1990s.jpg"
+    "image": "assets/photos/grozny-city/1990s.jpg",
+    "detail": "Разрушенный центр — место будущего Грозный-Сити."
   },
   {
     "placeId": "grozny-city",
     "year": "2006",
     "title": "Стройка Грозный-Сити",
     "description": "Реконструкция делового центра.",
-    "image": "assets/photos/grozny-city/2006.jpg"
+    "image": "assets/photos/grozny-city/2006.jpg",
+    "detail": "Реконструкция делового центра."
   },
   {
     "placeId": "grozny-city",
     "year": "2020",
     "title": "Грозный-Сити",
     "description": "Высотный комплекс на берегу Сунжи.",
-    "image": "assets/photos/grozny-city/2020.jpg"
+    "image": "assets/photos/grozny-city/2020.jpg",
+    "detail": "Высотный комплекс на берегу Сунжи."
   },
   {
     "placeId": "grozny-city",
     "year": "2024",
     "title": "Облик столицы",
-    "description": "Заглушка: Грозный-Сити в панораме современного города.",
-    "image": "assets/photos/grozny-city.jpg"
+    "description": "Башни Грозный-Сити стали новой вертикалью столицы и символом возрождения.",
+    "image": "assets/photos/grozny-city.jpg",
+    "detail": "Башни Грозный-Сити стали новой вертикалью столицы и символом возрождения."
   },
   {
     "placeId": "gudermes",
     "year": "1990-е",
     "title": "Вокзал Гудермеса, 1990-е",
     "description": "Станция во время конфликта.",
-    "image": "assets/photos/gudermes/1990s.jpg"
+    "image": "assets/photos/gudermes/1990s.jpg",
+    "detail": "Станция во время конфликта."
   },
   {
     "placeId": "gudermes",
     "year": "2006",
     "title": "Вокзал Гудермеса, 2006",
     "description": "Станция в годы восстановления.",
-    "image": "assets/photos/gudermes/2006.jpg"
+    "image": "assets/photos/gudermes/2006.jpg",
+    "detail": "Станция в годы восстановления."
   },
   {
     "placeId": "gudermes",
     "year": "2020",
     "title": "Гудермес-Сити",
     "description": "Новый вокзал и современный центр города.",
-    "image": "assets/photos/gudermes/2020.jpg"
+    "image": "assets/photos/gudermes/2020.jpg",
+    "detail": "Новый вокзал и современный центр города."
   },
   {
     "placeId": "gudermes",
     "year": "2024",
     "title": "Гудермес сегодня",
-    "description": "Заглушка: жизнь города в наши дни.",
-    "image": "assets/photos/gudermes.jpg"
+    "description": "Гудермес сегодня — транспортный узел и динамичный город республики.",
+    "image": "assets/photos/gudermes.jpg",
+    "detail": "Гудермес сегодня — транспортный узел и динамичный город республики."
   },
   {
     "placeId": "heart-of-chechnya",
     "year": "1990-е",
     "title": "Место будущей мечети, 1990-е",
     "description": "Центр Грозного в годы войны — до строительства мечети.",
-    "image": "assets/photos/heart-of-chechnya/1990s.jpg"
+    "image": "assets/photos/heart-of-chechnya/1990s.jpg",
+    "detail": "Центр Грозного в годы войны — до строительства мечети."
   },
   {
     "placeId": "heart-of-chechnya",
     "year": "2020",
     "title": "Мечеть «Сердце Чечни»",
     "description": "Главная мечеть республики.",
-    "image": "assets/photos/heart-of-chechnya/2020.jpg"
+    "image": "assets/photos/heart-of-chechnya/2020.jpg",
+    "detail": "Мечеть «Сердце Чечни» стала духовным и архитектурным символом республики. Её образ связывают с возрождением Грозного."
   },
   {
     "placeId": "heart-of-chechnya",
     "year": "2024",
     "title": "Символ республики",
-    "description": "Заглушка: мечеть как визитная карточка Чеченской Республики.",
-    "image": "assets/photos/heart-of-chechnya.jpg"
+    "description": "Мечеть «Сердце Чечни» — духовный и архитектурный символ республики.",
+    "image": "assets/photos/heart-of-chechnya.jpg",
+    "detail": "Мечеть «Сердце Чечни» — духовный и архитектурный символ республики."
   },
   {
     "placeId": "itum-kali",
     "year": "1950-е",
     "title": "Башни над Аргуном",
     "description": "Вид на Итум-Кали с противоположного берега.",
-    "image": "assets/photos/itum-kali/1950s.jpg"
+    "image": "assets/photos/itum-kali/1950s.jpg",
+    "detail": "Вид на Итум-Кали с противоположного берега."
   },
   {
     "placeId": "itum-kali",
     "year": "1960-е",
     "title": "Горное село",
     "description": "Башни и дома на склоне.",
-    "image": "assets/photos/itum-kali/1960s.jpg"
+    "image": "assets/photos/itum-kali/1960s.jpg",
+    "detail": "Башни и дома на склоне."
   },
   {
     "placeId": "itum-kali",
     "year": "1970-е",
     "title": "Силуэт башен",
     "description": "Классический вид ущелья Аргуна.",
-    "image": "assets/photos/itum-kali/1970s.jpg"
+    "image": "assets/photos/itum-kali/1970s.jpg",
+    "detail": "Классический вид ущелья Аргуна."
   },
   {
     "placeId": "itum-kali",
     "year": "1980-е",
     "title": "Конец XX века",
     "description": "Село и башни в конце советского периода.",
-    "image": "assets/photos/itum-kali/1980s.jpg"
+    "image": "assets/photos/itum-kali/1980s.jpg",
+    "detail": "Село и башни в конце советского периода."
   },
   {
     "placeId": "itum-kali",
     "year": "1990-е",
     "title": "Цвет ущелья",
     "description": "Зелёные склоны и бирюза реки.",
-    "image": "assets/photos/itum-kali/1990s.jpg"
+    "image": "assets/photos/itum-kali/1990s.jpg",
+    "detail": "Зелёные склоны и бирюза реки."
   },
   {
     "placeId": "itum-kali",
     "year": "2020-е",
     "title": "Итум-Кали сегодня",
     "description": "Мост, новая застройка и сохранённые башни.",
-    "image": "assets/photos/itum-kali/2020s.jpg"
+    "image": "assets/photos/itum-kali/2020s.jpg",
+    "detail": "Мост, новая застройка и сохранённые башни."
   },
   {
     "placeId": "kurchaloy",
     "year": "1950-е",
     "title": "Грунтовая площадь",
     "description": "Администрация Курчалоя на открытом пространстве.",
-    "image": "assets/photos/kurchaloy/1950s.jpg"
+    "image": "assets/photos/kurchaloy/1950s.jpg",
+    "detail": "Администрация Курчалоя на открытом пространстве."
   },
   {
     "placeId": "kurchaloy",
     "year": "1960-е",
     "title": "Монумент",
     "description": "Памятник на площади, растущие деревья.",
-    "image": "assets/photos/kurchaloy/1960s.jpg"
+    "image": "assets/photos/kurchaloy/1960s.jpg",
+    "detail": "Памятник на площади, растущие деревья."
   },
   {
     "placeId": "kurchaloy",
     "year": "1970-е",
     "title": "Озеленение",
     "description": "Площадь становится зеленее и обустроеннее.",
-    "image": "assets/photos/kurchaloy/1970s.jpg"
+    "image": "assets/photos/kurchaloy/1970s.jpg",
+    "detail": "Площадь становится зеленее и обустроеннее."
   },
   {
     "placeId": "kurchaloy",
     "year": "1980-е",
     "title": "Пешеходный переход",
     "description": "Городская инфраструктура и зрелый сквер.",
-    "image": "assets/photos/kurchaloy/1980s.jpg"
+    "image": "assets/photos/kurchaloy/1980s.jpg",
+    "detail": "Городская инфраструктура и зрелый сквер."
   },
   {
     "placeId": "kurchaloy",
     "year": "1990-е",
     "title": "Открытая площадь",
     "description": "Широкий асфальт и ясный вид на администрацию.",
-    "image": "assets/photos/kurchaloy/1990s.jpg"
+    "image": "assets/photos/kurchaloy/1990s.jpg",
+    "detail": "Широкий асфальт и ясный вид на администрацию."
   },
   {
     "placeId": "kurchaloy",
     "year": "2020-е",
     "title": "Современный Курчалой",
     "description": "Зелёная крыша, туи, флаги, обновлённый центр.",
-    "image": "assets/photos/kurchaloy/2020s.jpg"
-  },
-  {
-    "placeId": "lake-kezenoy",
-    "year": "2000-е",
-    "title": "Кезеной-Ам, 2000-е",
-    "description": "Озеро в начале XXI века.",
-    "image": "assets/photos/lake-kezenoy/2000s.jpg"
-  },
-  {
-    "placeId": "lake-kezenoy",
-    "year": "2020-е",
-    "title": "Курорт Кезеной-Ам",
-    "description": "Современный туристический комплекс на берегу озера.",
-    "image": "assets/photos/lake-kezenoy/2020s.jpg"
+    "image": "assets/photos/kurchaloy/2020s.jpg",
+    "detail": "Зелёная крыша, туи, флаги, обновлённый центр."
   },
   {
     "placeId": "national-museum",
     "year": "1990-е",
     "title": "Музей в 1990-е",
     "description": "Республиканский музей изобразительных искусств после боёв.",
-    "image": "assets/photos/national-museum/1990s.jpg"
+    "image": "assets/photos/national-museum/1990s.jpg",
+    "detail": "Республиканский музей изобразительных искусств после боёв."
   },
   {
     "placeId": "national-museum",
     "year": "2020",
     "title": "Национальный музей сегодня",
     "description": "Современное здание Национального музея ЧР.",
-    "image": "assets/photos/national-museum/2020.jpg"
+    "image": "assets/photos/national-museum/2020.jpg",
+    "detail": "Национальный музей хранит культуру и память народа. Цифровые форматы — часть его новой работы с посетителем."
   },
   {
     "placeId": "national-museum",
     "year": "2024",
     "title": "Музей будущего",
-    "description": "Заглушка: цифровые экспозиции и интерактивные стенды — в том числе этот проект.",
-    "image": "assets/photos/national-museum.jpg"
+    "description": "Национальный музей развивает цифровые экспозиции и новые форматы показа истории.",
+    "image": "assets/photos/national-museum.jpg",
+    "detail": "Национальный музей развивает цифровые экспозиции и новые форматы показа истории."
   },
   {
     "placeId": "novye-atagi",
     "year": "1950-е",
     "title": "Скромная мечеть",
     "description": "Небольшое здание с отдельным минаретом в Новых Атагах.",
-    "image": "assets/photos/novye-atagi/1950s.jpg"
+    "image": "assets/photos/novye-atagi/1950s.jpg",
+    "detail": "Небольшое здание с отдельным минаретом в Новых Атагах."
   },
   {
     "placeId": "novye-atagi",
     "year": "1960-е",
     "title": "Новый объём",
     "description": "Мечеть с куполом и высоким минаретом.",
-    "image": "assets/photos/novye-atagi/1960s.jpg"
+    "image": "assets/photos/novye-atagi/1960s.jpg",
+    "detail": "Мечеть с куполом и высоким минаретом."
   },
   {
     "placeId": "novye-atagi",
     "year": "1970-е",
     "title": "Улица у мечети",
     "description": "Появляется дорога, фонари, ограда.",
-    "image": "assets/photos/novye-atagi/1970s.jpg"
+    "image": "assets/photos/novye-atagi/1970s.jpg",
+    "detail": "Появляется дорога, фонари, ограда."
   },
   {
     "placeId": "novye-atagi",
     "year": "1980-е",
     "title": "Привычный силуэт",
     "description": "Устоявшийся облик мечети конца советского периода.",
-    "image": "assets/photos/novye-atagi/1980s.jpg"
+    "image": "assets/photos/novye-atagi/1980s.jpg",
+    "detail": "Устоявшийся облик мечети конца советского периода."
   },
   {
     "placeId": "novye-atagi",
     "year": "1990-е",
     "title": "Зелёные купола",
     "description": "Цветная эпоха: зелёный купол и туи у ограды.",
-    "image": "assets/photos/novye-atagi/1990s.jpg"
+    "image": "assets/photos/novye-atagi/1990s.jpg",
+    "detail": "Цветная эпоха: зелёный купол и туи у ограды."
   },
   {
     "placeId": "novye-atagi",
     "year": "2020-е",
     "title": "Величественный комплекс",
     "description": "Современная большая мечеть с несколькими куполами и минаретами.",
-    "image": "assets/photos/novye-atagi/2020s.jpg"
+    "image": "assets/photos/novye-atagi/2020s.jpg",
+    "detail": "Современная большая мечеть с несколькими куполами и минаретами."
   },
   {
     "placeId": "shali",
     "year": "1990-е",
     "title": "Шали в 1990-е",
     "description": "Город в годы конфликта.",
-    "image": "assets/photos/shali/1990s.jpg"
+    "image": "assets/photos/shali/1990s.jpg",
+    "detail": "Город в годы конфликта."
   },
   {
     "placeId": "shali",
     "year": "2020",
     "title": "Мечеть «Гордость мусульман»",
     "description": "Современный комплекс в Шали.",
-    "image": "assets/photos/shali/2020.jpg"
+    "image": "assets/photos/shali/2020.jpg",
+    "detail": "Современный комплекс в Шали."
   },
   {
     "placeId": "shali",
     "year": "2024",
     "title": "Шали сегодня",
-    "description": "Заглушка: город в карте современной Чеченской Республики.",
-    "image": "assets/photos/shali.jpg"
+    "description": "Шали сегодня — культурный и религиозный центр с обновлённым обликом.",
+    "image": "assets/photos/shali.jpg",
+    "detail": "Шали сегодня — культурный и религиозный центр с обновлённым обликом."
   },
   {
     "placeId": "shatoy",
     "year": "1950-е",
     "title": "Село у реки",
     "description": "Вид на Шатой со стороны Шатойки — башни на склоне.",
-    "image": "assets/photos/shatoy/1950s.jpg"
+    "image": "assets/photos/shatoy/1950s.jpg",
+    "detail": "Вид на Шатой со стороны Шатойки — башни на склоне."
   },
   {
     "placeId": "shatoy",
     "year": "1960-е",
     "title": "Жизнь ущелья",
     "description": "Плотнее застройка, те же башни над рекой.",
-    "image": "assets/photos/shatoy/1960s.jpg"
+    "image": "assets/photos/shatoy/1960s.jpg",
+    "detail": "Плотнее застройка, те же башни над рекой."
   },
   {
     "placeId": "shatoy",
     "year": "1970-е",
     "title": "Мост",
     "description": "Появляется мост через реку.",
-    "image": "assets/photos/shatoy/1970s.jpg"
+    "image": "assets/photos/shatoy/1970s.jpg",
+    "detail": "Появляется мост через реку."
   },
   {
     "placeId": "shatoy",
     "year": "1980-е",
     "title": "Растущее село",
     "description": "Больше домов, мост и башни в одном кадре.",
-    "image": "assets/photos/shatoy/1980s.jpg"
+    "image": "assets/photos/shatoy/1980s.jpg",
+    "detail": "Больше домов, мост и башни в одном кадре."
   },
   {
     "placeId": "shatoy",
     "year": "1990-е",
     "title": "Цвет гор",
     "description": "Цветной вид на Шатой и Шатойку.",
-    "image": "assets/photos/shatoy/1990s.jpg"
+    "image": "assets/photos/shatoy/1990s.jpg",
+    "detail": "Цветной вид на Шатой и Шатойку."
   },
   {
     "placeId": "shatoy",
     "year": "2020-е",
     "title": "Шатой сегодня",
     "description": "Обновлённый горный посёлок и мечеть на фоне хребтов.",
-    "image": "assets/photos/shatoy/2020.jpg"
+    "image": "assets/photos/shatoy/2020.jpg",
+    "detail": "Обновлённый горный посёлок и мечеть на фоне хребтов."
   },
   {
     "placeId": "shelkovskaya",
     "year": "1950-е",
     "title": "Администрация",
     "description": "Классическое здание администрации на открытой площади.",
-    "image": "assets/photos/shelkovskaya/1950s.jpg"
+    "image": "assets/photos/shelkovskaya/1950s.jpg",
+    "detail": "Классическое здание администрации на открытой площади."
   },
   {
     "placeId": "shelkovskaya",
     "year": "1960-е",
     "title": "Памятник на площади",
     "description": "Появляется монумент, площадь оживает.",
-    "image": "assets/photos/shelkovskaya/1960s.jpg"
+    "image": "assets/photos/shelkovskaya/1960s.jpg",
+    "detail": "Появляется монумент, площадь оживает."
   },
   {
     "placeId": "shelkovskaya",
     "year": "1970-е",
     "title": "Скульптура и ели",
     "description": "Зрелое озеленение и крупные монументы.",
-    "image": "assets/photos/shelkovskaya/1970s.jpg"
+    "image": "assets/photos/shelkovskaya/1970s.jpg",
+    "detail": "Зрелое озеленение и крупные монументы."
   },
   {
     "placeId": "shelkovskaya",
     "year": "1980-е",
     "title": "Сквер",
     "description": "Фонари, цветники, зрелые деревья.",
-    "image": "assets/photos/shelkovskaya/1980s.jpg"
+    "image": "assets/photos/shelkovskaya/1980s.jpg",
+    "detail": "Фонари, цветники, зрелые деревья."
   },
   {
     "placeId": "shelkovskaya",
     "year": "1990-е",
     "title": "Синяя крыша",
     "description": "Здание с цветной кровлей и ухоженными клумбами.",
-    "image": "assets/photos/shelkovskaya/1990s.jpg"
+    "image": "assets/photos/shelkovskaya/1990s.jpg",
+    "detail": "Здание с цветной кровлей и ухоженными клумбами."
   },
   {
     "placeId": "shelkovskaya",
     "year": "2020-е",
     "title": "Сегодня",
     "description": "Флаги, стела и современный облик администрации.",
-    "image": "assets/photos/shelkovskaya/2020s.jpg"
+    "image": "assets/photos/shelkovskaya/2020s.jpg",
+    "detail": "Флаги, стела и современный облик администрации."
   },
   {
     "placeId": "urus-martan",
     "year": "1950-е",
     "title": "Улица в центре",
     "description": "Центральная улица Урус-Мартана в 1950-е годы.",
-    "image": "assets/photos/urus-martan/1950s-street.jpg"
+    "image": "assets/photos/urus-martan/1950s-street.jpg",
+    "detail": "Центральная улица Урус-Мартана в 1950-е годы."
   },
   {
     "placeId": "urus-martan",
     "year": "1950-е",
     "title": "Памятник павшим",
     "description": "Памятник павшим воинам в центре города.",
-    "image": "assets/photos/urus-martan/1950s-monument.jpg"
+    "image": "assets/photos/urus-martan/1950s-monument.jpg",
+    "detail": "Памятник павшим воинам в центре города."
   },
   {
     "placeId": "urus-martan",
     "year": "1960-е",
     "title": "Дом культуры",
     "description": "Дом культуры — культурный центр Урус-Мартана.",
-    "image": "assets/photos/urus-martan/1960s-dk.jpg"
+    "image": "assets/photos/urus-martan/1960s-dk.jpg",
+    "detail": "Дом культуры — культурный центр Урус-Мартана."
   },
   {
     "placeId": "urus-martan",
     "year": "1960-е",
     "title": "Центральная улица",
     "description": "Озеленённая центральная улица 1960-х.",
-    "image": "assets/photos/urus-martan/1960s-center.jpg"
+    "image": "assets/photos/urus-martan/1960s-center.jpg",
+    "detail": "Озеленённая центральная улица 1960-х."
   },
   {
     "placeId": "urus-martan",
     "year": "1970-е",
     "title": "Жилые дома",
     "description": "Многоэтажная застройка 1970-х.",
-    "image": "assets/photos/urus-martan/1970s-houses.jpg"
+    "image": "assets/photos/urus-martan/1970s-houses.jpg",
+    "detail": "Многоэтажная застройка 1970-х."
   },
   {
     "placeId": "urus-martan",
     "year": "1980-е",
     "title": "Мост через реку",
     "description": "Мост через реку Урус-Мартан.",
-    "image": "assets/photos/urus-martan/1980s-bridge.jpg"
+    "image": "assets/photos/urus-martan/1980s-bridge.jpg",
+    "detail": "Мост через реку Урус-Мартан."
   },
   {
     "placeId": "vedeno",
     "year": "2000",
     "title": "Ведено, 2000",
     "description": "Блокпост и жизнь горного района.",
-    "image": "assets/photos/vedeno/2000.jpg"
+    "image": "assets/photos/vedeno/2000.jpg",
+    "detail": "Блокпост и жизнь горного района."
   },
   {
     "placeId": "vedeno",
     "year": "2020",
     "title": "Ведено сегодня",
     "description": "Современный облик района.",
-    "image": "assets/photos/vedeno/2020.jpg"
+    "image": "assets/photos/vedeno/2020.jpg",
+    "detail": "Современный облик района."
   },
   {
     "placeId": "vedeno",
     "year": "2024",
     "title": "Горы и память",
-    "description": "Заглушка: Ведено сегодня — природа, традиции, люди.",
-    "image": "assets/photos/vedeno.jpg"
+    "description": "Ведено сегодня — горный край традиций, природы и живой памяти.",
+    "image": "assets/photos/vedeno.jpg",
+    "detail": "Ведено сегодня — горный край традиций, природы и живой памяти."
+  },
+  {
+    "placeId": "chsu-campus",
+    "year": "1950-е",
+    "title": "Становление вуза",
+    "description": "Учебные корпуса и студенческая жизнь Чеченского государственного педагогического института — основа будущего ЧГУ.",
+    "image": "assets/photos/chsu-campus/1950s.jpg",
+    "detail": "Корни ЧГУ — в педагогическом институте и первых корпусах. Здесь начиналась современная система высшего образования республики."
+  },
+  {
+    "placeId": "chsu-campus",
+    "year": "1960-е",
+    "title": "Рост кампуса",
+    "description": "Расширение факультетов и территории: университет становится центром образования республики.",
+    "image": "assets/photos/chsu-campus/1960s.jpg",
+    "detail": "Кампус растёт вместе с республикой: новые факультеты и студенческая среда. Университет закрепляется как главный научный центр."
+  },
+  {
+    "placeId": "chsu-campus",
+    "year": "1970-е",
+    "title": "Наука и учёба",
+    "description": "Кампус 1970-х: лекции, лаборатории, повседневная жизнь студентов.",
+    "image": "assets/photos/chsu-campus/1970s.jpg",
+    "detail": "1970-е — время стабильной учёбы и науки. На фотографиях — обычная жизнь кампуса, которая и есть история вуза."
+  },
+  {
+    "placeId": "chsu-campus",
+    "year": "1980-е",
+    "title": "Перед переменами",
+    "description": "Университет накануне больших перемен конца XX века.",
+    "image": "assets/photos/chsu-campus/1980s.jpg",
+    "detail": "Перед большими переменами университет остаётся точкой притяжения молодёжи. Это последние «спокойные» кадры эпохи."
+  },
+  {
+    "placeId": "chsu-campus",
+    "year": "1990-е",
+    "title": "Испытание и стойкость",
+    "description": "Кампус в трудные годы: разрушения и начало восстановления.",
+    "image": "assets/photos/chsu-campus/1990s.jpg",
+    "detail": "Трудные годы тяжело ударили по кампусу. Но именно здесь позже начнётся восстановление образования."
+  },
+  {
+    "placeId": "chsu-campus",
+    "year": "2005",
+    "title": "Возрождение",
+    "description": "Восстановление корпусов и возвращение полноценной учёбы.",
+    "image": "assets/photos/chsu-campus/2005.jpg",
+    "detail": "Середина 2000-х — возвращение полноценной учёбы. Восстановленные корпуса снова принимают студентов."
+  },
+  {
+    "placeId": "chsu-campus",
+    "year": "2020-е",
+    "title": "ЧГУ сегодня",
+    "description": "Современный кампус Чеченского государственного университета — главный вуз республики.",
+    "image": "assets/photos/chsu-campus/2020s.jpg",
+    "detail": "Современный ЧГУ — главный вуз Чеченской Республики. Стенд музея показывает его путь от института до университета сегодняшнего дня."
+  },
+  {
+    "placeId": "lake-kezenoy",
+    "year": "1950-е",
+    "title": "Горное озеро",
+    "description": "Кезеной-Ам в середине XX века — удалённая горная жемчужина.",
+    "image": "assets/photos/lake-kezenoy/1950s.jpg",
+    "detail": "Кезеной-Ам долго оставался труднодоступной горной жемчужиной: высота, тишина и чистая вода."
+  },
+  {
+    "placeId": "lake-kezenoy",
+    "year": "1960-е",
+    "title": "Открытие для туристов",
+    "description": "Озеро становится известным маршрутом для путешественников.",
+    "image": "assets/photos/lake-kezenoy/1960s.jpg",
+    "detail": "Озеро входит в краеведческие маршруты — редкий природный памятник высокогорной Чечни."
+  },
+  {
+    "placeId": "lake-kezenoy",
+    "year": "1970-е",
+    "title": "Природа и покой",
+    "description": "Высокогорный пейзаж Кезеной-Ам привлекает любителей природы.",
+    "image": "assets/photos/lake-kezenoy/1970s.jpg",
+    "detail": "Высокогорный пейзаж привлекает любителей природы: озеро становится точкой притяжения республики."
+  },
+  {
+    "placeId": "lake-kezenoy",
+    "year": "1980-е",
+    "title": "На карте отдыха",
+    "description": "Озеро закрепляется как место силы и отдыха республики.",
+    "image": "assets/photos/lake-kezenoy/1980s.jpg",
+    "detail": "Кезеной-Ам закрепляется как место отдыха и спорта — берег узнаваем на открытках и снимках."
+  },
+  {
+    "placeId": "lake-kezenoy",
+    "year": "1990-е",
+    "title": "Тихие берега",
+    "description": "Кезеной-Ам на рубеже веков — природа важнее суеты.",
+    "image": "assets/photos/lake-kezenoy/1990s.jpg",
+    "detail": "В трудные годы доступ к высокогорью был ограничен, но образ озера сохранился в памяти людей."
+  },
+  {
+    "placeId": "lake-kezenoy",
+    "year": "2000-е",
+    "title": "Новая жизнь курорта",
+    "description": "Начало современного освоения берегов озера.",
+    "image": "assets/photos/lake-kezenoy/2000s.jpg",
+    "detail": "Берега снова оживают: появляется инфраструктура отдыха, озеро возвращается гостям."
+  },
+  {
+    "placeId": "lake-kezenoy",
+    "year": "2020-е",
+    "title": "Курорт Кезеной-Ам",
+    "description": "Современный туристический комплекс на берегу высокогорного озера.",
+    "image": "assets/photos/lake-kezenoy/2020s.jpg",
+    "detail": "Сегодня Кезеной-Ам — визитная карточка природного туризма Чечни: озеро, горы и спокойный горизонт."
   }
 ]

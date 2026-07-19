@@ -3,8 +3,8 @@
     "id": "grozny",
     "title": "Грозный",
     "subtitle": "Столица",
-    "lat": 43.316,
-    "lng": 45.694,
+    "lat": 43.36118,
+    "lng": 45.65541,
     "pad": 0.22,
     "minZoom": 12
   },
@@ -12,8 +12,8 @@
     "id": "argun",
     "title": "Аргун",
     "subtitle": "Город",
-    "lat": 43.2931,
-    "lng": 45.877,
+    "lat": 43.27169,
+    "lng": 45.84862,
     "pad": 0.35,
     "minZoom": 12
   },
@@ -21,8 +21,8 @@
     "id": "gudermes",
     "title": "Гудермес",
     "subtitle": "Город",
-    "lat": 43.352,
-    "lng": 46.1032,
+    "lat": 43.3185,
+    "lng": 46.15332,
     "pad": 0.35,
     "minZoom": 12
   },
@@ -30,8 +30,8 @@
     "id": "vedeno",
     "title": "Веденский район",
     "subtitle": "Район",
-    "lat": 42.87,
-    "lng": 46.12,
+    "lat": 42.90443,
+    "lng": 46.11316,
     "pad": 0.28,
     "minZoom": 10
   },
@@ -39,9 +39,63 @@
     "id": "shali",
     "title": "Шалинский район",
     "subtitle": "Район",
-    "lat": 43.1489,
-    "lng": 45.9012,
+    "lat": 43.15126,
+    "lng": 45.94569,
     "pad": 0.35,
+    "minZoom": 11
+  },
+  {
+    "id": "achkhoy-martan",
+    "title": "Ачхой-Мартан",
+    "subtitle": "Район",
+    "lat": 43.13313,
+    "lng": 45.30485,
+    "pad": 0.32,
+    "minZoom": 11
+  },
+  {
+    "id": "urus-martan",
+    "title": "Урус-Мартан",
+    "subtitle": "Район",
+    "lat": 43.04803,
+    "lng": 45.46315,
+    "pad": 0.32,
+    "minZoom": 11
+  },
+  {
+    "id": "kurchaloy",
+    "title": "Курчалой",
+    "subtitle": "Район",
+    "lat": 43.1761,
+    "lng": 46.13274,
+    "pad": 0.32,
+    "minZoom": 11
+  },
+  {
+    "id": "shelkovskoy",
+    "title": "Шелковской район",
+    "subtitle": "Район",
+    "lat": 43.81753,
+    "lng": 46.37973,
+    "pad": 0.35,
+    "minZoom": 10
+  },
+  {
+    "id": "shatoy",
+    "title": "Шатой",
+    "subtitle": "Район",
+    "lat": 42.85897,
+    "lng": 45.7889,
+    "pad": 0.3,
+    "minZoom": 11
+  },
+  {
+    "id": "itum-kali",
+    "title": "Итум-Кали",
+    "subtitle": "Район",
+    "lat": 42.70445,
+    "lng": 45.40215,
+    "pad": 0.3,
     "minZoom": 11
   }
 ]

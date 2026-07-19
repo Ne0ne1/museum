@@ -15,7 +15,7 @@ const LM = {
 // Pinch
 const PINCH_THRESHOLD = 0.42;
 const PINCH_RELEASE = 0.55;
-const PINCH_HOLD_MS = 200;
+const PINCH_HOLD_MS = 700; // чуть дольше — видно кольцо на точке
 const PINCH_COOLDOWN_MS = 700;
 
 // Кулак: 2с. Детекция по числу согнутых пальцев (стабильнее, чем один порог).

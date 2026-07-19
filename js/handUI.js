@@ -1,16 +1,17 @@
 // Общий запуск трекинга руки на любой странице.
 
 import { HandTracker } from './handTracker.js?v=4';
-import { GestureController } from './gestureState.js?v=9';
+import { GestureController } from './gestureState.js?v=10';
 export { saveSelectedPlace, loadSelectedPlace } from './storage.js';
 
 /**
  * @param {(type: string, payload: any) => void} onEvent
- * @param {{ freeCursor?: boolean, dwellEnabled?: boolean }} [options]
+ * @param {{ freeCursor?: boolean, dwellEnabled?: boolean, hideCursor?: boolean }} [options]
  */
 export function startHandUI(onEvent, options = {}) {
   const freeCursor = options.freeCursor !== false;
   const dwellEnabled = options.dwellEnabled !== false;
+  const hideCursor = options.hideCursor === true;
 
   const cursorEl = document.getElementById('hand-cursor');
   const statusEl = document.getElementById('camera-status');
@@ -24,8 +25,12 @@ export function startHandUI(onEvent, options = {}) {
 
   if (statusEl) statusEl.textContent = 'Подключение трекера…';
 
+  if (hideCursor && cursorEl) {
+    cursorEl.classList.add('hidden');
+  }
+
   function setHoldProgress(progress, mode) {
-    if (!cursorEl) return;
+    if (hideCursor || !cursorEl) return;
     const p = Math.max(0, Math.min(1, progress || 0));
     cursorEl.style.setProperty('--hold-progress', String(p));
     cursorEl.classList.toggle('holding', p > 0.02);
@@ -37,7 +42,7 @@ export function startHandUI(onEvent, options = {}) {
   }
 
   const gestureController = new GestureController((type, payload) => {
-    if (cursorEl) {
+    if (cursorEl && !hideCursor) {
       if (type === 'cursor') {
         cursorEl.classList.remove('hidden');
         if (freeCursor) cursorEl.classList.remove('snapped');
@@ -65,6 +70,8 @@ export function startHandUI(onEvent, options = {}) {
         setHoldProgress(0);
         cursorEl.classList.remove('pinching');
       }
+    } else if (hideCursor && cursorEl) {
+      cursorEl.classList.add('hidden');
     }
 
     onEvent(type, payload);

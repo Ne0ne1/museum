@@ -101,27 +101,36 @@ export class Gallery {
       zoomControl: true,
       attributionControl: true,
       zoomSnap: 0.5,
+      minZoom: 8,
+      maxZoom: 13,
     });
 
     const allLatLngs = [
       ...this.districts.map((d) => [d.lat, d.lng]),
       ...this.allPlaces.map((p) => [p.lat, p.lng]),
     ];
-    // Расширяем обзор по полигонам районов, если есть
     if (this.districtsGeo?.features) {
       this.districtsGeo.features.forEach((f) => {
-        const ring = f.geometry?.coordinates?.[0] || [];
-        ring.forEach(([lng, lat]) => allLatLngs.push([lat, lng]));
+        this._collectLatLngs(f.geometry, allLatLngs);
       });
     }
-    this.republicBounds = L.latLngBounds(allLatLngs).pad(0.12);
+    this.republicBounds = L.latLngBounds(allLatLngs).pad(0.08);
     this.initialBounds = this.republicBounds;
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap',
-      className: 'map-tiles-dim',
+    // Только локальные спутниковые тайлы (без сети — иначе лаги на стенде)
+    L.tileLayer('vendor/tiles/satellite/{z}/{x}/{y}.jpg', {
+      minZoom: 8,
+      maxZoom: 13,
+      maxNativeZoom: 13,
+      attribution: 'Esri World Imagery (локальный кэш)',
+      errorTileUrl:
+        'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+      keepBuffer: 4,
+      updateWhenIdle: true,
+      updateWhenZooming: false,
     }).addTo(this.map);
+
+    this._assertLocalTiles();
 
     this.map.fitBounds(this.republicBounds);
     this.map.on('zoomend moveend', () => {
@@ -140,6 +149,34 @@ export class Gallery {
     });
   }
 
+  _collectLatLngs(geometry, out) {
+    if (!geometry) return;
+    const pushRing = (ring) => {
+      (ring || []).forEach(([lng, lat]) => out.push([lat, lng]));
+    };
+    if (geometry.type === 'Polygon') {
+      (geometry.coordinates || []).forEach(pushRing);
+    } else if (geometry.type === 'MultiPolygon') {
+      (geometry.coordinates || []).forEach((poly) => (poly || []).forEach(pushRing));
+    }
+  }
+
+  async _assertLocalTiles() {
+    try {
+      const probe = await fetch('vendor/tiles/satellite/READY.txt', { cache: 'no-store' });
+      if (!probe.ok) throw new Error('нет READY.txt');
+      const sample = await fetch('vendor/tiles/satellite/10/639/372.jpg', { method: 'HEAD' });
+      if (!sample.ok) throw new Error('нет тайлов');
+    } catch (err) {
+      console.error('[map] local tiles missing', err);
+      const status = document.getElementById('camera-status');
+      if (status) {
+        status.textContent =
+          'Нет локальных тайлов! Запусти: python scripts/download_satellite_tiles.py';
+      }
+    }
+  }
+
   _clearMarkers() {
     this.markers.forEach((m) => {
       try { this.map.removeLayer(m); } catch (_) {}
@@ -150,11 +187,11 @@ export class Gallery {
   _districtPathStyle(props, focused) {
     const color = props.color || '#3ddc97';
     return {
-      color,
-      weight: focused ? 3.5 : 2,
-      opacity: focused ? 1 : 0.85,
-      fillColor: props.fill || color,
-      fillOpacity: focused ? 0.42 : 0.26,
+      color: focused ? '#ffffff' : color,
+      weight: focused ? 3.2 : 2,
+      opacity: focused ? 1 : 0.92,
+      fillColor: color,
+      fillOpacity: focused ? 0.28 : 0.14,
       lineJoin: 'round',
       lineCap: 'round',
       className: focused ? 'district-poly is-focused' : 'district-poly',
@@ -358,11 +395,19 @@ export class Gallery {
     this._updateDistrictPolygonFocus();
     this._applyFocus(false);
 
-    const bounds = L.latLngBounds(places.map((p) => [p.lat, p.lng]));
-    const pad = d.pad != null ? d.pad : 0.25;
+    // Реальный контур района, если есть; иначе точки мест
+    let bounds = null;
+    const layer = this.districtLayersById[d.id];
+    if (layer && typeof layer.getBounds === 'function') {
+      bounds = layer.getBounds();
+    }
+    if (!bounds || !bounds.isValid()) {
+      bounds = L.latLngBounds(places.map((p) => [p.lat, p.lng]));
+    }
+    const pad = d.pad != null ? Math.min(d.pad, 0.2) : 0.12;
     this.map.flyToBounds(bounds.pad(pad), {
       duration: 1.15,
-      maxZoom: d.minZoom ? Math.max(d.minZoom + 1, 14) : 14,
+      maxZoom: Math.min(13, d.minZoom ? d.minZoom + 1 : 12),
     });
 
     if (this.hintEl) {
@@ -459,6 +504,9 @@ export class Gallery {
   }
 
   _applyFocus(pan = true) {
+    // Сброс кольца удержания при смене точки
+    this.clearHoldProgress();
+
     this.canvasEl.querySelectorAll('.gallery-point').forEach((p) => {
       p.classList.toggle('focused', Number(p.dataset.index) === this.focusIndex);
     });
@@ -485,22 +533,51 @@ export class Gallery {
     this.snapCursorToFocus();
   }
 
-  snapCursorToFocus() {
-    if (!this.cursorSnapEnabled || !this.focusCursorEl) return;
+  /** Кольцо удержания на активной точке (pinch / кулак), без курсора руки. */
+  setHoldProgress(progress, mode = 'pinch') {
+    const p = Math.max(0, Math.min(1, progress || 0));
     const point = this.canvasEl.querySelector(`.gallery-point[data-index="${this.focusIndex}"]`);
-    if (!point) {
+    const listItem = this.listEl?.querySelector(`.place-list-item[data-index="${this.focusIndex}"]`);
+
+    const apply = (el) => {
+      if (!el) return;
+      el.style.setProperty('--hold-progress', String(p));
+      el.classList.toggle('holding', p > 0.02);
+      el.classList.toggle('holding-pinch', mode === 'pinch' && p > 0.02);
+      el.classList.toggle('holding-fist', mode === 'fist' && p > 0.02);
+      if (p <= 0.02) {
+        el.classList.remove('holding', 'holding-pinch', 'holding-fist');
+      }
+    };
+
+    // Снять кольцо с остальных точек
+    this.canvasEl.querySelectorAll('.gallery-point.holding').forEach((el) => {
+      if (el !== point) {
+        el.classList.remove('holding', 'holding-pinch', 'holding-fist');
+        el.style.setProperty('--hold-progress', '0');
+      }
+    });
+    this.listEl?.querySelectorAll('.place-list-item.holding').forEach((el) => {
+      if (el !== listItem) {
+        el.classList.remove('holding', 'holding-pinch', 'holding-fist');
+        el.style.setProperty('--hold-progress', '0');
+      }
+    });
+
+    apply(point);
+    apply(listItem);
+  }
+
+  clearHoldProgress() {
+    this.setHoldProgress(0);
+  }
+
+  snapCursorToFocus() {
+    // Курсор руки на карте скрыт — фокус только на точках
+    if (this.focusCursorEl) {
       this.focusCursorEl.classList.add('hidden');
-      return;
+      this.focusCursorEl.classList.remove('snapped', 'holding', 'holding-fist', 'holding-pinch', 'pinching');
     }
-    const rect = point.getBoundingClientRect();
-    if (rect.width === 0 && rect.height === 0) {
-      this.focusCursorEl.classList.add('hidden');
-      return;
-    }
-    this.focusCursorEl.classList.remove('hidden');
-    this.focusCursorEl.classList.add('snapped');
-    this.focusCursorEl.style.left = `${rect.left + rect.width / 2}px`;
-    this.focusCursorEl.style.top = `${rect.top + rect.height / 2}px`;
   }
 
   /** После закрытия портала — остаёмся в районе (не улетаем на всю ЧР). */

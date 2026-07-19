@@ -312,6 +312,7 @@ html, body {
 }
 
 .place-list-item {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -325,6 +326,7 @@ html, body {
   color: var(--text-main);
   cursor: pointer;
   font: inherit;
+  --hold-progress: 0;
 }
 
 .place-list-item:hover {
@@ -334,6 +336,40 @@ html, body {
 .place-list-item.focused {
   border-color: var(--accent-2);
   background: rgba(255, 182, 72, 0.12);
+}
+
+.place-list-item.holding {
+  border-color: var(--accent);
+}
+
+.place-list-item.holding-fist {
+  border-color: var(--accent-2);
+}
+
+.place-list-item.holding::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  border-radius: 0 0 12px 12px;
+  background: linear-gradient(
+    90deg,
+    var(--accent) 0%,
+    var(--accent) calc(var(--hold-progress) * 100%),
+    transparent calc(var(--hold-progress) * 100%)
+  );
+  pointer-events: none;
+}
+
+.place-list-item.holding-fist::after {
+  background: linear-gradient(
+    90deg,
+    var(--accent-2) 0%,
+    var(--accent-2) calc(var(--hold-progress) * 100%),
+    transparent calc(var(--hold-progress) * 100%)
+  );
 }
 
 .place-list-title {
@@ -347,6 +383,17 @@ html, body {
 }
 
 /* Leaflet-маркеры */
+.gallery-marker,
+.leaflet-marker-icon.gallery-marker {
+  overflow: visible !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-marker-pane {
+  overflow: visible !important;
+}
+
 .leaflet-container {
   width: 100%;
   height: 100%;
@@ -365,11 +412,16 @@ html, body {
 }
 
 .map-tiles-dim {
-  filter: saturate(0.55) brightness(0.72) contrast(1.05);
+  /* больше не затемняем — нужна живая спутниковая картинка */
+  filter: none;
 }
 
 .district-poly {
   transition: fill-opacity 0.25s ease, stroke-width 0.2s ease, stroke-opacity 0.2s ease;
+}
+
+.district-poly.is-focused {
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.35));
 }
 
 .leaflet-tooltip.district-label {
@@ -406,6 +458,49 @@ html, body {
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   padding: 0;
+  --hold-progress: 0;
+}
+
+/* Кольцо удержания жеста вокруг активной точки */
+.gallery-point::before {
+  content: "";
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from -90deg,
+    #3ddc97 0deg,
+    #3ddc97 calc(var(--hold-progress) * 360deg),
+    rgba(255, 255, 255, 0.14) calc(var(--hold-progress) * 360deg)
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+.gallery-point.holding::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.gallery-point.holding-fist::before {
+  background: conic-gradient(
+    from -90deg,
+    #ffb648 0deg,
+    #ffb648 calc(var(--hold-progress) * 360deg),
+    rgba(255, 255, 255, 0.14) calc(var(--hold-progress) * 360deg)
+  );
+}
+
+.gallery-point.holding-pinch {
+  box-shadow: 0 0 0 10px rgba(61, 220, 151, 0.28);
+}
+
+.gallery-point.holding-fist {
+  box-shadow: 0 0 0 10px rgba(255, 182, 72, 0.32);
 }
 
 .gallery-point.is-district {
@@ -437,7 +532,8 @@ html, body {
     0 0 32px rgba(255, 182, 72, 0.5);
 }
 
-.leaflet-marker-icon:has(.gallery-point.focused) {
+.leaflet-marker-icon:has(.gallery-point.focused),
+.leaflet-marker-icon:has(.gallery-point.holding) {
   z-index: 1000 !important;
 }
 

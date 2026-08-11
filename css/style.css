@@ -63,7 +63,7 @@ html, body {
   position: absolute;
   inset: -2%;
   background:
-    url("../assets/photos/grozny-center/2025.png") center / cover no-repeat;
+    url("../assets/photos/grozny-center/2025.jpg") center / cover no-repeat;
   transform: scale(1.04);
   animation: introKenBurns 22s ease-out forwards;
   filter: saturate(0.92) brightness(0.72);
@@ -1093,7 +1093,7 @@ html, body {
   margin: auto;
 }
 
-/* Camera / debug: всегда поверх карты и портала */
+/* Camera / debug: в зале скрыты; ?debug=1 показывает превью */
 #input-video {
   position: fixed;
   bottom: 10px;
@@ -1106,6 +1106,7 @@ html, body {
   z-index: 5100;
   border: 1px solid var(--border);
   pointer-events: none;
+  display: block;
 }
 
 #debug-canvas {
@@ -1117,6 +1118,12 @@ html, body {
   transform: scaleX(-1);
   z-index: 5101;
   pointer-events: none;
+  display: block;
+}
+
+#input-video.kiosk-hidden,
+#debug-canvas.kiosk-hidden {
+  display: none !important;
 }
 
 .hand-cursor {
@@ -1195,4 +1202,70 @@ html, body {
   border-radius: 20px;
   z-index: 5150;
   pointer-events: none;
+}
+
+/* Только при ?debug=1 — лёгкие метрики стабилизации руки */
+.hand-debug-metrics {
+  position: fixed;
+  top: 48px;
+  left: 16px;
+  z-index: 5150;
+  pointer-events: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.35;
+  color: #c8d2de;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 6px 10px;
+  border-radius: 8px;
+  max-width: min(92vw, 520px);
+  white-space: pre-line;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.camera-status.kiosk-status-quiet {
+  opacity: 0.35;
+  font-size: 11px;
+}
+
+html.kiosk-debug .camera-status.kiosk-status-quiet,
+body.kiosk-debug .camera-status.kiosk-status-quiet {
+  opacity: 1;
+  font-size: 13px;
+}
+
+/* Полноэкранное сообщение сотруднику при сбое камеры */
+.staff-alert {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px;
+  text-align: center;
+  background: rgba(7, 11, 20, 0.92);
+  color: #f2f5f9;
+  font-family: Manrope, "Segoe UI", system-ui, sans-serif;
+}
+
+.staff-alert[hidden] {
+  display: none !important;
+}
+
+.staff-alert strong {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  color: #ffb648;
+}
+
+.staff-alert p {
+  margin: 0;
+  max-width: 36ch;
+  font-size: clamp(16px, 2vw, 22px);
+  line-height: 1.45;
+  color: rgba(242, 245, 249, 0.85);
 }

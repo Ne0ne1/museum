@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=14" />
+  <link rel="stylesheet" href="css/style.css?v=19" />
 </head>
 <body>
   <div id="app">
@@ -21,25 +21,29 @@
       <div class="intro-content">
         <p class="intro-brand">Музей новых технологий</p>
         <h1 class="intro-title">Портал времени</h1>
-        <p class="intro-lead">Место на карте — и рука проводит через его эпохи</p>
+        <p class="intro-lead">Один экран, одно движение руки — и город возвращается в прошлое</p>
 
         <div class="intro-actions">
-          <a href="map.html" class="btn-primary intro-cta" id="start-btn">Начать</a>
-          <p class="intro-demo">30 сек: Грозный → открыть → годы → назад</p>
+          <a href="portal.html" class="btn-primary intro-cta" id="start-btn">Начать</a>
+          <p class="intro-demo">30 сек: места ←→ · ↑ описание · pinch — эпоха</p>
         </div>
 
-        <ul class="intro-gestures" aria-label="Три жеста">
+        <ul class="intro-gestures" aria-label="Жесты">
           <li>
-            <span class="intro-gesture-key">Pinch</span>
-            <span class="intro-gesture-desc">открыть</span>
+            <span class="intro-gesture-key">Ладонь ←→</span>
+            <span class="intro-gesture-desc">другое место</span>
           </li>
           <li>
-            <span class="intro-gesture-key">Ладонь</span>
-            <span class="intro-gesture-desc">листать</span>
+            <span class="intro-gesture-key">Ладонь ↑</span>
+            <span class="intro-gesture-desc">описание места</span>
+          </li>
+          <li>
+            <span class="intro-gesture-key">Pinch</span>
+            <span class="intro-gesture-desc">удержать — шторка</span>
           </li>
           <li>
             <span class="intro-gesture-key">Кулак</span>
-            <span class="intro-gesture-desc">назад</span>
+            <span class="intro-gesture-desc">закрыть / на старт</span>
           </li>
         </ul>
       </div>

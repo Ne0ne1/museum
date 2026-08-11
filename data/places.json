@@ -7,30 +7,8 @@
     "lat": 43.3169,
     "lng": 45.6981,
     "description": "Сердце столицы Чеченской Республики — площадь, проспекты, символ возрождения города.",
-    "image": "assets/photos/grozny-center.jpg",
-    "photo": "assets/photos/grozny-center.jpg"
-  },
-  {
-    "id": "chsu-campus",
-    "districtId": "grozny",
-    "title": "ЧГУ",
-    "region": "Грозный",
-    "lat": 43.309,
-    "lng": 45.692,
-    "description": "Чеченский государственный университет — главный вуз республики, центр образования и науки.",
-    "image": "assets/photos/chsu-campus/2020s.jpg",
-    "photo": "assets/photos/chsu-campus/2020s.jpg"
-  },
-  {
-    "id": "heart-of-chechnya",
-    "districtId": "grozny",
-    "title": "Мечеть «Сердце Чечни»",
-    "region": "Грозный",
-    "lat": 43.318,
-    "lng": 45.6866,
-    "description": "Одна из главных духовных и архитектурных доминант Грозного.",
-    "image": "assets/photos/heart-of-chechnya/2020.jpg",
-    "photo": "assets/photos/heart-of-chechnya/2020.jpg"
+    "image": "assets/photos/grozny-center/2025.jpg",
+    "photo": "assets/photos/grozny-center/2025.jpg"
   },
   {
     "id": "grozny-city",
@@ -40,150 +18,29 @@
     "lat": 43.3145,
     "lng": 45.7009,
     "description": "Современный деловой и архитектурный комплекс — символ нового облика столицы.",
-    "image": "assets/photos/grozny-city/2020.jpg",
-    "photo": "assets/photos/grozny-city/2020.jpg"
+    "image": "assets/photos/grozny-city/2025.jpg",
+    "photo": "assets/photos/grozny-city/2025.jpg"
   },
   {
-    "id": "national-museum",
+    "id": "heart-of-chechnya",
     "districtId": "grozny",
-    "title": "Национальный музей",
+    "title": "Мечеть «Сердце Чечни»",
     "region": "Грозный",
-    "lat": 43.321,
-    "lng": 45.689,
-    "description": "Музей, хранящий историю, культуру и наследие чеченского народа.",
-    "image": "assets/photos/national-museum/2020.jpg",
-    "photo": "assets/photos/national-museum/2020.jpg"
+    "lat": 43.318,
+    "lng": 45.6866,
+    "description": "Одна из главных духовных и архитектурных доминант Грозного — мечеть и площадь у Сунжи.",
+    "image": "assets/photos/heart-of-chechnya/2025.jpg",
+    "photo": "assets/photos/heart-of-chechnya/2025.jpg"
   },
   {
-    "id": "argun",
-    "districtId": "argun",
-    "title": "Аргун",
-    "region": "Аргун",
-    "lat": 43.2931,
-    "lng": 45.877,
-    "description": "Город Аргун — важный промышленный и культурный центр республики.",
-    "image": "assets/photos/argun/2020.jpg",
-    "photo": "assets/photos/argun/2020.jpg"
-  },
-  {
-    "id": "gudermes",
-    "districtId": "gudermes",
-    "title": "Гудермес",
-    "region": "Гудермес",
-    "lat": 43.352,
-    "lng": 46.1032,
-    "description": "Один из крупнейших городов ЧР, транспортный и образовательный узел.",
-    "image": "assets/photos/gudermes/2020.jpg",
-    "photo": "assets/photos/gudermes/2020.jpg"
-  },
-  {
-    "id": "lake-kezenoy",
-    "districtId": "vedeno",
-    "title": "Озеро Кезеной-Ам",
-    "region": "Веденский район",
-    "lat": 42.7769,
-    "lng": 46.1449,
-    "description": "Жемчужина природы Чечни — высокогорное озеро, место силы и туризма.",
-    "image": "assets/photos/lake-kezenoy/2020s.jpg",
-    "photo": "assets/photos/lake-kezenoy/2020s.jpg"
-  },
-  {
-    "id": "vedeno",
-    "districtId": "vedeno",
-    "title": "Ведено",
-    "region": "Веденский район",
-    "lat": 42.9686,
-    "lng": 46.1043,
-    "description": "Исторический центр Веденского района — горы, память, традиции.",
-    "image": "assets/photos/vedeno/2020.jpg",
-    "photo": "assets/photos/vedeno/2020.jpg"
-  },
-  {
-    "id": "shali",
-    "districtId": "shali",
-    "title": "Шали",
-    "region": "Шалинский район",
-    "lat": 43.1489,
-    "lng": 45.9012,
-    "description": "Город Шали — культурный и религиозный центр, современные объекты и наследие.",
-    "image": "assets/photos/shali/2020.jpg",
-    "photo": "assets/photos/shali/2020.jpg"
-  },
-  {
-    "id": "achkhoy-martan",
-    "districtId": "achkhoy-martan",
-    "title": "Ачхой-Мартан",
-    "region": "Ачхой-Мартановский район",
-    "lat": 43.188,
-    "lng": 45.285,
-    "description": "Площадь Ленина — центр Ачхой-Мартана в разные десятилетия.",
-    "image": "assets/photos/achkhoy-martan/2000s.jpg",
-    "photo": "assets/photos/achkhoy-martan.jpg"
-  },
-  {
-    "id": "novye-atagi",
-    "districtId": "shali",
-    "title": "Новые Атаги",
-    "region": "Шалинский район",
-    "lat": 43.135,
-    "lng": 45.773,
-    "description": "Мечеть в Новых Атагах — от скромного здания до современного комплекса.",
-    "image": "assets/photos/novye-atagi/2020s.jpg",
-    "photo": "assets/photos/novye-atagi.jpg"
-  },
-  {
-    "id": "shelkovskaya",
-    "districtId": "shelkovskoy",
-    "title": "Шелковская",
-    "region": "Шелковской район",
-    "lat": 43.509,
-    "lng": 46.323,
-    "description": "Администрация Шелковского района в разные десятилетия.",
-    "image": "assets/photos/shelkovskaya/2020s.jpg",
-    "photo": "assets/photos/shelkovskaya.jpg"
-  },
-  {
-    "id": "kurchaloy",
-    "districtId": "kurchaloy",
-    "title": "Курчалой",
-    "region": "Курчалоевский район",
-    "lat": 43.204,
-    "lng": 46.088,
-    "description": "Площадь перед администрацией Курчалоя — путь от грунтовой площади до современного облика.",
-    "image": "assets/photos/kurchaloy/2020s.jpg",
-    "photo": "assets/photos/kurchaloy.jpg"
-  },
-  {
-    "id": "urus-martan",
-    "districtId": "urus-martan",
-    "title": "Урус-Мартан",
-    "region": "Урус-Мартановский район",
-    "lat": 43.13,
-    "lng": 45.54,
-    "description": "Урус-Мартан в ранние годы: улицы, памятники, дом культуры, мост.",
-    "image": "assets/photos/urus-martan/1960s-dk.jpg",
-    "photo": "assets/photos/urus-martan.jpg"
-  },
-  {
-    "id": "shatoy",
-    "districtId": "shatoy",
-    "title": "Шатой",
-    "region": "Шатойский район",
-    "lat": 42.871,
-    "lng": 45.688,
-    "description": "Вид на село со стороны реки Шатойки — башни, мост, жизнь ущелья.",
-    "image": "assets/photos/shatoy/2020.jpg",
-    "photo": "assets/photos/shatoy/2020.jpg"
-  },
-  {
-    "id": "itum-kali",
-    "districtId": "itum-kali",
-    "title": "Итум-Кали",
-    "region": "Итум-Калинский район",
-    "lat": 42.735,
-    "lng": 45.575,
-    "description": "Вид на село с противоположного берега Аргуна — башни и горы сквозь десятилетия.",
-    "image": "assets/photos/itum-kali/2020s.jpg",
-    "photo": "assets/photos/itum-kali.jpg"
+    "id": "sunzha-embankment",
+    "districtId": "grozny",
+    "title": "Набережная Сунжи",
+    "region": "Грозный",
+    "lat": 43.3175,
+    "lng": 45.6925,
+    "description": "Набережная реки Сунжи — мосты, башни и прогулочная зона в центре столицы.",
+    "image": "assets/photos/sunzha-embankment/2025.jpg",
+    "photo": "assets/photos/sunzha-embankment/2025.jpg"
   }
 ]

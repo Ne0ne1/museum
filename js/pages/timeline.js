@@ -5,7 +5,7 @@ const statusEl = document.getElementById('camera-status');
 const place = loadSelectedPlace();
 
 if (!place) {
-  window.location.replace('map.html');
+  window.location.replace('portal.html');
   throw new Error('Место не выбрано');
 }
 
@@ -39,7 +39,7 @@ import('../handUI.js')
             timeline.handleSwipe(payload.deltaX);
             break;
           case 'fist':
-            window.location.href = 'map.html';
+            window.location.href = 'portal.html';
             break;
           case 'dwellprogress':
             timeline.handleDwellProgress(payload.el, payload.progress);

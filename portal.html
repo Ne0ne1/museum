@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <title>Портал времени</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=21" />
+  <link rel="stylesheet" href="css/portal.css?v=29" />
+</head>
+<body>
+  <div id="app">
+    <div class="portal open" id="place-portal" aria-label="Портал времени">
+      <div class="hero is-front" data-hero="a"><div class="hero-media"></div></div>
+      <div class="hero is-back" data-hero="b"><div class="hero-media"></div></div>
+      <div class="veil"></div>
+
+      <div class="compare" data-compare hidden>
+        <div class="compare-right" data-compare-right></div>
+        <div class="compare-left" data-compare-left></div>
+        <div class="compare-handle" data-compare-handle></div>
+        <div class="compare-labels">
+          <span data-compare-year-a></span>
+          <span data-compare-year-b></span>
+        </div>
+      </div>
+
+      <div class="portal-gate" data-portal-gate aria-hidden="true">
+        <div class="portal-gate-ring"></div>
+        <div class="portal-gate-glow"></div>
+        <div class="portal-particles">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="status" data-status></div>
+      <div class="portal-fist-ring" data-fist-ring aria-hidden="true"></div>
+
+      <aside class="story-sheet" data-story-sheet aria-hidden="true">
+        <div class="story-sheet-handle"></div>
+        <div class="story-sheet-year" data-sheet-year></div>
+        <h3 class="story-sheet-title" data-sheet-title></h3>
+        <p class="story-sheet-text" data-sheet-text></p>
+        <p class="story-sheet-hint">Свайп ладонью вниз — свернуть · кулак — закрыть</p>
+      </aside>
+
+      <footer class="portal-caption">
+        <div class="portal-caption-place" data-caption-place></div>
+        <div class="portal-caption-era" data-caption-era></div>
+        <p class="portal-caption-hint">←→ место · ↑ описание · pinch — шторка · кулак — назад</p>
+      </footer>
+    </div>
+
+    <video id="input-video" playsinline muted autoplay></video>
+    <canvas id="debug-canvas" width="640" height="480"></canvas>
+    <div id="hand-cursor" class="hand-cursor hidden"></div>
+    <div id="camera-status" class="camera-status">Загрузка…</div>
+  </div>
+
+  <div id="staff-alert" class="staff-alert" hidden role="alert"></div>
+
+  <script type="module" src="js/pages/portal.js?v=17"></script>
+</body>
+</html>

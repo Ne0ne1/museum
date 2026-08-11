@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Выбор камеры — Портал времени</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Manrope, "Segoe UI", system-ui, sans-serif;
+      background: #070b14;
+      color: #f2f5f9;
+      padding: 32px 24px 48px;
+    }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    p { color: #8b95ab; max-width: 42ch; line-height: 1.45; }
+    .status {
+      margin: 18px 0;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      font-size: 14px;
+    }
+    .list { display: grid; gap: 10px; max-width: 560px; margin-top: 20px; }
+    button.cam {
+      text-align: left;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(20, 28, 44, 0.9);
+      color: #f2f5f9;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    button.cam:hover { border-color: rgba(140, 210, 255, 0.55); }
+    button.cam.active {
+      border-color: #3ddc97;
+      box-shadow: inset 0 0 0 1px #3ddc97;
+    }
+    button.cam .meta { display: block; margin-top: 4px; font-size: 12px; color: #8b95ab; word-break: break-all; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+    .actions a, .actions button {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 0;
+      text-decoration: none;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .primary { background: #3ddc97; color: #071018; }
+    .secondary { background: rgba(255,255,255,0.1); color: #f2f5f9; }
+    video {
+      width: min(420px, 100%);
+      aspect-ratio: 4/3;
+      background: #000;
+      border-radius: 12px;
+      margin-top: 18px;
+      object-fit: cover;
+      transform: scaleX(-1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Выбор камеры</h1>
+  <p>
+    Подключите USB-камеру, нажмите «Обновить список», выберите нужную камеру.
+    Выбор сохранится и портал будет использовать её автоматически.
+  </p>
+  <div class="status" id="status">Запрос доступа к камере…</div>
+  <video id="preview" playsinline muted autoplay></video>
+  <div class="list" id="list"></div>
+  <div class="actions">
+    <button class="secondary" id="refresh" type="button">Обновить список</button>
+    <button class="secondary" id="clear" type="button">Сбросить (камера по умолчанию)</button>
+    <a class="primary" href="portal.html">Открыть портал</a>
+  </div>
+
+  <script type="module">
+    const KEY_ID = 'museum.cameraDeviceId';
+    const KEY_LABEL = 'museum.cameraLabel';
+    const statusEl = document.getElementById('status');
+    const listEl = document.getElementById('list');
+    const preview = document.getElementById('preview');
+    let currentStream = null;
+
+    function savedId() {
+      try { return localStorage.getItem(KEY_ID) || ''; } catch { return ''; }
+    }
+
+    function setStatus(msg) {
+      statusEl.textContent = msg;
+    }
+
+    async function stopPreview() {
+      currentStream?.getTracks?.().forEach((t) => t.stop());
+      currentStream = null;
+      preview.srcObject = null;
+    }
+
+    async function previewDevice(deviceId) {
+      await stopPreview();
+      const constraints = deviceId
+        ? { audio: false, video: { deviceId: { exact: deviceId }, width: { ideal: 640 }, height: { ideal: 480 } } }
+        : { audio: false, video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } } };
+      currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+      preview.srcObject = currentStream;
+      await preview.play();
+      const label = currentStream.getVideoTracks()[0]?.label || 'камера';
+      setStatus(`Превью: ${label}`);
+    }
+
+    async function loadList() {
+      // Need permission so labels are not empty
+      try {
+        const probe = await navigator.mediaDevices.getUserMedia({ audio: false, video: true });
+        probe.getTracks().forEach((t) => t.stop());
+      } catch (err) {
+        setStatus('Нужно разрешить камеру в Chrome: ' + (err.message || err));
+        return;
+      }
+
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const cams = devices.filter((d) => d.kind === 'videoinput');
+      const selected = savedId();
+      listEl.innerHTML = '';
+
+      if (!cams.length) {
+        setStatus('Камеры не найдены. Подключите USB-камеру и нажмите «Обновить список».');
+        return;
+      }
+
+      setStatus(`Найдено камер: ${cams.length}. Выберите нужную.`);
+      cams.forEach((cam, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'cam' + (cam.deviceId === selected ? ' active' : '');
+        const name = cam.label || `Камера ${i + 1}`;
+        btn.innerHTML = `<strong>${name}</strong><span class="meta">${cam.deviceId}</span>`;
+        btn.addEventListener('click', async () => {
+          try {
+            localStorage.setItem(KEY_ID, cam.deviceId);
+            localStorage.setItem(KEY_LABEL, name);
+            await previewDevice(cam.deviceId);
+            [...listEl.querySelectorAll('.cam')].forEach((el) => el.classList.remove('active'));
+            btn.classList.add('active');
+            setStatus(`Сохранено: ${name}. Можно открывать портал.`);
+          } catch (err) {
+            setStatus('Не удалось открыть камеру: ' + (err.message || err));
+          }
+        });
+        listEl.appendChild(btn);
+      });
+
+      try {
+        await previewDevice(selected || cams[0].deviceId);
+      } catch (err) {
+        setStatus('Превью не открылось: ' + (err.message || err));
+      }
+    }
+
+    document.getElementById('refresh').addEventListener('click', loadList);
+    document.getElementById('clear').addEventListener('click', async () => {
+      localStorage.removeItem(KEY_ID);
+      localStorage.removeItem(KEY_LABEL);
+      [...listEl.querySelectorAll('.cam')].forEach((el) => el.classList.remove('active'));
+      setStatus('Сброшено. Будет камера по умолчанию / внешняя по автовыбору.');
+      await loadList();
+    });
+
+    loadList();
+  </script>
+</body>
+</html>

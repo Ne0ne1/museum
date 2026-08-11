@@ -1,3 +1,10 @@
 .DS_Store
 __pycache__/
 vendor/tiles/
+node_modules/
+www/
+android/
+PortalVremeni-museum.apk
+*.apk
+.vercel/
+museum-tools/

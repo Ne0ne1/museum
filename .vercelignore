@@ -1,0 +1,10 @@
+android/
+www/
+node_modules/
+PortalVremeni-museum.apk
+*.apk
+.gradle/
+museum-tools/
+scripts/android/
+package.json
+package-lock.json

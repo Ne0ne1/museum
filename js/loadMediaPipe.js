@@ -3,13 +3,14 @@
 const HANDS_VERSION = '0.4.1675469240';
 const DRAWING_VERSION = '0.3.1675466124';
 
-const SOURCES = [
-  {
-    name: 'local',
-    hands: 'vendor/mediapipe/hands/hands.js',
-    drawing: 'vendor/mediapipe/drawing_utils/drawing_utils.js',
-    locate: (file) => `vendor/mediapipe/hands/${file}`,
-  },
+// Android APK / offline kiosk: local vendor only (no CDN).
+const OFFLINE_ONLY =
+  typeof window !== 'undefined' &&
+  (window.Capacitor?.isNativePlatform?.() === true ||
+    location.protocol === 'https:' && location.hostname === 'localhost' ||
+    new URLSearchParams(location.search).has('offline'));
+
+const CDN_SOURCES = [
   {
     name: 'jsdelivr',
     hands: `https://cdn.jsdelivr.net/npm/@mediapipe/hands@${HANDS_VERSION}/hands.js`,
@@ -23,6 +24,15 @@ const SOURCES = [
     locate: (file) => `https://unpkg.com/@mediapipe/hands@${HANDS_VERSION}/${file}`,
   },
 ];
+
+const LOCAL_SOURCE = {
+  name: 'local',
+  hands: 'vendor/mediapipe/hands/hands.js',
+  drawing: 'vendor/mediapipe/drawing_utils/drawing_utils.js',
+  locate: (file) => `vendor/mediapipe/hands/${file}`,
+};
+
+const SOURCES = OFFLINE_ONLY ? [LOCAL_SOURCE] : [LOCAL_SOURCE, ...CDN_SOURCES];
 
 function loadScript(src, timeoutMs = 20000) {
   return new Promise((resolve, reject) => {

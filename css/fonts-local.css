@@ -1,0 +1,28 @@
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: local("Manrope Medium"), local("Roboto Medium"), local("Noto Sans");
+}
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local("Manrope SemiBold"), local("Roboto Medium"), local("Noto Sans");
+}
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local("Manrope Bold"), local("Roboto Bold"), local("Noto Sans");
+}
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: local("Manrope ExtraBold"), local("Roboto Black"), local("Noto Sans");
+}

@@ -24,6 +24,21 @@ function clampInt(value, min, max, fallback) {
   return Math.min(max, Math.max(min, Math.round(n)));
 }
 
+/** Mac/USB kiosk setup — not public Vercel/tablet deploy. */
+function isLocalKioskHost() {
+  const h = location.hostname;
+  return h === 'localhost' || h === '127.0.0.1' || h.endsWith('.local');
+}
+
+function isSecureCameraContext() {
+  return (
+    window.isSecureContext === true ||
+    location.protocol === 'https:' ||
+    location.hostname === 'localhost' ||
+    location.hostname === '127.0.0.1'
+  );
+}
+
 export class HandTracker {
   /**
    * @param {HTMLVideoElement} videoEl
@@ -66,15 +81,18 @@ export class HandTracker {
     this.cameraDeviceId = String(options.cameraDeviceId || '').trim();
     /** Substring match against device label, e.g. "Logitech", "USB" */
     this.cameraLabelMatch = String(options.cameraLabelMatch || '').trim();
-    /** Prefer first non-built-in Mac camera when no id/label set */
-    this.cameraPreferExternal = options.cameraPreferExternal !== false;
+    /** Prefer first non-built-in Mac camera when no id/label set (local kiosk only) */
+    this.cameraPreferExternal =
+      isLocalKioskHost() && options.cameraPreferExternal !== false;
 
-    // Выбор с camera.html имеет приоритет над JSON
-    try {
-      const storedId = String(localStorage.getItem('museum.cameraDeviceId') || '').trim();
-      if (storedId) this.cameraDeviceId = storedId;
-    } catch (_) {
-      /* ignore */
+    // camera.html selection applies only on the same machine (local kiosk).
+    if (isLocalKioskHost()) {
+      try {
+        const storedId = String(localStorage.getItem('museum.cameraDeviceId') || '').trim();
+        if (storedId) this.cameraDeviceId = storedId;
+      } catch (_) {
+        /* ignore */
+      }
     }
 
     this.hands = null;
@@ -101,7 +119,9 @@ export class HandTracker {
       this.locateFile = mp.locateFile;
 
       if (!navigator.mediaDevices?.getUserMedia) {
-        const msg = 'Нет getUserMedia. Открой http://localhost:8080 в Chrome';
+        const msg = isSecureCameraContext()
+          ? 'Браузер не поддерживает камеру (getUserMedia).'
+          : 'Камера доступна только по HTTPS. Откройте сайт через https://…';
         this.onStatus(msg);
         this.onFatal(msg);
         return;
@@ -134,9 +154,10 @@ export class HandTracker {
 
   async _openCameraWithRetry() {
     let lastErr = null;
-    const videoConstraints = await this._resolveVideoConstraints();
+    const attempts = await this._buildCameraAttemptList();
 
     for (let attempt = 1; attempt <= this.retryAttempts; attempt += 1) {
+      const constraints = attempts[Math.min(attempt - 1, attempts.length - 1)];
       this.onStatus(
         attempt === 1
           ? 'Запрос камеры…'
@@ -146,10 +167,10 @@ export class HandTracker {
         this.stream = await withTimeout(
           navigator.mediaDevices.getUserMedia({
             audio: false,
-            video: videoConstraints,
+            video: constraints,
           }),
           CAMERA_TIMEOUT_MS,
-          'Таймаут камеры. Chrome → настройки сайта → Камера → Разрешить'
+          'Таймаут камеры. Разрешите доступ к камере в настройках браузера.'
         );
         const track = this.stream.getVideoTracks()[0];
         const label = track?.label || 'камера';
@@ -158,8 +179,12 @@ export class HandTracker {
         return;
       } catch (err) {
         lastErr = err;
-        console.warn('getUserMedia attempt', attempt, err);
+        console.warn('getUserMedia attempt', attempt, constraints, err);
         this.stopTracksOnly();
+        if (this._shouldClearStoredDeviceId(err)) {
+          this._clearStoredCameraDeviceId();
+          this.cameraDeviceId = '';
+        }
         if (attempt < this.retryAttempts) {
           await sleep(this.retryDelayMs);
         }
@@ -168,12 +193,53 @@ export class HandTracker {
     throw lastErr || new Error('Камера недоступна');
   }
 
+  _shouldClearStoredDeviceId(err) {
+    const name = String(err?.name || '');
+    const msg = String(err?.message || err);
+    return (
+      /Overconstrained|NotFound|DevicesNotFound/i.test(name) ||
+      /Overconstrained|requested device|not found/i.test(msg)
+    );
+  }
+
+  _clearStoredCameraDeviceId() {
+    try {
+      localStorage.removeItem('museum.cameraDeviceId');
+      localStorage.removeItem('museum.cameraLabel');
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  /** Progressive fallback: ideal deviceId → facingMode → any camera. */
+  async _buildCameraAttemptList() {
+    const base = { width: { ideal: 640 }, height: { ideal: 480 } };
+    const list = [];
+    const resolved = await this._resolveVideoConstraints();
+
+    if (resolved.deviceId) {
+      list.push({ ...base, deviceId: { ideal: resolved.deviceId } });
+      list.push({ ...base, deviceId: { exact: resolved.deviceId } });
+    }
+    if (resolved.facingMode) {
+      list.push({ ...base, facingMode: resolved.facingMode });
+    }
+    list.push({ ...base, facingMode: 'user' });
+    list.push(true);
+    return list;
+  }
+
   /**
-   * Build getUserMedia video constraints.
-   * Priority: cameraDeviceId → cameraLabelMatch → prefer external → facingMode user.
+   * Build preferred camera hints (deviceId / facingMode).
+   * Priority on local kiosk: cameraDeviceId → cameraLabelMatch → prefer external.
+   * On Vercel/public HTTPS: front camera (user-facing).
    */
   async _resolveVideoConstraints() {
     const base = { width: { ideal: 640 }, height: { ideal: 480 } };
+
+    if (!isLocalKioskHost()) {
+      return { ...base, facingMode: 'user' };
+    }
 
     let deviceId = this.cameraDeviceId;
     if (!deviceId && (this.cameraLabelMatch || this.cameraPreferExternal)) {
@@ -181,7 +247,7 @@ export class HandTracker {
     }
 
     if (deviceId) {
-      return { ...base, deviceId: { exact: deviceId } };
+      return { ...base, deviceId };
     }
 
     return { ...base, facingMode: 'user' };
@@ -380,7 +446,7 @@ export class HandTracker {
   _friendlyError(err) {
     const msg = String(err?.message || err);
     if (/Permission|NotAllowed|denied/i.test(msg)) {
-      return 'Камера запрещена. Разрешите для localhost:8080 в Chrome и обновите страницу.';
+      return `Камера запрещена. Нажмите 🔒 слева от адреса → Камера → Разрешить, затем обновите страницу.`;
     }
     if (/NotFound|DevicesNotFound/i.test(msg)) {
       return 'Камера не найдена. Проверьте кабель и Диспетчер устройств.';

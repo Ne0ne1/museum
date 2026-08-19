@@ -7,7 +7,6 @@ const DRAWING_VERSION = '0.3.1675466124';
 const OFFLINE_ONLY =
   typeof window !== 'undefined' &&
   (window.Capacitor?.isNativePlatform?.() === true ||
-    location.protocol === 'https:' && location.hostname === 'localhost' ||
     new URLSearchParams(location.search).has('offline'));
 
 const CDN_SOURCES = [

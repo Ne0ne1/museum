@@ -1,6 +1,6 @@
 // Общий запуск трекинга руки на любой странице.
 
-import { HandTracker } from './handTracker.js?v=8';
+import { HandTracker } from './handTracker.js?v=9';
 import { GestureController } from './gestureState.js?v=29';
 import { LandmarkStabilizer } from './landmarkStabilizer.js?v=1';
 import { applyDebugUi, showStaffAlert, hideStaffAlert, isDebugMode } from './kiosk.js?v=2';

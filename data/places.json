@@ -75,5 +75,16 @@
     "description": "Православный храм в центре Грозного — историческая и духовная часть многоконфессионального города.",
     "image": "assets/photos/archangel-michael-church/2025.jpg",
     "photo": "assets/photos/archangel-michael-church/2025.jpg"
+  },
+  {
+    "id": "central-avenue-house",
+    "districtId": "grozny",
+    "title": "Дом на центральном проспекте",
+    "region": "Грозный",
+    "lat": 43.3172,
+    "lng": 45.6941,
+    "description": "Жилой дом на одном из центральных перекрёстков Грозного — часть узнаваемого архитектурного облика столицы.",
+    "image": "assets/photos/central-avenue-house/2025.jpg",
+    "photo": "assets/photos/central-avenue-house/2025.jpg"
   }
 ]

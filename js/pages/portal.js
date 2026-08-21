@@ -40,8 +40,8 @@ async function boot() {
 
   try {
     const [places, events] = await Promise.all([
-      fetch('data/places.json?v=7').then((r) => r.json()),
-      fetch('data/events.json?v=7').then((r) => r.json()),
+      fetch('data/places.json?v=8').then((r) => r.json()),
+      fetch('data/events.json?v=8').then((r) => r.json()),
     ]);
 
     const portalPlaces = buildPortalPlaces(places, events);

@@ -86,5 +86,16 @@
     "description": "Жилой дом на одном из центральных перекрёстков Грозного — часть узнаваемого архитектурного облика столицы.",
     "image": "assets/photos/central-avenue-house/2025.jpg",
     "photo": "assets/photos/central-avenue-house/2025.jpg"
+  },
+  {
+    "id": "sunzha-riverfront",
+    "districtId": "grozny",
+    "title": "Набережная Сунжи",
+    "region": "Грозный",
+    "lat": 43.3159,
+    "lng": 45.6889,
+    "description": "Набережная реки Сунжи — место, где восстановленный городской ландшафт соединяет образование, архитектуру и отдых.",
+    "image": "assets/photos/sunzha-riverfront/2025.jpg",
+    "photo": "assets/photos/sunzha-riverfront/2025.jpg"
   }
 ]

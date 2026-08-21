@@ -1,49 +1,5 @@
 [
   {
-    "id": "grozny-center",
-    "districtId": "grozny",
-    "title": "Центр Грозного",
-    "region": "Грозный",
-    "lat": 43.3169,
-    "lng": 45.6981,
-    "description": "Сердце столицы Чеченской Республики — площадь, проспекты, символ возрождения города.",
-    "image": "assets/photos/grozny-center/2025.jpg",
-    "photo": "assets/photos/grozny-center/2025.jpg"
-  },
-  {
-    "id": "grozny-city",
-    "districtId": "grozny",
-    "title": "Грозный-Сити",
-    "region": "Грозный",
-    "lat": 43.3145,
-    "lng": 45.7009,
-    "description": "Современный деловой и архитектурный комплекс — символ нового облика столицы.",
-    "image": "assets/photos/grozny-city/2025.jpg",
-    "photo": "assets/photos/grozny-city/2025.jpg"
-  },
-  {
-    "id": "heart-of-chechnya",
-    "districtId": "grozny",
-    "title": "Мечеть «Сердце Чечни»",
-    "region": "Грозный",
-    "lat": 43.318,
-    "lng": 45.6866,
-    "description": "Одна из главных духовных и архитектурных доминант Грозного — мечеть и площадь у Сунжи.",
-    "image": "assets/photos/heart-of-chechnya/2025.jpg",
-    "photo": "assets/photos/heart-of-chechnya/2025.jpg"
-  },
-  {
-    "id": "sunzha-embankment",
-    "districtId": "grozny",
-    "title": "Набережная Сунжи",
-    "region": "Грозный",
-    "lat": 43.3175,
-    "lng": 45.6925,
-    "description": "Набережная реки Сунжи — мосты, башни и прогулочная зона в центре столицы.",
-    "image": "assets/photos/sunzha-embankment/2025.jpg",
-    "photo": "assets/photos/sunzha-embankment/2025.jpg"
-  },
-  {
     "id": "central-tunnel",
     "districtId": "grozny",
     "title": "Центральный тоннель",

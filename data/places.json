@@ -42,5 +42,82 @@
     "description": "Набережная реки Сунжи — мосты, башни и прогулочная зона в центре столицы.",
     "image": "assets/photos/sunzha-embankment/2025.jpg",
     "photo": "assets/photos/sunzha-embankment/2025.jpg"
+  },
+  {
+    "id": "central-tunnel",
+    "districtId": "grozny",
+    "title": "Центральный тоннель",
+    "region": "Грозный",
+    "lat": 43.3178,
+    "lng": 45.6964,
+    "description": "Городская магистраль в центре Грозного — пространство, где особенно заметно, как менялся облик столицы.",
+    "image": "assets/photos/central-tunnel/2025.jpg",
+    "photo": "assets/photos/central-tunnel/2025.jpg"
+  },
+  {
+    "id": "grozny-mall",
+    "districtId": "grozny",
+    "title": "Грозный Молл",
+    "region": "Грозный",
+    "lat": 43.3163,
+    "lng": 45.6995,
+    "description": "Современное общественное пространство в центре столицы — символ мирной жизни и обновления города.",
+    "image": "assets/photos/grozny-mall/2025.jpg",
+    "photo": "assets/photos/grozny-mall/2025.jpg"
+  },
+  {
+    "id": "central-street",
+    "districtId": "grozny",
+    "title": "Улица в центре Грозного",
+    "region": "Грозный",
+    "lat": 43.3184,
+    "lng": 45.6928,
+    "description": "Одна из центральных улиц столицы — повседневное городское пространство, восстановленное после войны.",
+    "image": "assets/photos/central-street/2025.png",
+    "photo": "assets/photos/central-street/2025.png"
+  },
+  {
+    "id": "historic-mansion",
+    "districtId": "grozny",
+    "title": "Исторический особняк",
+    "region": "Грозный",
+    "lat": 43.3191,
+    "lng": 45.6887,
+    "description": "Старинное городское здание, в архитектуре которого сохранилась память о прежнем Грозном.",
+    "image": "assets/photos/historic-mansion/2025.png",
+    "photo": "assets/photos/historic-mansion/2025.png"
+  },
+  {
+    "id": "tower-house",
+    "districtId": "grozny",
+    "title": "Дом с башней",
+    "region": "Грозный",
+    "lat": 43.3201,
+    "lng": 45.6902,
+    "description": "Выразительный жилой дом в центре Грозного, восстановленный с сохранением узнаваемого силуэта.",
+    "image": "assets/photos/tower-house/2025.png",
+    "photo": "assets/photos/tower-house/2025.png"
+  },
+  {
+    "id": "minutka-square",
+    "districtId": "grozny",
+    "title": "Площадь Минутка",
+    "region": "Грозный",
+    "lat": 43.2998,
+    "lng": 45.7052,
+    "description": "Один из известных городских узлов Грозного, соединяющий жилые кварталы и важные магистрали столицы.",
+    "image": "assets/photos/minutka-square/2025.jpg",
+    "photo": "assets/photos/minutka-square/2025.jpg"
+  },
+  {
+    "id": "archangel-michael-church",
+    "districtId": "grozny",
+    "title": "Храм Архангела Михаила",
+    "region": "Грозный",
+    "lat": 43.3154,
+    "lng": 45.6916,
+    "description": "Православный храм в центре Грозного — историческая и духовная часть многоконфессионального города.",
+    "image": "assets/photos/archangel-michael-church/2025.jpg",
+    "photo": "assets/photos/archangel-michael-church/2025.jpg"
   }
 ]

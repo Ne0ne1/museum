@@ -97,5 +97,16 @@
     "description": "Набережная реки Сунжи — место, где восстановленный городской ландшафт соединяет образование, архитектуру и отдых.",
     "image": "assets/photos/sunzha-riverfront/2025.jpg",
     "photo": "assets/photos/sunzha-riverfront/2025.jpg"
+  },
+  {
+    "id": "orzamiev-street",
+    "districtId": "grozny",
+    "title": "Улица Х. У. Орзамиева",
+    "region": "Грозный",
+    "lat": 43.3158,
+    "lng": 45.6961,
+    "description": "Центральная городская улица, где восстановленная архитектура соседствует с современной жизнью Грозного.",
+    "image": "assets/photos/orzamiev-street/2025.jpg",
+    "photo": "assets/photos/orzamiev-street/2025.jpg"
   }
 ]

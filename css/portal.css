@@ -36,7 +36,7 @@
   position: absolute;
   inset: 0;
   background-color: #070b14;
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   transform: scale(1);
@@ -302,7 +302,7 @@
   position: absolute;
   inset: 0;
   background-color: #070b14;
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   transform: none;
